@@ -2,9 +2,9 @@ package server
 
 import (
 	"github.com/codeginga/locevt"
-	"gitlab.com/Aubichol/hrishi-backend/container"
-	"gitlab.com/Aubichol/hrishi-backend/event"
-	"gitlab.com/Aubichol/hrishi-backend/ws"
+	"gitlab.com/Aubichol/blood-bank-backend/container"
+	"gitlab.com/Aubichol/blood-bank-backend/event"
+	"gitlab.com/Aubichol/blood-bank-backend/ws"
 )
 
 //Event registers event related providers
