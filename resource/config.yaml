@@ -1,0 +1,36 @@
+server:
+  port: 8080
+
+session:
+  length: 10h
+  max_per_user: 10
+
+connection_cache:
+  length: 300s
+
+mongo:
+  uri: mongodb://localhost:27017
+  database: hrishi
+
+redis:
+  address: localhost:6379
+  password: ""
+  db: 0
+
+limit:
+  friend_list: 50
+  chat_list: 10
+  message_length: 50000
+
+wsclient:
+  readq_buffer: 10
+  writeq_buffer: 10
+  pong_wait: 30s
+  ping_period: 25s
+  write_wait: 30s
+  read_message_size: 512
+
+file:
+  location: "/root/src/src/gitlab.com/Aubichol/hrishi-backend/images"
+  firebase: "/root/src/src/gitlab.com/Aubichol/hrishi-backend/firebase"
+  max_size: 6291456
