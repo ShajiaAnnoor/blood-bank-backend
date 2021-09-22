@@ -1,8 +1,8 @@
 package server
 
 import (
-	"gitlab.com/Aubichol/hrishi-backend/cache/redis"
-	"gitlab.com/Aubichol/hrishi-backend/container"
+	"gitlab.com/Aubichol/blood-bank-backend/cache/redis"
+	"gitlab.com/Aubichol/blood-bank-backend/container"
 )
 
 func Cache(c container.Container) {
