@@ -30,6 +30,10 @@ func main() {
 
 	server.Handler(c)
 
+	//All data
+	server.Patient(c)
+	server.Organization(c)
+
 	server.WS(c)
 	server.Event(c)
 
