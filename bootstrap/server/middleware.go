@@ -1,8 +1,8 @@
 package server
 
 import (
-	"gitlab.com/Aubichol/hrishi-backend/api/middleware"
-	"gitlab.com/Aubichol/hrishi-backend/container"
+	"gitlab.com/Aubichol/blood-bank-backend/api/middleware"
+	"gitlab.com/Aubichol/blood-bank-backend/container"
 )
 
 //Middleware registers middleware related providers
