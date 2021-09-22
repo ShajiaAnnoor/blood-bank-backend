@@ -1,8 +1,8 @@
 package server
 
 import (
-	"gitlab.com/Aubichol/hrishi-backend/api"
-	"gitlab.com/Aubichol/hrishi-backend/container"
+	"gitlab.com/Aubichol/blood-bank-backend/api"
+	"gitlab.com/Aubichol/blood-bank-backend/container"
 )
 
 //Handler registers provider that returns root handler
