@@ -1,14 +1,14 @@
-package status
+package notice
 
 import (
 	"fmt"
 	"time"
 
 	"github.com/sirupsen/logrus"
-	"gitlab.com/Aubichol/hrishi-backend/errors"
-	"gitlab.com/Aubichol/hrishi-backend/model"
-	"gitlab.com/Aubichol/hrishi-backend/status/dto"
-	storestatus "gitlab.com/Aubichol/hrishi-backend/store/status"
+	"gitlab.com/Aubichol/blood-bank-backend/errors"
+	"gitlab.com/Aubichol/blood-bank-backend/model"
+	"gitlab.com/Aubichol/blood-bank-backend/notice/dto"
+	storenotice "gitlab.com/Aubichol/blood-bank-backend/store/notice"
 	"go.uber.org/dig"
 	"gopkg.in/go-playground/validator.v9"
 )
@@ -20,18 +20,19 @@ type Creater interface {
 
 // create creates user status
 type create struct {
-	storeStatus storestatus.Status
+	storeStatus storenotice.Notice
 	validate    *validator.Validate
 }
 
 func (c *create) toModel(userstatus *dto.Status) (
 	status *model.Status,
 ) {
-	status = &model.Status{}
-	status.CreatedAt = time.Now().UTC()
-	status.UpdatedAt = status.CreatedAt
-	status.Status = userstatus.Status
-	status.UserID = userstatus.UserID
+	notice = &model.Notice{}
+	notice.CreatedAt = time.Now().UTC()
+	notice.UpdatedAt = status.CreatedAt
+	notice.Description = userstatus.Description
+	notice.Title = usernotice.Title
+	notice.UserID = userstatus.UserID
 	return
 }
 
@@ -42,32 +43,32 @@ func (c *create) validateData(create *dto.Status) (
 	return
 }
 
-func (c *create) convertData(create *dto.Status) (
+func (c *create) convertData(create *dto.Notice) (
 	modelStatus *model.Status,
 ) {
 	modelStatus = c.toModel(create)
 	return
 }
 
-func (c *create) askStore(model *model.Status) (
+func (c *create) askStore(model *model.Notice) (
 	id string,
 	err error,
 ) {
-	id, err = c.storeStatus.Save(model)
+	id, err = c.storeNotice.Save(model)
 	return
 }
 
-func (c *create) giveResponse(modelStatus *model.Status, id string) (
+func (c *create) giveResponse(modelStatus *model.Notice, id string) (
 	*dto.CreateResponse, error,
 ) {
 	logrus.WithFields(logrus.Fields{
-		"id": modelStatus.UserID,
+		"id": modelNotice.UserID,
 	}).Debug("User created status successfully")
 
 	return &dto.CreateResponse{
 		Message:    "status created",
 		OK:         true,
-		StatusTime: modelStatus.CreatedAt.String(),
+		StatusTime: modelNotice.CreatedAt.String(),
 		ID:         id,
 	}, nil
 }
