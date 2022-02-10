@@ -1,9 +1,9 @@
-package comment
+package staticcontent
 
-import "gitlab.com/Aubichol/hrishi-backend/model"
+import "gitlab.com/Aubichol/blood-bank-backend/model"
 
-// Comments wraps user's comment functionality
-type Comments interface {
+// StaticContents wraps user's comment functionality
+type StaticContents interface {
 	Save(*model.StaticContent) (id string, err error)
 	FindByID(id string) (*model.StaticContent, error)
 	FindByStaticContentID(id string, skip int64, limit int64) ([]*model.StaticContent, error)

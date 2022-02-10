@@ -18,19 +18,19 @@ type staticcontents struct {
 	c *mongo.Collection
 }
 
-func (c *staticcontents) convertData(modelComment *model.StaticContent) (
-	mongoComment mongoModel.Comment,
+func (c *staticcontents) convertData(modelStaticContent *model.StaticContent) (
+	mongoStaticContent mongoModel.StaticContent,
 	err error,
 ) {
-	err = mongoComment.FromModel(modelComment)
+	err = mongoStaticContent.FromModel(modelStaticContent)
 	return
 }
 
 // Save saves staticcontents from model to database
-func (c *staticcontents) Save(modelComment *model.StaticContent) (string, error) {
+func (c *staticcontents) Save(modelStaticContent *model.StaticContent) (string, error) {
 	mongoStaticContent := mongoModel.StaticContent{}
 	var err error
-	mongoStaticContent, err = c.convertData(modelComment)
+	mongoStaticContent, err = c.convertData(modelStaticContent)
 	if err != nil {
 		return "", fmt.Errorf("Could not convert model comment to mongo comment: %w", err)
 	}
@@ -77,7 +77,7 @@ func (c *staticcontents) FindByID(id string) (*model.StaticContent, error) {
 }
 
 //FindByStatusID finds a comment by status id
-func (c *staticcontents) FindByStatusID(id string, skip int64, limit int64) ([]*model.StaticContent, error) {
+func (c *staticcontents) FindByStaticContentID(id string, skip int64, limit int64) ([]*model.StaticContent, error) {
 	objectID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return nil, fmt.Errorf("Invalid id %s : %w", id, err)
@@ -108,7 +108,11 @@ func (c *staticcontents) CountByStaticContentID(id string) (int64, error) {
 	}
 
 	filter := bson.M{"status_id": objectID}
-	cnt, err := c.c.CountDocuments(context.Background(), filter, &options.CountOptions{})
+	cnt, err := c.c.CountDocuments(
+		context.Background(),
+		filter,
+		&options.CountOptions{},
+	)
 
 	if err != nil {
 		return -1, err
@@ -135,7 +139,11 @@ func (c *staticcontents) FindByIDs(ids ...string) ([]*model.StaticContent, error
 		},
 	}
 
-	cursor, err := c.c.Find(context.Background(), filter, nil)
+	cursor, err := c.c.Find(
+		context.Background(),
+		filter,
+		nil,
+	)
 	if err != nil {
 		return nil, err
 	}
