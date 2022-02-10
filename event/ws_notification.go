@@ -3,7 +3,7 @@ package event
 import (
 	"github.com/codeginga/locevt"
 	"github.com/sirupsen/logrus"
-	"gitlab.com/Aubichol/hrishi-backend/ws"
+	"gitlab.com/Aubichol/blood-bank-backend/ws"
 )
 
 const (

@@ -2,9 +2,9 @@ package main
 
 import (
 	"github.com/sirupsen/logrus"
-	"gitlab.com/Aubichol/hrishi-backend/bootstrap/server"
-	"gitlab.com/Aubichol/hrishi-backend/container"
-	"gitlab.com/Aubichol/hrishi-backend/index"
+	"gitlab.com/Aubichol/blood-bank-backend/bootstrap/server"
+	"gitlab.com/Aubichol/blood-bank-backend/container"
+	"gitlab.com/Aubichol/blood-bank-backend/index"
 )
 
 func main() {

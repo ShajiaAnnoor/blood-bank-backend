@@ -5,8 +5,8 @@ import (
 
 	"github.com/go-redis/redis"
 	"github.com/google/uuid"
-	"gitlab.com/Aubichol/hrishi-backend/cache"
-	"gitlab.com/Aubichol/hrishi-backend/model"
+	"gitlab.com/Aubichol/blood-bank-backend/cache"
+	"gitlab.com/Aubichol/blood-bank-backend/model"
 )
 
 const (

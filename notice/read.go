@@ -17,8 +17,8 @@ type Reader interface {
 
 //statusReader implements Reader interface
 type statusReader struct {
-	statuses status.Notice
-	friends  friendrequest.FriendRequests
+	notices status.Notice
+	friends friendrequest.FriendRequests
 }
 
 func (read *statusReader) askStore(statusID string) (

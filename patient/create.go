@@ -109,7 +109,7 @@ func (c *create) Create(create *dto.Status) (
 //CreateParams give parameters for NewCreate
 type CreateParams struct {
 	dig.In
-	StoreStatuses storestatus.Status
+	StoreStatuses storepatient.Patient
 	Validate      *validator.Validate
 }
 

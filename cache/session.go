@@ -1,6 +1,6 @@
 package cache
 
-import "gitlab.com/Aubichol/hrishi-backend/model"
+import "gitlab.com/Aubichol/blood-bank-backend/model"
 
 // Session wraps methods to handle session
 type Session interface {

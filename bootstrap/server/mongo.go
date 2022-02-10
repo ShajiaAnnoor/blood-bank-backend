@@ -33,15 +33,12 @@ func Mongo(c container.Container) {
 // RegisterWithName is used since different functions return the same type and it's important
 // to differentiate between them
 func MongoCollections(c container.Container) {
-	registerCollectionProvider(c, "users")
-	registerCollectionProvider(c, "friend_requests")
-	registerCollectionProvider(c, "conversations")
-	registerCollectionProvider(c, "conversation_read_pointers")
-	registerCollectionProvider(c, "pictures")
-	registerCollectionProvider(c, "statuses")
-	registerCollectionProvider(c, "tokens")
-	registerCollectionProvider(c, "comments")
-	registerCollectionProvider(c, "likes")
+	registerCollectionProvider(c, "patient")
+	registerCollectionProvider(c, "organization")
+	registerCollectionProvider(c, "notice")
+	registerCollectionProvider(c, "donor")
+	registerCollectionProvider(c, "bloodrequest")
+	registerCollectionProvider(c, "staticcontent")
 }
 
 func registerCollectionProvider(c container.Container, collectionName string) {

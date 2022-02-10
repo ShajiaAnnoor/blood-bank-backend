@@ -5,10 +5,10 @@ import (
 	"time"
 
 	"github.com/sirupsen/logrus"
-	"gitlab.com/Aubichol/hrishi-backend/errors"
-	"gitlab.com/Aubichol/hrishi-backend/model"
-	"gitlab.com/Aubichol/hrishi-backend/status/dto"
-	storestatus "gitlab.com/Aubichol/hrishi-backend/store/status"
+	"gitlab.com/Aubichol/blood-bank-backend/errors"
+	"gitlab.com/Aubichol/blood-bank-backend/model"
+	"gitlab.com/Aubichol/blood-bank-backend/status/dto"
+	storestatus "gitlab.com/Aubichol/blood-bank-backend/store/status"
 	"gopkg.in/go-playground/validator.v9"
 )
 

@@ -9,22 +9,23 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/model"
 	"gitlab.com/Aubichol/blood-bank-backend/notice/dto"
 	storenotice "gitlab.com/Aubichol/blood-bank-backend/store/notice"
+	storestatus "gitlab.com/Aubichol/blood-bank-backend/store/notice"
 	"go.uber.org/dig"
 	"gopkg.in/go-playground/validator.v9"
 )
 
 // Creater provides create method for creating user status
 type Creater interface {
-	Create(create *dto.Status) (*dto.CreateResponse, error)
+	Create(create *dto.Organization) (*dto.CreateResponse, error)
 }
 
 // create creates user status
 type create struct {
-	storeStatus storenotice.Notice
+	storeNotice storenotice.Notice
 	validate    *validator.Validate
 }
 
-func (c *create) toModel(userstatus *dto.Status) (
+func (c *create) toModel(userorganization *dto.Organization) (
 	status *model.Status,
 ) {
 	notice = &model.Notice{}

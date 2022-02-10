@@ -109,14 +109,14 @@ func (c *create) Create(create *dto.Status) (
 //CreateParams give parameters for NewCreate
 type CreateParams struct {
 	dig.In
-	StoreStatuses storestatus.Status
-	Validate      *validator.Validate
+	StoreNotices storenotice.Notice
+	Validate     *validator.Validate
 }
 
 //NewCreate returns new instance of NewCreate
 func NewCreate(params CreateParams) Creater {
 	return &create{
-		params.StoreStatuses,
+		params.StoreNotices,
 		params.Validate,
 	}
 }

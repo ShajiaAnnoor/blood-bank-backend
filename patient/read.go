@@ -17,7 +17,7 @@ type Reader interface {
 
 //statusReader implements Reader interface
 type statusReader struct {
-	statuses status.Notice
+	statuses statusnotice.Notice
 	friends  friendrequest.FriendRequests
 }
 

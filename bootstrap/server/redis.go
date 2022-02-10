@@ -3,8 +3,8 @@ package server
 import (
 	"github.com/go-redis/redis"
 	"github.com/sirupsen/logrus"
-	"gitlab.com/Aubichol/hrishi-backend/cfg"
-	"gitlab.com/Aubichol/hrishi-backend/container"
+	"gitlab.com/Aubichol/blood-bank-backend/cfg"
+	"gitlab.com/Aubichol/blood-bank-backend/container"
 )
 
 //Redis provides a constructor for creating redis.Client instance from cfg.Redis config details

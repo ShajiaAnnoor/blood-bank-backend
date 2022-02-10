@@ -5,10 +5,11 @@ import (
 	"time"
 
 	"github.com/sirupsen/logrus"
-	"gitlab.com/Aubichol/hrishi-backend/errors"
-	"gitlab.com/Aubichol/hrishi-backend/model"
-	"gitlab.com/Aubichol/hrishi-backend/status/dto"
-	storestatus "gitlab.com/Aubichol/hrishi-backend/store/status"
+	"gitlab.com/Aubichol/blood-bank-backend/errors"
+	"gitlab.com/Aubichol/blood-bank-backend/model"
+	"gitlab.com/Aubichol/blood-bank-backend/status/dto"
+	storenotice "gitlab.com/Aubichol/blood-bank-backend/store/notice"
+	storestatus "gitlab.com/Aubichol/blood-bank-backend/store/status"
 	"gopkg.in/go-playground/validator.v9"
 )
 
@@ -19,7 +20,7 @@ type Updater interface {
 
 // update updates user status
 type update struct {
-	storeStatus storestatus.Status
+	storeStatus storenotice.Notice
 	validate    *validator.Validate
 }
 

@@ -4,9 +4,9 @@ import (
 	"fmt"
 
 	"github.com/go-redis/redis"
-	"gitlab.com/Aubichol/hrishi-backend/cache"
-	"gitlab.com/Aubichol/hrishi-backend/cfg"
-	"gitlab.com/Aubichol/hrishi-backend/pkg/tag"
+	"gitlab.com/Aubichol/blood-bank-backend/cache"
+	"gitlab.com/Aubichol/blood-bank-backend/cfg"
+	"gitlab.com/Aubichol/blood-bank-backend/pkg/tag"
 )
 
 const (
