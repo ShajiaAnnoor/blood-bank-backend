@@ -21,10 +21,10 @@ type updateHandler struct {
 func (ch *updateHandler) decodeBody(
 	body io.ReadCloser,
 ) (
-	comment dto.Update,
+	donor dto.Update,
 	err error,
 ) {
-	err = comment.FromReader(body)
+	err = donor.FromReader(body)
 	return
 }
 
@@ -70,8 +70,8 @@ func (ch *updateHandler) ServeHTTP(
 ) {
 	defer r.Body.Close()
 
-	comment := dto.Update{}
-	comment, err := ch.decodeBody(r.Body)
+	donor := dto.Update{}
+	donor, err := ch.decodeBody(r.Body)
 
 	if err != nil {
 		message := "Unable to decode comment error: "
@@ -79,7 +79,7 @@ func (ch *updateHandler) ServeHTTP(
 		return
 	}
 
-	comment.UserID = ch.decodeContext(r)
+	donor.UserID = ch.decodeContext(r)
 
 	data, err := ch.askController(&comment)
 
@@ -104,7 +104,7 @@ func UpdateRoute(params UpdateParams) *routeutils.Route {
 	handler := updateHandler{params.Update}
 	return &routeutils.Route{
 		Method:  http.MethodPost,
-		Pattern: apipattern.CommentUpdate,
+		Pattern: apipattern.DonorUpdate,
 		Handler: params.Middleware.Middleware(&handler),
 	}
 }

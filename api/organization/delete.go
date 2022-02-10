@@ -106,7 +106,7 @@ func CreateRoute(params CreateParams) *routeutils.Route {
 	handler := createHandler{params.Create}
 	return &routeutils.Route{
 		Method:  http.MethodPost,
-		Pattern: apipattern.PatientCreate,
+		Pattern: apipattern.OrganizationCreate,
 		Handler: params.Middleware.Middleware(&handler),
 	}
 }

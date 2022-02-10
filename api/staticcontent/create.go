@@ -21,11 +21,11 @@ type createHandler struct {
 func (ch *createHandler) decodeBody(
 	body io.ReadCloser,
 ) (
-	comment dto.StaticContent,
+	staticcontent dto.StaticContent,
 	err error,
 ) {
-	comment = dto.StaticContent{}
-	err = comment.FromReader(body)
+	staticcontent = dto.StaticContent{}
+	err = staticcontent.FromReader(body)
 
 	return
 }
@@ -40,7 +40,7 @@ func (ch *createHandler) handleError(
 }
 
 func (ch *createHandler) askController(
-	comment *dto.StaticContent,
+	staticcontent *dto.StaticContent,
 ) (
 	data *dto.CreateResponse,
 	err error,
@@ -87,7 +87,7 @@ func (ch *createHandler) ServeHTTP(
 	data, err := ch.askController((staticcontent)
 
 	if err != nil {
-		message := "Unable to create comment for status error: "
+		message := "Unable to create static content error: "
 		ch.handleError(w, err, message)
 		return
 	}
@@ -107,7 +107,7 @@ func CreateRoute(params CreateParams) *routeutils.Route {
 	handler := createHandler{params.Create}
 	return &routeutils.Route{
 		Method:  http.MethodPost,
-		Pattern: apipattern.CommentCreate,
+		Pattern: apipattern.StaticContentCreate,
 		Handler: params.Middleware.Middleware(&handler),
 	}
 }

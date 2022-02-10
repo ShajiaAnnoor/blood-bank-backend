@@ -20,10 +20,10 @@ type updateHandler struct {
 func (ch *updateHandler) decodeBody(
 	body io.ReadCloser,
 ) (
-	donor dto.Update,
+	bloodreq dto.Update,
 	err error,
 ) {
-	err = donor.FromReader(body)
+	err = bloodreq.FromReader(body)
 	return
 }
 
@@ -73,7 +73,7 @@ func (ch *updateHandler) ServeHTTP(
 	donorDat, err := ch.decodeBody(r.Body)
 
 	if err != nil {
-		message := "Unable to decode comment error: "
+		message := "Unable to decode blood request update error: "
 		ch.handleError(w, err, message)
 		return
 	}
@@ -83,7 +83,7 @@ func (ch *updateHandler) ServeHTTP(
 	data, err := ch.askController(&donorDat)
 
 	if err != nil {
-		message := "Unable to update comment for user error: "
+		message := "Unable to update blood request error: "
 		ch.handleError(w, err, message)
 		return
 	}

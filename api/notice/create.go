@@ -8,7 +8,6 @@ import (
 	"gitlab.com/Aubichol/hrishi-backend/api/middleware"
 	"gitlab.com/Aubichol/hrishi-backend/api/routeutils"
 	"gitlab.com/Aubichol/hrishi-backend/apipattern"
-	"gitlab.com/Aubichol/hrishi-backend/comment"
 	"gitlab.com/Aubichol/hrishi-backend/comment/dto"
 	"go.uber.org/dig"
 )
@@ -98,7 +97,7 @@ func (ch *createHandler) ServeHTTP(
 //CreateParams provide parameters for NewCommentRoute
 type CreateParams struct {
 	dig.In
-	Create     comment.Creater
+	Create     notice.Creater
 	Middleware *middleware.Auth
 }
 

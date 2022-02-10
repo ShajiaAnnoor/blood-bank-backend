@@ -8,7 +8,6 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/api/middleware"
 	"gitlab.com/Aubichol/blood-bank-backend/api/routeutils"
 	"gitlab.com/Aubichol/blood-bank-backend/apipattern"
-	"gitlab.com/Aubichol/blood-bank-backend/comment"
 	"gitlab.com/Aubichol/blood-bank-backend/comment/dto"
 	"go.uber.org/dig"
 )
@@ -79,12 +78,12 @@ func (ch *updateHandler) ServeHTTP(
 		return
 	}
 
-	comment.UserID = ch.decodeContext(r)
+	bloodreq.UserID = ch.decodeContext(r)
 
 	data, err := ch.askController(&bloodreq)
 
 	if err != nil {
-		message := "Unable to update comment for user error: "
+		message := "Unable to update blood request error: "
 		ch.handleError(w, err, message)
 		return
 	}

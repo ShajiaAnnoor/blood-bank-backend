@@ -23,7 +23,7 @@ func (ch *createHandler) decodeBody(
 	donor dto.Donor,
 	err error,
 ) {
-	bloodreqDat = dto.Donor{}
+	bloodreqDat = dto.Bloodreq{}
 	err = bloodreqDat.FromReader(body)
 
 	return
@@ -86,7 +86,7 @@ func (ch *createHandler) ServeHTTP(
 	data, err := ch.askController(&bloodreqDat)
 
 	if err != nil {
-		message := "Unable to create comment for status error: "
+		message := "Unable to create blood request error: "
 		ch.handleError(w, err, message)
 		return
 	}
@@ -106,7 +106,7 @@ func CreateRoute(params CreateParams) *routeutils.Route {
 	handler := createHandler{params.Create}
 	return &routeutils.Route{
 		Method:  http.MethodPost,
-		Pattern: apipattern.DonorCreate,
+		Pattern: apipattern.BloodReqCreate,
 		Handler: params.Middleware.Middleware(&handler),
 	}
 }

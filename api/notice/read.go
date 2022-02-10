@@ -104,7 +104,7 @@ func ReadRoute(params ReadRouteParams) *routeutils.Route {
 
 	return &routeutils.Route{
 		Method:  http.MethodGet,
-		Pattern: apipattern.NpticeRead,
+		Pattern: apipattern.NoticeRead,
 		Handler: params.Middleware.Middleware(&handler),
 	}
 }

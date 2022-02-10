@@ -12,7 +12,7 @@ import (
 	"go.uber.org/dig"
 )
 
-//createHandler holds handler for creating comments
+//createHandler holds handler for creating donors
 type createHandler struct {
 	create donor.Creater
 }
@@ -86,7 +86,7 @@ func (ch *createHandler) ServeHTTP(
 	data, err := ch.askController(&donorDat)
 
 	if err != nil {
-		message := "Unable to create comment for status error: "
+		message := "Unable to create donor error: "
 		ch.handleError(w, err, message)
 		return
 	}

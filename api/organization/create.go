@@ -8,7 +8,6 @@ import (
 	"gitlab.com/Aubichol/hrishi-backend/api/middleware"
 	"gitlab.com/Aubichol/hrishi-backend/api/routeutils"
 	"gitlab.com/Aubichol/hrishi-backend/apipattern"
-	"gitlab.com/Aubichol/hrishi-backend/comment"
 	"gitlab.com/Aubichol/hrishi-backend/comment/dto"
 	"go.uber.org/dig"
 )
@@ -24,8 +23,8 @@ func (ch *createHandler) decodeBody(
 	organization dto.Comment,
 	err error,
 ) {
-	organization = dto.Comment{}
-	err = comment.FromReader(body)
+	organization = dto.Organization{}
+	err = organization.FromReader(body)
 
 	return
 }
@@ -84,10 +83,10 @@ func (ch *createHandler) ServeHTTP(
 
 	organization.UserID = ch.decodeContext(r)
 
-	data, err := ch.askController(&comment)
+	data, err := ch.askController(&organization)
 
 	if err != nil {
-		message := "Unable to create comment for status error: "
+		message := "Unable to create organization error: "
 		ch.handleError(w, err, message)
 		return
 	}
@@ -98,7 +97,7 @@ func (ch *createHandler) ServeHTTP(
 //CreateParams provide parameters for NewCommentRoute
 type CreateParams struct {
 	dig.In
-	Create     comment.Creater
+	Create     organization.Creater
 	Middleware *middleware.Auth
 }
 
@@ -107,7 +106,7 @@ func CreateRoute(params CreateParams) *routeutils.Route {
 	handler := createHandler{params.Create}
 	return &routeutils.Route{
 		Method:  http.MethodPost,
-		Pattern: apipattern.CommentCreate,
+		Pattern: apipattern.OrganizationCreate,
 		Handler: params.Middleware.Middleware(&handler),
 	}
 }
