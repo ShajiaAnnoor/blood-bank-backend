@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	"gitlab.com/Aubichol/hrishi-backend/model"
-	storecomment "gitlab.com/Aubichol/hrishi-backend/store/comment"
-	mongoModel "gitlab.com/Aubichol/hrishi-backend/store/comment/mongo/model"
+	"gitlab.com/Aubichol/blood-bank-backend/model"
+	storecomment "gitlab.com/Aubichol/blood-bank-backend/store/comment"
+	mongoModel "gitlab.com/Aubichol/blood-bank-backend/store/comment/mongo/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
