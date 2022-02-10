@@ -8,23 +8,22 @@ import (
 	"gitlab.com/Aubichol/hrishi-backend/api/middleware"
 	"gitlab.com/Aubichol/hrishi-backend/api/routeutils"
 	"gitlab.com/Aubichol/hrishi-backend/apipattern"
-	"gitlab.com/Aubichol/hrishi-backend/comment"
 	"gitlab.com/Aubichol/hrishi-backend/comment/dto"
 	"go.uber.org/dig"
 )
 
 //updateHandler holds comment update handler
 type updateHandler struct {
-	update comment.Updater
+	update notice.Updater
 }
 
 func (ch *updateHandler) decodeBody(
 	body io.ReadCloser,
 ) (
-	comment dto.Update,
+	notice dto.Update,
 	err error,
 ) {
-	err = comment.FromReader(body)
+	err = notice.FromReader(body)
 	return
 }
 
@@ -70,8 +69,8 @@ func (ch *updateHandler) ServeHTTP(
 ) {
 	defer r.Body.Close()
 
-	comment := dto.Update{}
-	comment, err := ch.decodeBody(r.Body)
+	noticeDat := dto.Update{}
+	noticeDat, err := ch.decodeBody(r.Body)
 
 	if err != nil {
 		message := "Unable to decode comment error: "
@@ -79,9 +78,9 @@ func (ch *updateHandler) ServeHTTP(
 		return
 	}
 
-	comment.UserID = ch.decodeContext(r)
+	noticeDat.UserID = ch.decodeContext(r)
 
-	data, err := ch.askController(&comment)
+	data, err := ch.askController(&noticeDat)
 
 	if err != nil {
 		message := "Unable to update comment for user error: "
@@ -93,9 +92,9 @@ func (ch *updateHandler) ServeHTTP(
 }
 
 //UpdateParams provide parameters for comment update handler
-type UpdateParams struct {
+type DeleteParams struct {
 	dig.In
-	Update     comment.Updater
+	Update     notice.Updater
 	Middleware *middleware.Auth
 }
 
@@ -104,7 +103,7 @@ func UpdateRoute(params UpdateParams) *routeutils.Route {
 	handler := updateHandler{params.Update}
 	return &routeutils.Route{
 		Method:  http.MethodPost,
-		Pattern: apipattern.CommentUpdate,
+		Pattern: apipattern.NoticeUpdate,
 		Handler: params.Middleware.Middleware(&handler),
 	}
 }

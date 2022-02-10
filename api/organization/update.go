@@ -8,23 +8,22 @@ import (
 	"gitlab.com/Aubichol/hrishi-backend/api/middleware"
 	"gitlab.com/Aubichol/hrishi-backend/api/routeutils"
 	"gitlab.com/Aubichol/hrishi-backend/apipattern"
-	"gitlab.com/Aubichol/hrishi-backend/comment"
 	"gitlab.com/Aubichol/hrishi-backend/comment/dto"
 	"go.uber.org/dig"
 )
 
-//updateHandler holds comment update handler
+//updateHandler holds organization update handler
 type updateHandler struct {
-	update comment.Updater
+	update organization.Updater
 }
 
 func (ch *updateHandler) decodeBody(
 	body io.ReadCloser,
 ) (
-	comment dto.Update,
+	organization dto.Update,
 	err error,
 ) {
-	err = comment.FromReader(body)
+	err = organization.FromReader(body)
 	return
 }
 
@@ -70,8 +69,8 @@ func (ch *updateHandler) ServeHTTP(
 ) {
 	defer r.Body.Close()
 
-	comment := dto.Update{}
-	comment, err := ch.decodeBody(r.Body)
+	organization := dto.Update{}
+	organization, err := ch.decodeBody(r.Body)
 
 	if err != nil {
 		message := "Unable to decode comment error: "
@@ -79,12 +78,12 @@ func (ch *updateHandler) ServeHTTP(
 		return
 	}
 
-	comment.UserID = ch.decodeContext(r)
+	organization.UserID = ch.decodeContext(r)
 
-	data, err := ch.askController(&comment)
+	data, err := ch.askController(&organization)
 
 	if err != nil {
-		message := "Unable to update comment for user error: "
+		message := "Unable to update organization for user error: "
 		ch.handleError(w, err, message)
 		return
 	}
@@ -92,10 +91,10 @@ func (ch *updateHandler) ServeHTTP(
 	ch.responseSuccess(w, data)
 }
 
-//UpdateParams provide parameters for comment update handler
+//UpdateParams provide parameters for র update handler
 type UpdateParams struct {
 	dig.In
-	Update     comment.Updater
+	Update     organization.Updater
 	Middleware *middleware.Auth
 }
 
@@ -104,7 +103,7 @@ func UpdateRoute(params UpdateParams) *routeutils.Route {
 	handler := updateHandler{params.Update}
 	return &routeutils.Route{
 		Method:  http.MethodPost,
-		Pattern: apipattern.CommentUpdate,
+		Pattern: apipattern.PatientUpdate,
 		Handler: params.Middleware.Middleware(&handler),
 	}
 }

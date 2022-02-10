@@ -13,18 +13,18 @@ import (
 	"go.uber.org/dig"
 )
 
-//createHandler holds handler for creating comments
+//createHandler holds handler for creating organizations
 type createHandler struct {
-	create comment.Creater
+	create organization.Creater
 }
 
 func (ch *createHandler) decodeBody(
 	body io.ReadCloser,
 ) (
-	comment dto.Comment,
+	organization dto.Comment,
 	err error,
 ) {
-	comment = dto.Comment{}
+	organization = dto.Comment{}
 	err = comment.FromReader(body)
 
 	return
@@ -40,12 +40,12 @@ func (ch *createHandler) handleError(
 }
 
 func (ch *createHandler) askController(
-	comment *dto.Comment,
+	organization *dto.Comment,
 ) (
 	data *dto.CreateResponse,
 	err error,
 ) {
-	data, err = ch.create.Create(comment)
+	data, err = ch.create.Create(organization)
 	return
 }
 
@@ -74,7 +74,7 @@ func (ch *createHandler) ServeHTTP(
 ) {
 	defer r.Body.Close()
 
-	comment, err := ch.decodeBody(r.Body)
+	organization, err := ch.decodeBody(r.Body)
 
 	if err != nil {
 		message := "Unable to decode error: "
@@ -82,7 +82,7 @@ func (ch *createHandler) ServeHTTP(
 		return
 	}
 
-	comment.UserID = ch.decodeContext(r)
+	organization.UserID = ch.decodeContext(r)
 
 	data, err := ch.askController(&comment)
 

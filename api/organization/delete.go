@@ -8,24 +8,23 @@ import (
 	"gitlab.com/Aubichol/hrishi-backend/api/middleware"
 	"gitlab.com/Aubichol/hrishi-backend/api/routeutils"
 	"gitlab.com/Aubichol/hrishi-backend/apipattern"
-	"gitlab.com/Aubichol/hrishi-backend/comment"
 	"gitlab.com/Aubichol/hrishi-backend/comment/dto"
 	"go.uber.org/dig"
 )
 
 //createHandler holds handler for creating comments
 type createHandler struct {
-	create comment.Creater
+	create organization.Creater
 }
 
 func (ch *createHandler) decodeBody(
 	body io.ReadCloser,
 ) (
-	comment dto.Comment,
+	organization dto.Patient,
 	err error,
 ) {
-	comment = dto.Comment{}
-	err = comment.FromReader(body)
+	organization = dto.Patient{}
+	err = organization.FromReader(body)
 
 	return
 }
@@ -40,7 +39,7 @@ func (ch *createHandler) handleError(
 }
 
 func (ch *createHandler) askController(
-	comment *dto.Comment,
+	organization *dto.Patient,
 ) (
 	data *dto.CreateResponse,
 	err error,
@@ -74,7 +73,7 @@ func (ch *createHandler) ServeHTTP(
 ) {
 	defer r.Body.Close()
 
-	comment, err := ch.decodeBody(r.Body)
+	organization, err := ch.decodeBody(r.Body)
 
 	if err != nil {
 		message := "Unable to decode error: "
@@ -82,7 +81,7 @@ func (ch *createHandler) ServeHTTP(
 		return
 	}
 
-	comment.UserID = ch.decodeContext(r)
+	organization.UserID = ch.decodeContext(r)
 
 	data, err := ch.askController(&comment)
 
@@ -98,7 +97,7 @@ func (ch *createHandler) ServeHTTP(
 //CreateParams provide parameters for NewCommentRoute
 type CreateParams struct {
 	dig.In
-	Create     comment.Creater
+	Create     organization.Creater
 	Middleware *middleware.Auth
 }
 
@@ -107,7 +106,7 @@ func CreateRoute(params CreateParams) *routeutils.Route {
 	handler := createHandler{params.Create}
 	return &routeutils.Route{
 		Method:  http.MethodPost,
-		Pattern: apipattern.CommentCreate,
+		Pattern: apipattern.PatientCreate,
 		Handler: params.Middleware.Middleware(&handler),
 	}
 }

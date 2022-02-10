@@ -1,30 +1,29 @@
-package comment
+package staticcontent
 
 import (
 	"io"
 	"net/http"
 
 	"github.com/sirupsen/logrus"
-	"gitlab.com/Aubichol/hrishi-backend/api/middleware"
-	"gitlab.com/Aubichol/hrishi-backend/api/routeutils"
-	"gitlab.com/Aubichol/hrishi-backend/apipattern"
-	"gitlab.com/Aubichol/hrishi-backend/comment"
-	"gitlab.com/Aubichol/hrishi-backend/comment/dto"
+	"gitlab.com/Aubichol/blood-bank-backend/api/middleware"
+	"gitlab.com/Aubichol/blood-bank-backend/api/routeutils"
+	"gitlab.com/Aubichol/blood-bank-backend/apipattern"
+	"gitlab.com/Aubichol/blood-bank-backend/comment/dto"
 	"go.uber.org/dig"
 )
 
-//updateHandler holds comment update handler
+//updateHandler holds staticcontent update handler
 type updateHandler struct {
-	update comment.Updater
+	update staticcontent.Updater
 }
 
 func (ch *updateHandler) decodeBody(
 	body io.ReadCloser,
 ) (
-	comment dto.Update,
+	staticcontent dto.Update,
 	err error,
 ) {
-	err = comment.FromReader(body)
+	err = staticcontent.FromReader(body)
 	return
 }
 
@@ -95,7 +94,7 @@ func (ch *updateHandler) ServeHTTP(
 //UpdateParams provide parameters for comment update handler
 type UpdateParams struct {
 	dig.In
-	Update     comment.Updater
+	Update     staticcontent.Updater
 	Middleware *middleware.Auth
 }
 
@@ -104,7 +103,7 @@ func UpdateRoute(params UpdateParams) *routeutils.Route {
 	handler := updateHandler{params.Update}
 	return &routeutils.Route{
 		Method:  http.MethodPost,
-		Pattern: apipattern.CommentUpdate,
+		Pattern: apipattern.StaticContentUpdate,
 		Handler: params.Middleware.Middleware(&handler),
 	}
 }

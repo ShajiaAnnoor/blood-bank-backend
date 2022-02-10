@@ -21,11 +21,11 @@ type createHandler struct {
 func (ch *createHandler) decodeBody(
 	body io.ReadCloser,
 ) (
-	comment dto.Comment,
+	patient dto.Patient,
 	err error,
 ) {
-	comment = dto.Comment{}
-	err = comment.FromReader(body)
+	patient = dto.Patient{}
+	err = patient.FromReader(body)
 
 	return
 }
@@ -40,7 +40,7 @@ func (ch *createHandler) handleError(
 }
 
 func (ch *createHandler) askController(
-	comment *dto.Comment,
+	patient *dto.Patient,
 ) (
 	data *dto.CreateResponse,
 	err error,
@@ -74,7 +74,7 @@ func (ch *createHandler) ServeHTTP(
 ) {
 	defer r.Body.Close()
 
-	comment, err := ch.decodeBody(r.Body)
+	patient, err := ch.decodeBody(r.Body)
 
 	if err != nil {
 		message := "Unable to decode error: "
@@ -82,12 +82,12 @@ func (ch *createHandler) ServeHTTP(
 		return
 	}
 
-	comment.UserID = ch.decodeContext(r)
+	patient.UserID = ch.decodeContext(r)
 
-	data, err := ch.askController(&comment)
+	data, err := ch.askController(&patient)
 
 	if err != nil {
-		message := "Unable to create comment for status error: "
+		message := "Unable to create patient for status error: "
 		ch.handleError(w, err, message)
 		return
 	}
@@ -98,7 +98,7 @@ func (ch *createHandler) ServeHTTP(
 //CreateParams provide parameters for NewCommentRoute
 type CreateParams struct {
 	dig.In
-	Create     comment.Creater
+	Create     patient.Creater
 	Middleware *middleware.Auth
 }
 
@@ -107,7 +107,7 @@ func CreateRoute(params CreateParams) *routeutils.Route {
 	handler := createHandler{params.Create}
 	return &routeutils.Route{
 		Method:  http.MethodPost,
-		Pattern: apipattern.CommentCreate,
+		Pattern: apipattern.PatientCreate,
 		Handler: params.Middleware.Middleware(&handler),
 	}
 }

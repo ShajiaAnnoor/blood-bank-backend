@@ -1,31 +1,30 @@
-package donor
+package staticcontent
 
 import (
 	"io"
 	"net/http"
 
 	"github.com/sirupsen/logrus"
-	"gitlab.com/Aubichol/hrishi-backend/api/middleware"
-	"gitlab.com/Aubichol/hrishi-backend/api/routeutils"
-	"gitlab.com/Aubichol/hrishi-backend/apipattern"
-	"gitlab.com/Aubichol/hrishi-backend/comment"
-	"gitlab.com/Aubichol/hrishi-backend/comment/dto"
+	"gitlab.com/Aubichol/blood-bank-backend/api/middleware"
+	"gitlab.com/Aubichol/blood-bank-backend/api/routeutils"
+	"gitlab.com/Aubichol/blood-bank-backend/apipattern"
+	"gitlab.com/Aubichol/blood-bank-backend/comment/dto"
 	"go.uber.org/dig"
 )
 
 //createHandler holds handler for creating comments
 type createHandler struct {
-	create comment.Creater
+	create staticcontent.Creater
 }
 
 func (ch *createHandler) decodeBody(
 	body io.ReadCloser,
 ) (
-	comment dto.Comment,
+	staticcontent dto.StaticContent,
 	err error,
 ) {
-	comment = dto.Comment{}
-	err = comment.FromReader(body)
+	staticcontent = dto.StaticContent{}
+	err = staticcontent.FromReader(body)
 
 	return
 }
@@ -40,7 +39,7 @@ func (ch *createHandler) handleError(
 }
 
 func (ch *createHandler) askController(
-	comment *dto.Comment,
+	staticcontent *dto.StaticContent,
 ) (
 	data *dto.CreateResponse,
 	err error,
@@ -82,12 +81,12 @@ func (ch *createHandler) ServeHTTP(
 		return
 	}
 
-	comment.UserID = ch.decodeContext(r)
+	staticcontent.UserID = ch.decodeContext(r)
 
 	data, err := ch.askController(&comment)
 
 	if err != nil {
-		message := "Unable to create comment for status error: "
+		message := "Unable to create staticcontent for status error: "
 		ch.handleError(w, err, message)
 		return
 	}
@@ -98,7 +97,7 @@ func (ch *createHandler) ServeHTTP(
 //CreateParams provide parameters for NewCommentRoute
 type CreateParams struct {
 	dig.In
-	Create     comment.Creater
+	Create     staticcontent.Creater
 	Middleware *middleware.Auth
 }
 
@@ -107,7 +106,7 @@ func CreateRoute(params CreateParams) *routeutils.Route {
 	handler := createHandler{params.Create}
 	return &routeutils.Route{
 		Method:  http.MethodPost,
-		Pattern: apipattern.CommentCreate,
+		Pattern: apipattern.StaticContentCreate,
 		Handler: params.Middleware.Middleware(&handler),
 	}
 }

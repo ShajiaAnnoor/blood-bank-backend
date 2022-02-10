@@ -1,122 +1,112 @@
-package notice
+package donor
 
 import (
-	"fmt"
-	"time"
+	"io"
+	"net/http"
 
 	"github.com/sirupsen/logrus"
-	"gitlab.com/Aubichol/blood-bank-backend/errors"
-	"gitlab.com/Aubichol/blood-bank-backend/model"
-	"gitlab.com/Aubichol/blood-bank-backend/notice/dto"
-	storenotice "gitlab.com/Aubichol/blood-bank-backend/store/notice"
+	"gitlab.com/Aubichol/blood-bank-backend/api/middleware"
+	"gitlab.com/Aubichol/blood-bank-backend/api/routeutils"
+	"gitlab.com/Aubichol/blood-bank-backend/apipattern"
+	"gitlab.com/Aubichol/blood-bank-backend/comment/dto"
 	"go.uber.org/dig"
-	"gopkg.in/go-playground/validator.v9"
 )
 
-// Creater provides create method for creating user status
-type Creater interface {
-	Create(create *dto.Status) (*dto.CreateResponse, error)
+//createHandler holds handler for creating comments
+type createHandler struct {
+	create bloodreq.Creater
 }
 
-// create creates user status
-type create struct {
-	storeStatus storenotice.Notice
-	validate    *validator.Validate
-}
-
-func (c *create) toModel(userstatus *dto.Status) (
-	status *model.Status,
-) {
-	notice = &model.Notice{}
-	notice.CreatedAt = time.Now().UTC()
-	notice.UpdatedAt = status.CreatedAt
-	notice.Description = userstatus.Description
-	notice.Title = usernotice.Title
-	notice.UserID = userstatus.UserID
-	return
-}
-
-func (c *create) validateData(create *dto.Status) (
+func (ch *createHandler) decodeBody(
+	body io.ReadCloser,
+) (
+	donor dto.Donor,
 	err error,
 ) {
-	err = create.Validate(c.validate)
+	bloodreqDat = dto.Donor{}
+	err = bloodreqDat.FromReader(body)
+
 	return
 }
 
-func (c *create) convertData(create *dto.Notice) (
-	modelStatus *model.Status,
+func (ch *createHandler) handleError(
+	w http.ResponseWriter,
+	err error,
+	message string,
 ) {
-	modelStatus = c.toModel(create)
-	return
+	logrus.Error(message, err)
+	routeutils.ServeError(w, err)
 }
 
-func (c *create) askStore(model *model.Notice) (
-	id string,
+func (ch *createHandler) askController(
+	bloodreq *dto.Donor,
+) (
+	data *dto.CreateResponse,
 	err error,
 ) {
-	id, err = c.storeNotice.Save(model)
+	data, err = ch.create.Create(bloodreq)
 	return
 }
 
-func (c *create) giveResponse(modelStatus *model.Notice, id string) (
-	*dto.CreateResponse, error,
-) {
-	logrus.WithFields(logrus.Fields{
-		"id": modelNotice.UserID,
-	}).Debug("User created status successfully")
-
-	return &dto.CreateResponse{
-		Message:    "status created",
-		OK:         true,
-		StatusTime: modelNotice.CreatedAt.String(),
-		ID:         id,
-	}, nil
-}
-
-func (c *create) giveError() (err error) {
-	logrus.Error("Could not create status. Error: ", err)
-	errResp := errors.Unknown{
-		Base: errors.Base{
-			OK:      false,
-			Message: "Invalid data",
-		},
-	}
-
-	err = fmt.Errorf("%s %w", err.Error(), &errResp)
+func (ch *createHandler) decodeContext(
+	r *http.Request,
+) (userID string) {
+	userID = r.Context().Value("userID").(string)
 	return
 }
 
-//Create implements Creater interface
-func (c *create) Create(create *dto.Status) (
-	*dto.CreateResponse, error,
+func (ch *createHandler) responseSuccess(
+	w http.ResponseWriter,
+	resp *dto.CreateResponse,
 ) {
-	err := c.validateData(create)
+	routeutils.ServeResponse(
+		w,
+		http.StatusOK,
+		resp,
+	)
+}
+
+//ServeHTTP implements http.Handler interface
+func (ch *createHandler) ServeHTTP(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+	defer r.Body.Close()
+
+	bloodreqDat, err := ch.decodeBody(r.Body)
+
 	if err != nil {
-		return nil, err
+		message := "Unable to decode error: "
+		ch.handleError(w, err, message)
+		return
 	}
 
-	modelStatus := c.convertData(create)
+	bloodreqDat.UserID = ch.decodeContext(r)
 
-	id, err := c.askStore(modelStatus)
-	if err == nil {
-		return c.giveResponse(modelStatus, id)
+	data, err := ch.askController(&bloodreqDat)
+
+	if err != nil {
+		message := "Unable to create comment for status error: "
+		ch.handleError(w, err, message)
+		return
 	}
 
-	err = c.giveError()
-	return nil, err
+	ch.responseSuccess(w, data)
 }
 
-//CreateParams give parameters for NewCreate
+//CreateParams provide parameters for NewCommentRoute
 type CreateParams struct {
 	dig.In
-	StoreStatuses storestatus.Status
-	Validate      *validator.Validate
+	Create     bloodreq.Creater
+	Middleware *middleware.Auth
 }
 
-//NewCreate returns new instance of NewCreate
-func NewCreate(params CreateParams) Creater {
-	return &create{
-		params.StoreStatuses,
-		params.Validate,
+//CreateRoute provides a route that lets users make comments
+func CreateRoute(params CreateParams) *routeutils.Route {
+	handler := createHandler{params.Create}
+	return &routeutils.Route{
+		Method:  http.MethodPost,
+		Pattern: apipattern.DonorCreate,
+		Handler: params.Middleware.Middleware(&handler),
 	}
 }

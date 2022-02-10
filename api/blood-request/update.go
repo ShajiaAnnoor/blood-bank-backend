@@ -1,112 +1,109 @@
-package status
+package donor
 
 import (
-	"fmt"
-	"time"
+	"io"
+	"net/http"
 
 	"github.com/sirupsen/logrus"
-	"gitlab.com/Aubichol/hrishi-backend/errors"
-	"gitlab.com/Aubichol/hrishi-backend/model"
-	"gitlab.com/Aubichol/hrishi-backend/status/dto"
-	storestatus "gitlab.com/Aubichol/hrishi-backend/store/status"
-	"gopkg.in/go-playground/validator.v9"
+	"gitlab.com/Aubichol/blood-bank-backend/api/middleware"
+	"gitlab.com/Aubichol/blood-bank-backend/api/routeutils"
+	"gitlab.com/Aubichol/blood-bank-backend/apipattern"
+	"gitlab.com/Aubichol/blood-bank-backend/comment/dto"
+	"go.uber.org/dig"
 )
 
-//Updater provides an interface for updating statuses
-type Updater interface {
-	Update(*dto.Update) (*dto.UpdateResponse, error)
+//updateHandler holds donor update handler
+type updateHandler struct {
+	update donor.Updater
 }
 
-// update updates user status
-type update struct {
-	storeStatus storestatus.Status
-	validate    *validator.Validate
-}
-
-func (u *update) toModel(userstatus *dto.Update) (status *model.Status) {
-	status = &model.Status{}
-	status.CreatedAt = time.Now().UTC()
-	status.UpdatedAt = status.CreatedAt
-	status.Status = userstatus.Status
-	status.UserID = userstatus.UserID
-	status.ID = userstatus.StatusID
-	return
-}
-
-func (u *update) validateData(update *dto.Update) (err error) {
-	err = update.Validate(u.validate)
-	return
-}
-
-func (u *update) convertData(update *dto.Update) (
-	modelStatus *model.Status,
-) {
-	modelStatus = u.toModel(update)
-	return
-}
-
-func (u *update) askStore(modelStatus *model.Status) (
-	id string,
+func (ch *updateHandler) decodeBody(
+	body io.ReadCloser,
+) (
+	donor dto.Update,
 	err error,
 ) {
-	id, err = u.storeStatus.Save(modelStatus)
+	err = donor.FromReader(body)
 	return
 }
 
-func (u *update) giveResponse(
-	modelStatus *model.Status,
-	id string,
-) *dto.UpdateResponse {
-	logrus.WithFields(logrus.Fields{
-		"id": modelStatus.UserID,
-	}).Debug("User updated status successfully")
-
-	return &dto.UpdateResponse{
-		Message:    "Status updated",
-		OK:         true,
-		ID:         id,
-		UpdateTime: modelStatus.UpdatedAt.String(),
-	}
-}
-
-func (u *update) giveError() (err error) {
-	errResp := errors.Unknown{
-		Base: errors.Base{
-			OK:      false,
-			Message: "Invalid data",
-		},
-	}
-	err = fmt.Errorf(
-		"%s %w",
-		err.Error(),
-		&errResp,
-	)
-	return
-}
-
-//Update implements Update interface
-func (u *update) Update(update *dto.Update) (
-	*dto.UpdateResponse, error,
+func (ch *updateHandler) handleError(
+	w http.ResponseWriter,
+	err error,
+	message string,
 ) {
-	if err := u.validateData(update); err != nil {
-		return nil, err
-	}
-
-	modelStatus := u.convertData(update)
-	id, err := u.askStore(modelStatus)
-	if err == nil {
-		return u.giveResponse(modelStatus, id), nil
-	}
-
-	logrus.Error("Could not update status ", err)
-	err = u.giveError()
-	return nil, err
+	logrus.Error(message, err)
+	routeutils.ServeError(w, err)
 }
 
-//NewUpdate returns new instance of NewCreate
-func NewUpdate(store storestatus.Status, validate *validator.Validate) Updater {
-	return &update{
-		store,
-		validate,
+func (ch *updateHandler) decodeContext(
+	r *http.Request,
+) (userID string) {
+	userID = r.Context().Value("userID").(string)
+	return
+}
+
+func (ch *updateHandler) askController(update *dto.Update) (
+	resp *dto.UpdateResponse,
+	err error,
+) {
+	resp, err = ch.update.Update(update)
+	return
+}
+
+func (ch *updateHandler) responseSuccess(
+	w http.ResponseWriter,
+	resp *dto.UpdateResponse,
+) {
+	routeutils.ServeResponse(
+		w,
+		http.StatusOK,
+		resp,
+	)
+}
+
+//ServeHTTP implements http.Handler interface
+func (ch *updateHandler) ServeHTTP(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+	defer r.Body.Close()
+
+	donorDat := dto.Update{}
+	donorDat, err := ch.decodeBody(r.Body)
+
+	if err != nil {
+		message := "Unable to decode comment error: "
+		ch.handleError(w, err, message)
+		return
+	}
+
+	donorDat.UserID = ch.decodeContext(r)
+
+	data, err := ch.askController(&donorDat)
+
+	if err != nil {
+		message := "Unable to update comment for user error: "
+		ch.handleError(w, err, message)
+		return
+	}
+
+	ch.responseSuccess(w, data)
+}
+
+//UpdateParams provide parameters for comment update handler
+type UpdateParams struct {
+	dig.In
+	Update     bloodreq.Updater
+	Middleware *middleware.Auth
+}
+
+//UpdateRoute provides a route that updates comment
+func UpdateRoute(params UpdateParams) *routeutils.Route {
+	handler := updateHandler{params.Update}
+	return &routeutils.Route{
+		Method:  http.MethodPost,
+		Pattern: apipattern.BloodreqUpdate,
+		Handler: params.Middleware.Middleware(&handler),
 	}
 }

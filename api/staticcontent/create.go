@@ -1,30 +1,30 @@
-package donor
+package staticcontent
 
 import (
 	"io"
 	"net/http"
 
 	"github.com/sirupsen/logrus"
-	"gitlab.com/Aubichol/hrishi-backend/api/middleware"
-	"gitlab.com/Aubichol/hrishi-backend/api/routeutils"
-	"gitlab.com/Aubichol/hrishi-backend/apipattern"
-	"gitlab.com/Aubichol/hrishi-backend/comment"
-	"gitlab.com/Aubichol/hrishi-backend/comment/dto"
+	"gitlab.com/Aubichol/blook-bank-backend/api/middleware"
+	"gitlab.com/Aubichol/blook-bank-backend/api/routeutils"
+	"gitlab.com/Aubichol/blook-bank-backend/apipattern"
+	"gitlab.com/Aubichol/blook-bank-backend/comment"
+	"gitlab.com/Aubichol/blook-bank-backend/comment/dto"
 	"go.uber.org/dig"
 )
 
 //createHandler holds handler for creating comments
 type createHandler struct {
-	create comment.Creater
+	create staticcontent.Creater
 }
 
 func (ch *createHandler) decodeBody(
 	body io.ReadCloser,
 ) (
-	comment dto.Comment,
+	comment dto.StaticContent,
 	err error,
 ) {
-	comment = dto.Comment{}
+	comment = dto.StaticContent{}
 	err = comment.FromReader(body)
 
 	return
@@ -40,7 +40,7 @@ func (ch *createHandler) handleError(
 }
 
 func (ch *createHandler) askController(
-	comment *dto.Comment,
+	comment *dto.StaticContent,
 ) (
 	data *dto.CreateResponse,
 	err error,
@@ -74,7 +74,7 @@ func (ch *createHandler) ServeHTTP(
 ) {
 	defer r.Body.Close()
 
-	comment, err := ch.decodeBody(r.Body)
+	staticcontent, err := ch.decodeBody(r.Body)
 
 	if err != nil {
 		message := "Unable to decode error: "
@@ -82,9 +82,9 @@ func (ch *createHandler) ServeHTTP(
 		return
 	}
 
-	comment.UserID = ch.decodeContext(r)
+	staticcontent.UserID = ch.decodeContext(r)
 
-	data, err := ch.askController(&comment)
+	data, err := ch.askController((staticcontent)
 
 	if err != nil {
 		message := "Unable to create comment for status error: "
@@ -98,7 +98,7 @@ func (ch *createHandler) ServeHTTP(
 //CreateParams provide parameters for NewCommentRoute
 type CreateParams struct {
 	dig.In
-	Create     comment.Creater
+	Create     staticcontent.Creater
 	Middleware *middleware.Auth
 }
 

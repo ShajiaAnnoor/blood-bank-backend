@@ -19,9 +19,9 @@ type readHandler struct {
 
 func (read *readHandler) decodeURL(
 	r *http.Request,
-) (commentID string) {
+) (noticeID string) {
 	// Get user id from url
-	commentID = chi.URLParam(r, "id")
+	noticeID = chi.URLParam(r, "id")
 	return
 }
 
@@ -91,7 +91,7 @@ func (read *readHandler) ServeHTTP(
 //ReadRouteParams lists all the parameters for ReadRoute
 type ReadRouteParams struct {
 	dig.In
-	Reader     comment.Reader
+	Reader     notice.Reader
 	Middleware *middleware.Auth
 }
 
@@ -104,7 +104,7 @@ func ReadRoute(params ReadRouteParams) *routeutils.Route {
 
 	return &routeutils.Route{
 		Method:  http.MethodGet,
-		Pattern: apipattern.CommentRead,
+		Pattern: apipattern.NpticeRead,
 		Handler: params.Middleware.Middleware(&handler),
 	}
 }

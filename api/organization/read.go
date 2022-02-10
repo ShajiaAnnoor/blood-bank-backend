@@ -8,20 +8,19 @@ import (
 	"gitlab.com/Aubichol/hrishi-backend/api/middleware"
 	"gitlab.com/Aubichol/hrishi-backend/api/routeutils"
 	"gitlab.com/Aubichol/hrishi-backend/apipattern"
-	"gitlab.com/Aubichol/hrishi-backend/comment"
 	"gitlab.com/Aubichol/hrishi-backend/comment/dto"
 	"go.uber.org/dig"
 )
 
 type readHandler struct {
-	reader comment.Reader
+	reader organization.Reader
 }
 
 func (read *readHandler) decodeURL(
 	r *http.Request,
-) (commentID string) {
+) (organizationID string) {
 	// Get user id from url
-	commentID = chi.URLParam(r, "id")
+	organizationID = chi.URLParam(r, "id")
 	return
 }
 
@@ -64,7 +63,7 @@ func (read *readHandler) handleRead(
 ) {
 
 	req := dto.ReadReq{}
-	req.CommentID = read.decodeURL(r)
+	req.PatientID = read.decodeURL(r)
 
 	req.UserID = read.decodeContext(r)
 	// Read comment from database using comment id and user id
@@ -91,7 +90,7 @@ func (read *readHandler) ServeHTTP(
 //ReadRouteParams lists all the parameters for ReadRoute
 type ReadRouteParams struct {
 	dig.In
-	Reader     comment.Reader
+	Reader     organization.Reader
 	Middleware *middleware.Auth
 }
 
@@ -104,7 +103,7 @@ func ReadRoute(params ReadRouteParams) *routeutils.Route {
 
 	return &routeutils.Route{
 		Method:  http.MethodGet,
-		Pattern: apipattern.CommentRead,
+		Pattern: apipattern.PatientRead,
 		Handler: params.Middleware.Middleware(&handler),
 	}
 }

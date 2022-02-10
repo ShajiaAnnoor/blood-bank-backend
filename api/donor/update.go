@@ -8,23 +8,22 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/api/middleware"
 	"gitlab.com/Aubichol/blood-bank-backend/api/routeutils"
 	"gitlab.com/Aubichol/blood-bank-backend/apipattern"
-	"gitlab.com/Aubichol/blood-bank-backend/comment"
 	"gitlab.com/Aubichol/blood-bank-backend/comment/dto"
 	"go.uber.org/dig"
 )
 
-//updateHandler holds comment update handler
+//updateHandler holds donor update handler
 type updateHandler struct {
-	update comment.Updater
+	update donor.Updater
 }
 
 func (ch *updateHandler) decodeBody(
 	body io.ReadCloser,
 ) (
-	comment dto.Update,
+	donor dto.Update,
 	err error,
 ) {
-	err = comment.FromReader(body)
+	err = donor.FromReader(body)
 	return
 }
 
@@ -70,8 +69,8 @@ func (ch *updateHandler) ServeHTTP(
 ) {
 	defer r.Body.Close()
 
-	comment := dto.Update{}
-	comment, err := ch.decodeBody(r.Body)
+	donorDat := dto.Update{}
+	donorDat, err := ch.decodeBody(r.Body)
 
 	if err != nil {
 		message := "Unable to decode comment error: "
@@ -79,9 +78,9 @@ func (ch *updateHandler) ServeHTTP(
 		return
 	}
 
-	comment.UserID = ch.decodeContext(r)
+	donorDat.UserID = ch.decodeContext(r)
 
-	data, err := ch.askController(&comment)
+	data, err := ch.askController(&donorDat)
 
 	if err != nil {
 		message := "Unable to update comment for user error: "
@@ -95,7 +94,7 @@ func (ch *updateHandler) ServeHTTP(
 //UpdateParams provide parameters for comment update handler
 type UpdateParams struct {
 	dig.In
-	Update     comment.Updater
+	Update     donor.Updater
 	Middleware *middleware.Auth
 }
 
@@ -104,7 +103,7 @@ func UpdateRoute(params UpdateParams) *routeutils.Route {
 	handler := updateHandler{params.Update}
 	return &routeutils.Route{
 		Method:  http.MethodPost,
-		Pattern: apipattern.CommentUpdate,
+		Pattern: apipattern.DonorUpdate,
 		Handler: params.Middleware.Middleware(&handler),
 	}
 }

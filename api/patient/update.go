@@ -8,23 +8,22 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/api/middleware"
 	"gitlab.com/Aubichol/blood-bank-backend/api/routeutils"
 	"gitlab.com/Aubichol/blood-bank-backend/apipattern"
-	"gitlab.com/Aubichol/blood-bank-backend/comment"
 	"gitlab.com/Aubichol/blood-bank-backend/comment/dto"
 	"go.uber.org/dig"
 )
 
-//updateHandler holds comment update handler
+//updateHandler holds patient update handler
 type updateHandler struct {
-	update comment.Updater
+	update patient.Updater
 }
 
 func (ch *updateHandler) decodeBody(
 	body io.ReadCloser,
 ) (
-	comment dto.Update,
+	patient dto.Update,
 	err error,
 ) {
-	err = comment.FromReader(body)
+	err = patient.FromReader(body)
 	return
 }
 
@@ -70,18 +69,18 @@ func (ch *updateHandler) ServeHTTP(
 ) {
 	defer r.Body.Close()
 
-	comment := dto.Update{}
-	comment, err := ch.decodeBody(r.Body)
+	patient := dto.Update{}
+	patient, err := ch.decodeBody(r.Body)
 
 	if err != nil {
-		message := "Unable to decode comment error: "
+		message := "Unable to decode patient error: "
 		ch.handleError(w, err, message)
 		return
 	}
 
-	comment.UserID = ch.decodeContext(r)
+	patient.UserID = ch.decodeContext(r)
 
-	data, err := ch.askController(&comment)
+	data, err := ch.askController(&patient)
 
 	if err != nil {
 		message := "Unable to update comment for user error: "
@@ -92,19 +91,19 @@ func (ch *updateHandler) ServeHTTP(
 	ch.responseSuccess(w, data)
 }
 
-//UpdateParams provide parameters for comment update handler
+//UpdateParams provide parameters for patient update handler
 type UpdateParams struct {
 	dig.In
-	Update     comment.Updater
+	Update     patient.Updater
 	Middleware *middleware.Auth
 }
 
-//UpdateRoute provides a route that updates comment
+//UpdateRoute provides a route that updates patient
 func UpdateRoute(params UpdateParams) *routeutils.Route {
 	handler := updateHandler{params.Update}
 	return &routeutils.Route{
 		Method:  http.MethodPost,
-		Pattern: apipattern.CommentUpdate,
+		Pattern: apipattern.PatientUpdate,
 		Handler: params.Middleware.Middleware(&handler),
 	}
 }

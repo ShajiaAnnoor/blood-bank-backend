@@ -15,17 +15,17 @@ import (
 
 //createHandler holds handler for creating comments
 type createHandler struct {
-	create comment.Creater
+	create notice.Creater
 }
 
 func (ch *createHandler) decodeBody(
 	body io.ReadCloser,
 ) (
-	comment dto.Comment,
+	notice dto.Notice,
 	err error,
 ) {
-	comment = dto.Comment{}
-	err = comment.FromReader(body)
+	notice = dto.Notice{}
+	err = notice.FromReader(body)
 
 	return
 }
@@ -40,12 +40,12 @@ func (ch *createHandler) handleError(
 }
 
 func (ch *createHandler) askController(
-	comment *dto.Comment,
+	notice *dto.Notice,
 ) (
 	data *dto.CreateResponse,
 	err error,
 ) {
-	data, err = ch.create.Create(comment)
+	data, err = ch.create.Create(notice)
 	return
 }
 
@@ -74,7 +74,7 @@ func (ch *createHandler) ServeHTTP(
 ) {
 	defer r.Body.Close()
 
-	comment, err := ch.decodeBody(r.Body)
+	notice, err := ch.decodeBody(r.Body)
 
 	if err != nil {
 		message := "Unable to decode error: "
@@ -82,9 +82,9 @@ func (ch *createHandler) ServeHTTP(
 		return
 	}
 
-	comment.UserID = ch.decodeContext(r)
+	notice.UserID = ch.decodeContext(r)
 
-	data, err := ch.askController(&comment)
+	data, err := ch.askController(&notice)
 
 	if err != nil {
 		message := "Unable to create comment for status error: "
@@ -107,7 +107,7 @@ func CreateRoute(params CreateParams) *routeutils.Route {
 	handler := createHandler{params.Create}
 	return &routeutils.Route{
 		Method:  http.MethodPost,
-		Pattern: apipattern.CommentCreate,
+		Pattern: apipattern.NoticeCreate,
 		Handler: params.Middleware.Middleware(&handler),
 	}
 }

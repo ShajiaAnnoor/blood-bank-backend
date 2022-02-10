@@ -19,9 +19,9 @@ type readHandler struct {
 
 func (read *readHandler) decodeURL(
 	r *http.Request,
-) (commentID string) {
+) (patientID string) {
 	// Get user id from url
-	commentID = chi.URLParam(r, "id")
+	patientID = chi.URLParam(r, "id")
 	return
 }
 
@@ -64,7 +64,7 @@ func (read *readHandler) handleRead(
 ) {
 
 	req := dto.ReadReq{}
-	req.CommentID = read.decodeURL(r)
+	req.PatientID = read.decodeURL(r)
 
 	req.UserID = read.decodeContext(r)
 	// Read comment from database using comment id and user id
@@ -91,11 +91,11 @@ func (read *readHandler) ServeHTTP(
 //ReadRouteParams lists all the parameters for ReadRoute
 type ReadRouteParams struct {
 	dig.In
-	Reader     comment.Reader
+	Reader     patient.Reader
 	Middleware *middleware.Auth
 }
 
-//ReadRoute provides a route to get comment
+//ReadRoute provides a route to get patient
 func ReadRoute(params ReadRouteParams) *routeutils.Route {
 
 	handler := readHandler{
@@ -104,7 +104,7 @@ func ReadRoute(params ReadRouteParams) *routeutils.Route {
 
 	return &routeutils.Route{
 		Method:  http.MethodGet,
-		Pattern: apipattern.CommentRead,
+		Pattern: apipattern.PatientRead,
 		Handler: params.Middleware.Middleware(&handler),
 	}
 }
