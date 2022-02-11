@@ -7,8 +7,8 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-//Comment holds db data type for comments
-type Comment struct {
+//Donor holds db data type for donors
+type Donor struct {
 	ID        primitive.ObjectID `bson:"_id,omitempty"`
 	Comment   string             `bson:"comment"`
 	UserID    primitive.ObjectID `bson:"user_id"`
@@ -18,7 +18,7 @@ type Comment struct {
 }
 
 //FromModel converts model data to db data for comments
-func (c *Comment) FromModel(modelComment *model.Comment) error {
+func (c *Donor) FromModel(modelDonor *model.Donor) error {
 	c.Comment = modelComment.Comment
 	c.CreatedAt = modelComment.CreatedAt
 	c.UpdatedAt = modelComment.UpdatedAt
@@ -49,14 +49,14 @@ func (c *Comment) FromModel(modelComment *model.Comment) error {
 }
 
 //ModelComment converts bson to model
-func (c *Comment) ModelComment() *model.Comment {
-	comment := model.Comment{}
-	comment.ID = c.ID.Hex()
-	comment.Comment = c.Comment
-	comment.UserID = c.UserID.Hex()
-	comment.StatusID = c.StatusID.Hex()
-	comment.CreatedAt = c.CreatedAt
-	comment.UpdatedAt = c.UpdatedAt
+func (c *Donor) ModelDonor() *model.Donor {
+	donor := model.Donor{}
+	donor.ID = c.ID.Hex()
+	donor.Comment = c.Comment
+	donor.UserID = c.UserID.Hex()
+	donor.StatusID = c.StatusID.Hex()
+	donor.CreatedAt = c.CreatedAt
+	donor.UpdatedAt = c.UpdatedAt
 
-	return &comment
+	return &donor
 }

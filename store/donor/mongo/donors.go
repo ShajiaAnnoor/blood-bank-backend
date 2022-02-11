@@ -104,7 +104,7 @@ func (c *donors) FindByDonorID(id string, skip int64, limit int64) ([]*model.Don
 }
 
 //CountByStatusID returns comments from status id
-func (c *donors) CountByStatusID(id string) (int64, error) {
+func (c *donors) CountByDonorID(id string) (int64, error) {
 	objectID, err := primitive.ObjectIDFromHex(id)
 
 	if err != nil {
@@ -144,7 +144,7 @@ func (c *donors) FindByIDs(ids ...string) ([]*model.Comment, error) {
 		return nil, err
 	}
 
-	return c.cursorToComments(cursor)
+	return c.cursorToDonors(cursor)
 }
 
 //Search search for users given the text, skip and limit
@@ -181,10 +181,10 @@ func (c *donors) cursorToDonors(cursor *mongo.Cursor) ([]*model.Donor, error) {
 //DonorsParams provides parameters for comment specific Collection
 type DonorsParams struct {
 	dig.In
-	Collection *mongo.Collection `name:"comments"`
+	Collection *mongo.Collection `name:"donors"`
 }
 
 //Store provides store for comments
-func Store(params DonorsParams) storecomment.Donors {
+func Store(params DonorsParams) storedonor.Donors {
 	return &donors{params.Collection}
 }

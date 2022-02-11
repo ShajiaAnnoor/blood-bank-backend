@@ -7,8 +7,8 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-//Comment holds db data type for comments
-type Comment struct {
+//Patient holds db data type for comments
+type Patient struct {
 	ID        primitive.ObjectID `bson:"_id,omitempty"`
 	Comment   string             `bson:"comment"`
 	UserID    primitive.ObjectID `bson:"user_id"`
@@ -18,28 +18,28 @@ type Comment struct {
 }
 
 //FromModel converts model data to db data for comments
-func (c *Comment) FromModel(modelComment *model.Comment) error {
-	c.Comment = modelComment.Comment
-	c.CreatedAt = modelComment.CreatedAt
-	c.UpdatedAt = modelComment.UpdatedAt
+func (c *Patient) FromModel(modelComment *model.Patient) error {
+	c.Comment = modelPatient.Comment
+	c.CreatedAt = modelPatient.CreatedAt
+	c.UpdatedAt = modelPatient.UpdatedAt
 
 	var err error
-	c.StatusID, err = primitive.ObjectIDFromHex(modelComment.StatusID)
+	c.StatusID, err = primitive.ObjectIDFromHex(modelPatient.PatientID)
 
 	if err != nil {
 		return err
 	}
 
-	c.UserID, err = primitive.ObjectIDFromHex(modelComment.UserID)
+	c.UserID, err = primitive.ObjectIDFromHex(modelPatient.UserID)
 	if err != nil {
 		return err
 	}
 
-	if modelComment.ID == "" {
+	if modelPatient.ID == "" {
 		return nil
 	}
 
-	id, err := primitive.ObjectIDFromHex(modelComment.ID)
+	id, err := primitive.ObjectIDFromHex(modelPatient.ID)
 	if err != nil {
 		return err
 	}
@@ -50,13 +50,13 @@ func (c *Comment) FromModel(modelComment *model.Comment) error {
 
 //ModelComment converts bson to model
 func (c *Comment) ModelComment() *model.Comment {
-	comment := model.Comment{}
-	comment.ID = c.ID.Hex()
-	comment.Comment = c.Comment
-	comment.UserID = c.UserID.Hex()
-	comment.StatusID = c.StatusID.Hex()
-	comment.CreatedAt = c.CreatedAt
-	comment.UpdatedAt = c.UpdatedAt
+	patient := model.Comment{}
+	patient.ID = c.ID.Hex()
+	patientcomment.Comment = c.Comment
+	patient.UserID = c.UserID.Hex()
+	patient.StatusID = c.StatusID.Hex()
+	patient.CreatedAt = c.CreatedAt
+	patient.UpdatedAt = c.UpdatedAt
 
 	return &comment
 }

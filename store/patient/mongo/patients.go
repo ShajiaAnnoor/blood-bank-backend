@@ -63,7 +63,11 @@ func (c *patients) FindByID(id string) (*model.Patient, error) {
 	}
 
 	filter := bson.M{"_id": objectID}
-	result := c.c.FindOne(context.Background(), filter, &options.FindOneOptions{})
+	result := c.c.FindOne(
+		context.Background(),
+		filter,
+		&options.FindOneOptions{},
+	)
 	if err := result.Err(); err != nil {
 		return nil, err
 	}
@@ -90,7 +94,11 @@ func (c *patients) FindByNoticeID(id string, skip int64, limit int64) ([]*model.
 	findOptions.SetSkip(skip)
 	findOptions.SetLimit(limit)
 
-	cursor, err := c.c.Find(context.Background(), filter, findOptions)
+	cursor, err := c.c.Find(
+		context.Background(),
+		filter,
+		findOptions,
+	)
 
 	if err != nil {
 		return nil, err
@@ -100,7 +108,7 @@ func (c *patients) FindByNoticeID(id string, skip int64, limit int64) ([]*model.
 }
 
 //CountByStatusID returns comments from status id
-func (c *patients) CountByStatusID(id string) (int64, error) {
+func (c *patients) CountByPatientID(id string) (int64, error) {
 	objectID, err := primitive.ObjectIDFromHex(id)
 
 	if err != nil {
@@ -108,7 +116,11 @@ func (c *patients) CountByStatusID(id string) (int64, error) {
 	}
 
 	filter := bson.M{"status_id": objectID}
-	cnt, err := c.c.CountDocuments(context.Background(), filter, &options.CountOptions{})
+	cnt, err := c.c.CountDocuments(
+		context.Background(),
+		filter,
+		&options.CountOptions{},
+	)
 
 	if err != nil {
 		return -1, err
@@ -135,7 +147,11 @@ func (c *patients) FindByIDs(ids ...string) ([]*model.Patient, error) {
 		},
 	}
 
-	cursor, err := c.c.Find(context.Background(), filter, nil)
+	cursor, err := c.c.Find(
+		context.Background(),
+		filter,
+		nil,
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -160,7 +176,7 @@ func (c *patients) Search(text string, skip, limit int64) ([]*model.Patient, err
 //cursorToComments decodes users one by one from the search result
 func (c *patients) cursorToPatients(cursor *mongo.Cursor) ([]*model.Patient, error) {
 	defer cursor.Close(context.Background())
-	modelNotices := []*model.Patient{}
+	modelPatients := []*model.Patient{}
 
 	for cursor.Next(context.Background()) {
 		patient := mongoModel.Patient{}
@@ -168,10 +184,10 @@ func (c *patients) cursorToPatients(cursor *mongo.Cursor) ([]*model.Patient, err
 			return nil, fmt.Errorf("Could not decode data from mongo %w", err)
 		}
 
-		modelNotices = append(modelNotices, notice.ModelNotice())
+		modelPatients = append(modelPatients, patient.ModelPatient())
 	}
 
-	return modelNotices, nil
+	return modelPatients, nil
 }
 
 //PatientssParams provides parameters for comment specific Collection

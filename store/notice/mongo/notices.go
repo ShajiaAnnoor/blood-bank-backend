@@ -13,7 +13,7 @@ import (
 	"go.uber.org/dig"
 )
 
-//users handles user related database queries
+//notices handles notice related database queries
 type notices struct {
 	c *mongo.Collection
 }
@@ -32,7 +32,7 @@ func (c *notices) Save(modelNotice *model.Notice) (string, error) {
 	var err error
 	mongoNotice, err = c.convertData(modelNotice)
 	if err != nil {
-		return "", fmt.Errorf("Could not convert model comment to mongo comment: %w", err)
+		return "", fmt.Errorf("Could not convert model notice to mongo comment: %w", err)
 	}
 
 	if modelNotice.ID == "" {
@@ -63,7 +63,11 @@ func (c *notices) FindByID(id string) (*model.Notice, error) {
 	}
 
 	filter := bson.M{"_id": objectID}
-	result := c.c.FindOne(context.Background(), filter, &options.FindOneOptions{})
+	result := c.c.FindOne(
+		context.Background(),
+		filter,
+		&options.FindOneOptions{},
+	)
 	if err := result.Err(); err != nil {
 		return nil, err
 	}
@@ -90,7 +94,11 @@ func (c *notices) FindByNoticeID(id string, skip int64, limit int64) ([]*model.N
 	findOptions.SetSkip(skip)
 	findOptions.SetLimit(limit)
 
-	cursor, err := c.c.Find(context.Background(), filter, findOptions)
+	cursor, err := c.c.Find(
+		context.Background(),
+		filter,
+		findOptions,
+	)
 
 	if err != nil {
 		return nil, err
@@ -99,8 +107,8 @@ func (c *notices) FindByNoticeID(id string, skip int64, limit int64) ([]*model.N
 	return c.cursorToNotices(cursor)
 }
 
-//CountByStatusID returns comments from status id
-func (c *notices) CountByStatusID(id string) (int64, error) {
+//CountByNoticeID returns notices from notice id
+func (c *notices) CountByNoticeID(id string) (int64, error) {
 	objectID, err := primitive.ObjectIDFromHex(id)
 
 	if err != nil {
@@ -135,7 +143,11 @@ func (c *notices) FindByIDs(ids ...string) ([]*model.Notice, error) {
 		},
 	}
 
-	cursor, err := c.c.Find(context.Background(), filter, nil)
+	cursor, err := c.c.Find(
+		context.Background(),
+		filter,
+		nil,
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -146,10 +158,13 @@ func (c *notices) FindByIDs(ids ...string) ([]*model.Notice, error) {
 //Search search for users given the text, skip and limit
 func (c *notices) Search(text string, skip, limit int64) ([]*model.Notice, error) {
 	filter := bson.M{"$text": bson.M{"$search": text}}
-	cursor, err := c.c.Find(context.Background(), filter, &options.FindOptions{
-		Skip:  &skip,
-		Limit: &limit,
-	})
+	cursor, err := c.c.Find(
+		context.Background(),
+		filter,
+		&options.FindOptions{
+			Skip:  &skip,
+			Limit: &limit,
+		})
 	if err != nil {
 		return nil, err
 	}
