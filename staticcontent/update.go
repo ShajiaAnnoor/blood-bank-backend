@@ -8,7 +8,6 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/errors"
 	"gitlab.com/Aubichol/blood-bank-backend/model"
 	"gitlab.com/Aubichol/blood-bank-backend/status/dto"
-	storestatus "gitlab.com/Aubichol/blood-bank-backend/store/status"
 	"gopkg.in/go-playground/validator.v9"
 )
 
@@ -23,13 +22,13 @@ type update struct {
 	validate    *validator.Validate
 }
 
-func (u *update) toModel(userstatus *dto.Update) (status *model.Status) {
-	status = &model.Status{}
-	status.CreatedAt = time.Now().UTC()
-	status.UpdatedAt = status.CreatedAt
-	status.Status = userstatus.Status
-	status.UserID = userstatus.UserID
-	status.ID = userstatus.StatusID
+func (u *update) toModel(userstaticcontent *dto.Update) (sc *model.StaticContent) {
+	sc = &model.StaticContent{}
+	sc.CreatedAt = time.Now().UTC()
+	sc.UpdatedAt = sc.CreatedAt
+	sc.Status = userstaticcontent.Status
+	sc.UserID = userstaticcontent.UserID
+	sc.ID = userstaticcontent.StatusID
 	return
 }
 
@@ -92,10 +91,10 @@ func (u *update) Update(update *dto.Update) (
 		return nil, err
 	}
 
-	modelStatus := u.convertData(update)
-	id, err := u.askStore(modelStatus)
+	modelStaticContent := u.convertData(update)
+	id, err := u.askStore(modelStaticContent)
 	if err == nil {
-		return u.giveResponse(modelStatus, id), nil
+		return u.giveResponse(modelStaticContent, id), nil
 	}
 
 	logrus.Error("Could not update status ", err)
@@ -104,7 +103,7 @@ func (u *update) Update(update *dto.Update) (
 }
 
 //NewUpdate returns new instance of NewCreate
-func NewUpdate(store storestatus.Status, validate *validator.Validate) Updater {
+func NewUpdate(store storestaticcontent.StaticContent, validate *validator.Validate) Updater {
 	return &update{
 		store,
 		validate,

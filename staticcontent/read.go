@@ -1,4 +1,4 @@
-package status
+package staticcontent
 
 import (
 	"github.com/sirupsen/logrus"

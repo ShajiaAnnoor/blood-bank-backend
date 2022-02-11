@@ -1,8 +1,8 @@
 package server
 
 import (
-	"gitlab.com/Aubichol/hrishi-backend/container"
-	"gitlab.com/Aubichol/hrishi-backend/ws"
+	"gitlab.com/Aubichol/blood-bank-backend/container"
+	"gitlab.com/Aubichol/blood-bank-backend/ws"
 )
 
 //WS regisers web socket related providers

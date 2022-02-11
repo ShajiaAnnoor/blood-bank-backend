@@ -9,6 +9,7 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/model"
 	"gitlab.com/Aubichol/blood-bank-backend/notice/dto"
 	storenotice "gitlab.com/Aubichol/blood-bank-backend/store/notice"
+	storestatus "gitlab.com/Aubichol/blood-bank-backend/store/notice"
 	"go.uber.org/dig"
 	"gopkg.in/go-playground/validator.v9"
 )
@@ -24,15 +25,15 @@ type create struct {
 	validate    *validator.Validate
 }
 
-func (c *create) toModel(userstatus *dto.Status) (
-	status *model.Status,
+func (c *create) toModel(userstaticcontent *dto.StaticContent) (
+	status *model.StaticContent,
 ) {
-	notice = &model.Notice{}
-	notice.CreatedAt = time.Now().UTC()
-	notice.UpdatedAt = status.CreatedAt
-	notice.Description = userstatus.Description
-	notice.Title = usernotice.Title
-	notice.UserID = userstatus.UserID
+	sc = &model.StaticContent{}
+	sc.CreatedAt = time.Now().UTC()
+	sc.UpdatedAt = status.CreatedAt
+	sc.Description = userstaticcontent.Description
+	sc.Title = userstaticcontent.Title
+	sc.UserID = userstaticcontent.UserID
 	return
 }
 

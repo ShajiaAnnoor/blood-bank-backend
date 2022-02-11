@@ -1,4 +1,4 @@
-package status
+package donor
 
 import (
 	"github.com/sirupsen/logrus"
