@@ -13,17 +13,17 @@ import (
 )
 
 //createHandler holds handler for creating comments
-type createHandler struct {
-	create organization.Creater
+type deleteeHandler struct {
+	delete organization.Creater
 }
 
 func (ch *createHandler) decodeBody(
 	body io.ReadCloser,
 ) (
-	organization dto.Patient,
+	organization dto.Organization,
 	err error,
 ) {
-	organization = dto.Patient{}
+	organization = dto.Organization{}
 	err = organization.FromReader(body)
 
 	return
@@ -39,12 +39,12 @@ func (ch *createHandler) handleError(
 }
 
 func (ch *createHandler) askController(
-	organization *dto.Patient,
+	organization *dto.Organization,
 ) (
 	data *dto.CreateResponse,
 	err error,
 ) {
-	data, err = ch.create.Create(comment)
+	data, err = ch.create.Create(organization)
 	return
 }
 
@@ -95,18 +95,18 @@ func (ch *createHandler) ServeHTTP(
 }
 
 //CreateParams provide parameters for NewCommentRoute
-type CreateParams struct {
+type DeleteParams struct {
 	dig.In
 	Create     organization.Creater
 	Middleware *middleware.Auth
 }
 
 //CreateRoute provides a route that lets users make comments
-func CreateRoute(params CreateParams) *routeutils.Route {
+func DeleteRoute(params DeleteParams) *routeutils.Route {
 	handler := createHandler{params.Create}
 	return &routeutils.Route{
 		Method:  http.MethodPost,
-		Pattern: apipattern.OrganizationCreate,
+		Pattern: apipattern.OrganizationDelete,
 		Handler: params.Middleware.Middleware(&handler),
 	}
 }

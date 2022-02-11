@@ -13,11 +13,11 @@ import (
 )
 
 //createHandler holds handler for creating comments
-type createHandler struct {
-	create staticcontent.Creater
+type deleteHandler struct {
+	delete staticcontent.Creater
 }
 
-func (ch *createHandler) decodeBody(
+func (ch *deleteHandler) decodeBody(
 	body io.ReadCloser,
 ) (
 	staticcontent dto.StaticContent,
@@ -29,7 +29,7 @@ func (ch *createHandler) decodeBody(
 	return
 }
 
-func (ch *createHandler) handleError(
+func (ch *deleteHandler) handleError(
 	w http.ResponseWriter,
 	err error,
 	message string,
@@ -38,7 +38,7 @@ func (ch *createHandler) handleError(
 	routeutils.ServeError(w, err)
 }
 
-func (ch *createHandler) askController(
+func (ch *deleteHandler) askController(
 	staticcontent *dto.StaticContent,
 ) (
 	data *dto.CreateResponse,
@@ -48,14 +48,14 @@ func (ch *createHandler) askController(
 	return
 }
 
-func (ch *createHandler) decodeContext(
+func (ch *deleteHandler) decodeContext(
 	r *http.Request,
 ) (userID string) {
 	userID = r.Context().Value("userID").(string)
 	return
 }
 
-func (ch *createHandler) responseSuccess(
+func (ch *deleteHandler) responseSuccess(
 	w http.ResponseWriter,
 	resp *dto.CreateResponse,
 ) {
@@ -67,13 +67,13 @@ func (ch *createHandler) responseSuccess(
 }
 
 //ServeHTTP implements http.Handler interface
-func (ch *createHandler) ServeHTTP(
+func (ch *deleteHandler) ServeHTTP(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
 	defer r.Body.Close()
 
-	comment, err := ch.decodeBody(r.Body)
+	staticcontent, err := ch.decodeBody(r.Body)
 
 	if err != nil {
 		message := "Unable to decode error: "
@@ -83,7 +83,7 @@ func (ch *createHandler) ServeHTTP(
 
 	staticcontent.UserID = ch.decodeContext(r)
 
-	data, err := ch.askController(&comment)
+	data, err := ch.askController(&staticcontent)
 
 	if err != nil {
 		message := "Unable to create staticcontent for status error: "
@@ -95,15 +95,15 @@ func (ch *createHandler) ServeHTTP(
 }
 
 //CreateParams provide parameters for NewCommentRoute
-type CreateParams struct {
+type DeleteParams struct {
 	dig.In
 	Create     staticcontent.Creater
 	Middleware *middleware.Auth
 }
 
 //CreateRoute provides a route that lets users make comments
-func CreateRoute(params CreateParams) *routeutils.Route {
-	handler := createHandler{params.Create}
+func CreateRoute(params DeleteParams) *routeutils.Route {
+	handler := deleteHandler{params.Create}
 	return &routeutils.Route{
 		Method:  http.MethodPost,
 		Pattern: apipattern.StaticContentCreate,

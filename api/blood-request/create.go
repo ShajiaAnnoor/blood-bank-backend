@@ -1,4 +1,4 @@
-package donor
+package bloodrequest
 
 import (
 	"io"
@@ -20,7 +20,7 @@ type createHandler struct {
 func (ch *createHandler) decodeBody(
 	body io.ReadCloser,
 ) (
-	donor dto.Donor,
+	bloodreqDat dto.Bloodreq,
 	err error,
 ) {
 	bloodreqDat = dto.Bloodreq{}
@@ -39,7 +39,7 @@ func (ch *createHandler) handleError(
 }
 
 func (ch *createHandler) askController(
-	bloodreq *dto.Donor,
+	bloodreq *dto.BloodReq,
 ) (
 	data *dto.CreateResponse,
 	err error,

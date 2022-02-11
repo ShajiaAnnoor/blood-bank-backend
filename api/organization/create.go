@@ -20,7 +20,7 @@ type createHandler struct {
 func (ch *createHandler) decodeBody(
 	body io.ReadCloser,
 ) (
-	organization dto.Comment,
+	organization dto.Organization,
 	err error,
 ) {
 	organization = dto.Organization{}

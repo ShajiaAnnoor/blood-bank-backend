@@ -83,7 +83,7 @@ func (ch *updateHandler) ServeHTTP(
 	data, err := ch.askController(&patient)
 
 	if err != nil {
-		message := "Unable to update comment for user error: "
+		message := "Unable to update patient error: "
 		ch.handleError(w, err, message)
 		return
 	}

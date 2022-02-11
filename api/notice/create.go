@@ -5,10 +5,10 @@ import (
 	"net/http"
 
 	"github.com/sirupsen/logrus"
-	"gitlab.com/Aubichol/hrishi-backend/api/middleware"
-	"gitlab.com/Aubichol/hrishi-backend/api/routeutils"
-	"gitlab.com/Aubichol/hrishi-backend/apipattern"
-	"gitlab.com/Aubichol/hrishi-backend/comment/dto"
+	"gitlab.com/Aubichol/blood-bank-backend/api/middleware"
+	"gitlab.com/Aubichol/blood-bank-backend/api/routeutils"
+	"gitlab.com/Aubichol/blood-bank-backend/apipattern"
+	"gitlab.com/Aubichol/blood-bank-backend/comment/dto"
 	"go.uber.org/dig"
 )
 
@@ -86,7 +86,7 @@ func (ch *createHandler) ServeHTTP(
 	data, err := ch.askController(&notice)
 
 	if err != nil {
-		message := "Unable to create comment for status error: "
+		message := "Unable to create notice error: "
 		ch.handleError(w, err, message)
 		return
 	}

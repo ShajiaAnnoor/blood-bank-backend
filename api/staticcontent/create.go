@@ -45,7 +45,7 @@ func (ch *createHandler) askController(
 	data *dto.CreateResponse,
 	err error,
 ) {
-	data, err = ch.create.Create(comment)
+	data, err = ch.create.Create(staticcontent)
 	return
 }
 

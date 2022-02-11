@@ -95,7 +95,7 @@ func (ch *updateHandler) ServeHTTP(
 //UpdateParams provide parameters for comment update handler
 type UpdateParams struct {
 	dig.In
-	Update     comment.Updater
+	Update     donor.Updater
 	Middleware *middleware.Auth
 }
 

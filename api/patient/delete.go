@@ -87,7 +87,7 @@ func (ch *createHandler) ServeHTTP(
 	data, err := ch.askController(&patient)
 
 	if err != nil {
-		message := "Unable to create patient for status error: "
+		message := "Unable to delete patient error: "
 		ch.handleError(w, err, message)
 		return
 	}
@@ -96,14 +96,14 @@ func (ch *createHandler) ServeHTTP(
 }
 
 //CreateParams provide parameters for NewCommentRoute
-type CreateParams struct {
+type DeleteParams struct {
 	dig.In
 	Create     patient.Creater
 	Middleware *middleware.Auth
 }
 
 //CreateRoute provides a route that lets users make comments
-func CreateRoute(params CreateParams) *routeutils.Route {
+func DeleteRoute(params DeleteParams) *routeutils.Route {
 	handler := createHandler{params.Create}
 	return &routeutils.Route{
 		Method:  http.MethodPost,

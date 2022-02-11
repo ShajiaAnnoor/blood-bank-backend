@@ -1,4 +1,4 @@
-package donor
+package bloodrequest
 
 import (
 	"io"

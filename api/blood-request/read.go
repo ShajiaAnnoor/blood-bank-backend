@@ -1,4 +1,4 @@
-package bloodreq
+package bloodrequest
 
 import (
 	"net/http"

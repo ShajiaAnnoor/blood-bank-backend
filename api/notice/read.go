@@ -8,13 +8,12 @@ import (
 	"gitlab.com/Aubichol/hrishi-backend/api/middleware"
 	"gitlab.com/Aubichol/hrishi-backend/api/routeutils"
 	"gitlab.com/Aubichol/hrishi-backend/apipattern"
-	"gitlab.com/Aubichol/hrishi-backend/comment"
 	"gitlab.com/Aubichol/hrishi-backend/comment/dto"
 	"go.uber.org/dig"
 )
 
 type readHandler struct {
-	reader comment.Reader
+	reader notice.Reader
 }
 
 func (read *readHandler) decodeURL(

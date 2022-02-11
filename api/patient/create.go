@@ -86,7 +86,7 @@ func (ch *createHandler) ServeHTTP(
 	data, err := ch.askController(&patient)
 
 	if err != nil {
-		message := "Unable to create comment for status error: "
+		message := "Unable to create patient for status error: "
 		ch.handleError(w, err, message)
 		return
 	}

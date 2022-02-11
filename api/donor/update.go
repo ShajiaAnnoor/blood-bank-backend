@@ -73,7 +73,7 @@ func (ch *updateHandler) ServeHTTP(
 	donorDat, err := ch.decodeBody(r.Body)
 
 	if err != nil {
-		message := "Unable to decode comment error: "
+		message := "Unable to decode donor error: "
 		ch.handleError(w, err, message)
 		return
 	}
@@ -83,7 +83,7 @@ func (ch *updateHandler) ServeHTTP(
 	data, err := ch.askController(&donorDat)
 
 	if err != nil {
-		message := "Unable to update comment for user error: "
+		message := "Unable to update donor error: "
 		ch.handleError(w, err, message)
 		return
 	}

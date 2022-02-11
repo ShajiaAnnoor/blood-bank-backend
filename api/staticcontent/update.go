@@ -69,21 +69,21 @@ func (ch *updateHandler) ServeHTTP(
 ) {
 	defer r.Body.Close()
 
-	comment := dto.Update{}
-	comment, err := ch.decodeBody(r.Body)
+	staticcontent := dto.Update{}
+	staticcontent, err := ch.decodeBody(r.Body)
 
 	if err != nil {
-		message := "Unable to decode comment error: "
+		message := "Unable to decode staticcontent error: "
 		ch.handleError(w, err, message)
 		return
 	}
 
-	comment.UserID = ch.decodeContext(r)
+	staticcontent.UserID = ch.decodeContext(r)
 
-	data, err := ch.askController(&comment)
+	data, err := ch.askController(&staticcontent)
 
 	if err != nil {
-		message := "Unable to update comment for user error: "
+		message := "Unable to update staticcontent error: "
 		ch.handleError(w, err, message)
 		return
 	}
