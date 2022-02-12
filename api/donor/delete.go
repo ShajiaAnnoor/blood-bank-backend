@@ -8,14 +8,13 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/api/middleware"
 	"gitlab.com/Aubichol/blood-bank-backend/api/routeutils"
 	"gitlab.com/Aubichol/blood-bank-backend/apipattern"
-	"gitlab.com/Aubichol/blood-bank-backend/comment"
 	"gitlab.com/Aubichol/blood-bank-backend/comment/dto"
 	"go.uber.org/dig"
 )
 
 //updateHandler holds comment update handler
 type deleteHandler struct {
-	update comment.Updater
+	update donor.Updater
 }
 
 func (ch *deleteHandler) decodeBody(
@@ -74,17 +73,17 @@ func (ch *deleteHandler) ServeHTTP(
 	donor, err := ch.decodeBody(r.Body)
 
 	if err != nil {
-		message := "Unable to decode comment error: "
+		message := "Unable to decode donor delete error: "
 		ch.handleError(w, err, message)
 		return
 	}
 
 	donor.UserID = ch.decodeContext(r)
 
-	data, err := ch.askController(&comment)
+	data, err := ch.askController(&donor)
 
 	if err != nil {
-		message := "Unable to update comment for user error: "
+		message := "Unable to delete donor error: "
 		ch.handleError(w, err, message)
 		return
 	}
@@ -101,7 +100,7 @@ type UpdateParams struct {
 
 //UpdateRoute provides a route that updates comment
 func UpdateRoute(params UpdateParams) *routeutils.Route {
-	handler := updateHandler{params.Update}
+	handler := deleteHandler{params.Update}
 	return &routeutils.Route{
 		Method:  http.MethodPost,
 		Pattern: apipattern.DonorUpdate,
