@@ -1,6 +1,6 @@
 package dto
 
-import "gitlab.com/Aubichol/hrishi-backend/model"
+import "gitlab.com/Aubichol/blood-bank-backend/model"
 
 //ReadResp holds the response data for reading comment
 type ReadResp struct {
@@ -9,7 +9,7 @@ type ReadResp struct {
 }
 
 //FromModel converts the model data to response data
-func (r *ReadResp) FromModel(comment *model.Comment) {
-	r.Request = comment.Request
-	r.Sender = comment.UserID
+func (r *ReadResp) FromModel(bloodreq *model.Bloodreq) {
+	r.Request = bloodreq.Request
+	r.Sender = bloodreq.UserID
 }
