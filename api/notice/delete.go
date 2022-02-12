@@ -8,16 +8,16 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/api/middleware"
 	"gitlab.com/Aubichol/blood-bank-backend/api/routeutils"
 	"gitlab.com/Aubichol/blood-bank-backend/apipattern"
-	"gitlab.com/Aubichol/blood-bank-backend/comment/dto"
+	"gitlab.com/Aubichol/blood-bank-backend/notice/dto"
 	"go.uber.org/dig"
 )
 
-//updateHandler holds comment update handler
-type updateHandler struct {
+//deleteHandler holds comment update handler
+type deleteHandler struct {
 	update notice.Updater
 }
 
-func (ch *updateHandler) decodeBody(
+func (ch *deleteHandler) decodeBody(
 	body io.ReadCloser,
 ) (
 	notice dto.Update,
@@ -27,7 +27,7 @@ func (ch *updateHandler) decodeBody(
 	return
 }
 
-func (ch *updateHandler) handleError(
+func (ch *deleteHandler) handleError(
 	w http.ResponseWriter,
 	err error,
 	message string,
@@ -36,14 +36,14 @@ func (ch *updateHandler) handleError(
 	routeutils.ServeError(w, err)
 }
 
-func (ch *updateHandler) decodeContext(
+func (ch *deleteHandler) decodeContext(
 	r *http.Request,
 ) (userID string) {
 	userID = r.Context().Value("userID").(string)
 	return
 }
 
-func (ch *updateHandler) askController(update *dto.Update) (
+func (ch *deleteHandler) askController(update *dto.Update) (
 	resp *dto.UpdateResponse,
 	err error,
 ) {
@@ -51,7 +51,7 @@ func (ch *updateHandler) askController(update *dto.Update) (
 	return
 }
 
-func (ch *updateHandler) responseSuccess(
+func (ch *deleteHandler) responseSuccess(
 	w http.ResponseWriter,
 	resp *dto.UpdateResponse,
 ) {
@@ -63,7 +63,7 @@ func (ch *updateHandler) responseSuccess(
 }
 
 //ServeHTTP implements http.Handler interface
-func (ch *updateHandler) ServeHTTP(
+func (ch *deleteHandler) ServeHTTP(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
@@ -91,7 +91,7 @@ func (ch *updateHandler) ServeHTTP(
 	ch.responseSuccess(w, data)
 }
 
-//UpdateParams provide parameters for comment update handler
+//DeleteParams provide parameters for comment update handler
 type DeleteParams struct {
 	dig.In
 	Update     notice.Updater
@@ -100,7 +100,7 @@ type DeleteParams struct {
 
 //UpdateRoute provides a route that updates comment
 func UpdateRoute(params DeleteParams) *routeutils.Route {
-	handler := updateHandler{params.Update}
+	handler := deleteHandler{params.Update}
 	return &routeutils.Route{
 		Method:  http.MethodPost,
 		Pattern: apipattern.NoticeUpdate,
