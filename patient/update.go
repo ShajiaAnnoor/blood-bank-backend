@@ -1,4 +1,4 @@
-package status
+package patient
 
 import (
 	"fmt"
@@ -23,13 +23,13 @@ type update struct {
 	validate    *validator.Validate
 }
 
-func (u *update) toModel(userstatus *dto.Update) (status *model.Status) {
-	status = &model.Status{}
-	status.CreatedAt = time.Now().UTC()
-	status.UpdatedAt = status.CreatedAt
-	status.Status = userstatus.Status
-	status.UserID = userstatus.UserID
-	status.ID = userstatus.StatusID
+func (u *update) toModel(userpatient *dto.Update) (patient *model.Patient) {
+	patient = &model.Status{}
+	patient.CreatedAt = time.Now().UTC()
+	patient.UpdatedAt = patient.CreatedAt
+	patient.Status = userpatient.Status
+	patient.UserID = userpatient.UserID
+	patient.ID = userpatient.StatusID
 	return
 }
 
@@ -39,33 +39,33 @@ func (u *update) validateData(update *dto.Update) (err error) {
 }
 
 func (u *update) convertData(update *dto.Update) (
-	modelStatus *model.Status,
+	modelPatient *model.Status,
 ) {
-	modelStatus = u.toModel(update)
+	modelPatient = u.toModel(update)
 	return
 }
 
-func (u *update) askStore(modelStatus *model.Status) (
+func (u *update) askStore(modelPatient *model.Patient) (
 	id string,
 	err error,
 ) {
-	id, err = u.storeStatus.Save(modelStatus)
+	id, err = u.storePatient.Save(modelPatient)
 	return
 }
 
 func (u *update) giveResponse(
-	modelStatus *model.Status,
+	modelPatient *model.Patient,
 	id string,
 ) *dto.UpdateResponse {
 	logrus.WithFields(logrus.Fields{
-		"id": modelStatus.UserID,
+		"id": modelPatient.UserID,
 	}).Debug("User updated status successfully")
 
 	return &dto.UpdateResponse{
 		Message:    "Status updated",
 		OK:         true,
 		ID:         id,
-		UpdateTime: modelStatus.UpdatedAt.String(),
+		UpdateTime: modelPatient.UpdatedAt.String(),
 	}
 }
 
@@ -92,19 +92,19 @@ func (u *update) Update(update *dto.Update) (
 		return nil, err
 	}
 
-	modelStatus := u.convertData(update)
-	id, err := u.askStore(modelStatus)
+	modelPatient := u.convertData(update)
+	id, err := u.askStore(modelPatient)
 	if err == nil {
-		return u.giveResponse(modelStatus, id), nil
+		return u.giveResponse(modelPatient, id), nil
 	}
 
-	logrus.Error("Could not update status ", err)
+	logrus.Error("Could not update patient ", err)
 	err = u.giveError()
 	return nil, err
 }
 
 //NewUpdate returns new instance of NewCreate
-func NewUpdate(store storestatus.Status, validate *validator.Validate) Updater {
+func NewUpdate(store storepatient.Patient, validate *validator.Validate) Updater {
 	return &update{
 		store,
 		validate,
