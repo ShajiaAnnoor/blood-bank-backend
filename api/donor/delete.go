@@ -14,11 +14,11 @@ import (
 )
 
 //updateHandler holds comment update handler
-type updateHandler struct {
+type deleteHandler struct {
 	update comment.Updater
 }
 
-func (ch *updateHandler) decodeBody(
+func (ch *deleteHandler) decodeBody(
 	body io.ReadCloser,
 ) (
 	donor dto.Update,
@@ -28,7 +28,7 @@ func (ch *updateHandler) decodeBody(
 	return
 }
 
-func (ch *updateHandler) handleError(
+func (ch *deleteHandler) handleError(
 	w http.ResponseWriter,
 	err error,
 	message string,
@@ -37,14 +37,14 @@ func (ch *updateHandler) handleError(
 	routeutils.ServeError(w, err)
 }
 
-func (ch *updateHandler) decodeContext(
+func (ch *deleteHandler) decodeContext(
 	r *http.Request,
 ) (userID string) {
 	userID = r.Context().Value("userID").(string)
 	return
 }
 
-func (ch *updateHandler) askController(update *dto.Update) (
+func (ch *deleteHandler) askController(update *dto.Update) (
 	resp *dto.UpdateResponse,
 	err error,
 ) {
@@ -52,7 +52,7 @@ func (ch *updateHandler) askController(update *dto.Update) (
 	return
 }
 
-func (ch *updateHandler) responseSuccess(
+func (ch *deleteHandler) responseSuccess(
 	w http.ResponseWriter,
 	resp *dto.UpdateResponse,
 ) {
@@ -64,7 +64,7 @@ func (ch *updateHandler) responseSuccess(
 }
 
 //ServeHTTP implements http.Handler interface
-func (ch *updateHandler) ServeHTTP(
+func (ch *deleteHandler) ServeHTTP(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
