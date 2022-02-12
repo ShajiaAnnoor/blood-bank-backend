@@ -7,8 +7,8 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-//Comment holds db data type for comments
-type Comment struct {
+//StaticContent holds db data type for comments
+type StaticContent struct {
 	ID        primitive.ObjectID `bson:"_id,omitempty"`
 	Comment   string             `bson:"comment"`
 	UserID    primitive.ObjectID `bson:"user_id"`
@@ -18,19 +18,19 @@ type Comment struct {
 }
 
 //FromModel converts model data to db data for comments
-func (c *Comment) FromModel(modelComment *model.Comment) error {
-	c.Comment = modelComment.Comment
-	c.CreatedAt = modelComment.CreatedAt
-	c.UpdatedAt = modelComment.UpdatedAt
+func (sc *StaticContent) FromModel(modelComment *model.Comment) error {
+	sc.Comment = modelComment.Comment
+	sc.CreatedAt = modelComment.CreatedAt
+	sc.UpdatedAt = modelComment.UpdatedAt
 
 	var err error
-	c.StatusID, err = primitive.ObjectIDFromHex(modelComment.StatusID)
+	sc.StatusID, err = primitive.ObjectIDFromHex(modelComment.StatusID)
 
 	if err != nil {
 		return err
 	}
 
-	c.UserID, err = primitive.ObjectIDFromHex(modelComment.UserID)
+	sc.UserID, err = primitive.ObjectIDFromHex(modelComment.UserID)
 	if err != nil {
 		return err
 	}
@@ -44,19 +44,19 @@ func (c *Comment) FromModel(modelComment *model.Comment) error {
 		return err
 	}
 
-	c.ID = id
+	sc.ID = id
 	return nil
 }
 
 //ModelComment converts bson to model
-func (c *Comment) ModelComment() *model.Comment {
-	comment := model.Comment{}
-	comment.ID = c.ID.Hex()
-	comment.Comment = c.Comment
-	comment.UserID = c.UserID.Hex()
-	comment.StatusID = c.StatusID.Hex()
-	comment.CreatedAt = c.CreatedAt
-	comment.UpdatedAt = c.UpdatedAt
+func (c *StaticContent) ModelComment() *model.Comment {
+	sc := model.StaticContent{}
+	sc.ID = c.ID.Hex()
+	sc.Comment = c.Comment
+	sc.UserID = c.UserID.Hex()
+	sc.StatusID = c.StatusID.Hex()
+	sc.CreatedAt = c.CreatedAt
+	sc.UpdatedAt = c.UpdatedAt
 
 	return &comment
 }
