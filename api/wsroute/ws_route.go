@@ -5,9 +5,9 @@ import (
 
 	"github.com/gorilla/websocket"
 	"github.com/sirupsen/logrus"
-	"gitlab.com/Aubichol/hrishi-backend/api/routeutils"
-	"gitlab.com/Aubichol/hrishi-backend/cfg"
-	"gitlab.com/Aubichol/hrishi-backend/ws"
+	"gitlab.com/Aubichol/blood-bank-backend/api/routeutils"
+	"gitlab.com/Aubichol/blood-bank-backend/cfg"
+	"gitlab.com/Aubichol/blood-bank-backend/ws"
 )
 
 // TODO: Need to know what websocket upgrader does
