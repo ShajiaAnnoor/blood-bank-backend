@@ -14,7 +14,7 @@ import (
 
 //createHandler holds handler for creating comments
 type deleteHandler struct {
-	delete staticcontent.Creater
+	delete staticcontent.Deleter
 }
 
 func (ch *deleteHandler) decodeBody(
@@ -44,7 +44,7 @@ func (ch *deleteHandler) askController(
 	data *dto.CreateResponse,
 	err error,
 ) {
-	data, err = ch.create.Create(comment)
+	data, err = ch.delete.Delete(comment)
 	return
 }
 
@@ -86,7 +86,7 @@ func (ch *deleteHandler) ServeHTTP(
 	data, err := ch.askController(&staticcontent)
 
 	if err != nil {
-		message := "Unable to create staticcontent for status error: "
+		message := "Unable to create staticcontent error: "
 		ch.handleError(w, err, message)
 		return
 	}
@@ -97,7 +97,7 @@ func (ch *deleteHandler) ServeHTTP(
 //CreateParams provide parameters for NewCommentRoute
 type DeleteParams struct {
 	dig.In
-	Create     staticcontent.Creater
+	Create     staticcontent.Deleter
 	Middleware *middleware.Auth
 }
 
