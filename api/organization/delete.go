@@ -14,7 +14,7 @@ import (
 
 //createHandler holds handler for creating comments
 type deleteHandler struct {
-	delete organization.Creater
+	delete organization.Deleter
 }
 
 func (ch *deleteHandler) decodeBody(
@@ -44,7 +44,7 @@ func (ch *deleteHandler) askController(
 	data *dto.CreateResponse,
 	err error,
 ) {
-	data, err = ch.create.Create(organization)
+	data, err = ch.delete.Update(organization)
 	return
 }
 
@@ -97,13 +97,13 @@ func (ch *deleteHandler) ServeHTTP(
 //CreateParams provide parameters for NewCommentRoute
 type DeleteParams struct {
 	dig.In
-	Create     organization.Creater
+	Create     organization.Updater
 	Middleware *middleware.Auth
 }
 
 //CreateRoute provides a route that lets users make comments
 func DeleteRoute(params DeleteParams) *routeutils.Route {
-	handler := createHandler{params.Create}
+	handler := deleteHandler{params.Delete}
 	return &routeutils.Route{
 		Method:  http.MethodPost,
 		Pattern: apipattern.OrganizationDelete,
