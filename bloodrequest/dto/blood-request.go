@@ -30,7 +30,7 @@ func (c *Bloodreq) Validate(validate *validator.Validate) error {
 	return nil
 }
 
-//FromReader reads comment (?) from request body
+//FromReader reads blood request (?) from request body
 func (c *Bloodreq) FromReader(reader io.Reader) error {
 	err := json.NewDecoder(reader).Decode(c)
 	if err != nil {
