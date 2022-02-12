@@ -18,7 +18,7 @@ type staticcontents struct {
 	c *mongo.Collection
 }
 
-func (c *staticcontents) convertData(modelStaticContent *model.StaticContent) (
+func (s *staticcontents) convertData(modelStaticContent *model.StaticContent) (
 	mongoStaticContent mongoModel.StaticContent,
 	err error,
 ) {
@@ -27,10 +27,10 @@ func (c *staticcontents) convertData(modelStaticContent *model.StaticContent) (
 }
 
 // Save saves staticcontents from model to database
-func (c *staticcontents) Save(modelStaticContent *model.StaticContent) (string, error) {
+func (s *staticcontents) Save(modelStaticContent *model.StaticContent) (string, error) {
 	mongoStaticContent := mongoModel.StaticContent{}
 	var err error
-	mongoStaticContent, err = c.convertData(modelStaticContent)
+	mongoStaticContent, err = s.convertData(modelStaticContent)
 	if err != nil {
 		return "", fmt.Errorf("Could not convert model comment to mongo comment: %w", err)
 	}
@@ -43,7 +43,7 @@ func (c *staticcontents) Save(modelStaticContent *model.StaticContent) (string, 
 	update := bson.M{"$set": mongoStaticContent}
 	upsert := true
 
-	_, err = c.c.UpdateOne(
+	_, err = s.c.UpdateOne(
 		context.Background(),
 		filter,
 		update,
@@ -56,14 +56,18 @@ func (c *staticcontents) Save(modelStaticContent *model.StaticContent) (string, 
 }
 
 //FindByID finds a comment by id
-func (c *staticcontents) FindByID(id string) (*model.StaticContent, error) {
+func (s *staticcontents) FindByID(id string) (*model.StaticContent, error) {
 	objectID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return nil, fmt.Errorf("Invalid id %s : %w", id, err)
 	}
 
 	filter := bson.M{"_id": objectID}
-	result := c.c.FindOne(context.Background(), filter, &options.FindOneOptions{})
+	result := s.c.FindOne(
+		context.Background(),
+		filter,
+		&options.FindOneOptions{},
+	)
 	if err := result.Err(); err != nil {
 		return nil, err
 	}
@@ -77,7 +81,7 @@ func (c *staticcontents) FindByID(id string) (*model.StaticContent, error) {
 }
 
 //FindByStatusID finds a comment by status id
-func (c *staticcontents) FindByStaticContentID(id string, skip int64, limit int64) ([]*model.StaticContent, error) {
+func (s *staticcontents) FindByStaticContentID(id string, skip int64, limit int64) ([]*model.StaticContent, error) {
 	objectID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return nil, fmt.Errorf("Invalid id %s : %w", id, err)
@@ -90,17 +94,21 @@ func (c *staticcontents) FindByStaticContentID(id string, skip int64, limit int6
 	findOptions.SetSkip(skip)
 	findOptions.SetLimit(limit)
 
-	cursor, err := c.c.Find(context.Background(), filter, findOptions)
+	cursor, err := s.c.Find(
+		context.Background(),
+		filter,
+		findOptions,
+	)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return c.cursorToStaticContents(cursor)
+	return s.cursorToStaticContents(cursor)
 }
 
 //CountByStaticContentID returns comments from status id
-func (c *staticcontents) CountByStaticContentID(id string) (int64, error) {
+func (s *staticcontents) CountByStaticContentID(id string) (int64, error) {
 	objectID, err := primitive.ObjectIDFromHex(id)
 
 	if err != nil {
@@ -108,7 +116,7 @@ func (c *staticcontents) CountByStaticContentID(id string) (int64, error) {
 	}
 
 	filter := bson.M{"status_id": objectID}
-	cnt, err := c.c.CountDocuments(
+	cnt, err := s.c.CountDocuments(
 		context.Background(),
 		filter,
 		&options.CountOptions{},
@@ -148,25 +156,28 @@ func (c *staticcontents) FindByIDs(ids ...string) ([]*model.StaticContent, error
 		return nil, err
 	}
 
-	return c.cursorToStaticContents(cursor)
+	return s.cursorToStaticContents(cursor)
 }
 
 //Search search for users given the text, skip and limit
 func (c *staticcontents) Search(text string, skip, limit int64) ([]*model.StaticContent, error) {
 	filter := bson.M{"$text": bson.M{"$search": text}}
-	cursor, err := c.c.Find(context.Background(), filter, &options.FindOptions{
-		Skip:  &skip,
-		Limit: &limit,
-	})
+	cursor, err := s.c.Find(
+		context.Background(),
+		filter,
+		&options.FindOptions{
+			Skip:  &skip,
+			Limit: &limit,
+		})
 	if err != nil {
 		return nil, err
 	}
 
-	return c.cursorToStaticContents(cursor)
+	return s.cursorToStaticContents(cursor)
 }
 
 //cursorToComments decodes users one by one from the search result
-func (c *staticcontents) cursorToStaticContents(cursor *mongo.Cursor) ([]*model.StaticContent, error) {
+func (s *staticcontents) cursorToStaticContents(cursor *mongo.Cursor) ([]*model.StaticContent, error) {
 	defer cursor.Close(context.Background())
 	modelStaticContents := []*model.StaticContent{}
 
