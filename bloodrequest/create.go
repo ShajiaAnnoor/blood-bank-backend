@@ -23,13 +23,13 @@ type create struct {
 	validate          *validator.Validate
 }
 
-func (c *create) toModel(usercomment *dto.Comment) (comment *model.Comment) {
-	comment = &model.Comment{}
-	comment.CreatedAt = time.Now().UTC()
-	comment.UpdatedAt = comment.CreatedAt
-	comment.Comment = usercomment.Comment
-	comment.UserID = usercomment.UserID
-	comment.StatusID = usercomment.StatusID
+func (c *create) toModel(userbloodreq *dto.Comment) (bloodreq *model.Comment) {
+	bloodreq = &model.Bloodreq{}
+	bloodreq.CreatedAt = time.Now().UTC()
+	bloodreq.UpdatedAt = bloodreq.CreatedAt
+	bloodreq.Comment = userbloodreq.Comment
+	bloodreq.UserID = userbloodreq.UserID
+	bloodreq.StatusID = userbloodreq.StatusID
 	return
 }
 
