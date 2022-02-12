@@ -9,14 +9,68 @@ const BloodReqUpdate string = "/api/v1/bloodrequest/update"
 //BloodReqGet holds the api string for getting a blood request
 const BloodReqGet string = "/api/v1/bloodrequest/get"
 
+//BloodReqGet holds the api string for getting a blood request
+const BloodReqDelete string = "/api/v1/bloodrequest/delete"
+
 //DonorCreate holds the api string for creating a donor
-const DonorCreate string = "/api/v1/comment/create"
+const DonorCreate string = "/api/v1/donor/create"
 
 //DonorRead holds the api string for reading comments
-const DonorRead string = "/api/v1/comment/get/{id}"
+const DonorRead string = "/api/v1/donor/get/{id}"
 
 //DonorUpdate holds the api string for updating comment
-const DonorUpdate string = "/api/v1/comment/update"
+const DonorUpdate string = "/api/v1/donor/update"
+
+//BloodReqDelete holds the api string for getting a blood request
+const DonorDelete string = "/api/v1/bloodrequest/delete"
+
+//NoticeCreate holds the api string for creating a notice
+const NoticeCreate string = "/api/v1/notice/create"
+
+//NoticeRead holds the api string for reading notices
+const NoticeRead string = "/api/v1/notice/get/{id}"
+
+//NoticeUpdate holds the api string for updating notice
+const NoticeUpdate string = "/api/v1/notice/update"
+
+//NoticeDelete holds the api string for getting a notice
+const NoticeDelete string = "/api/v1/notice/delete"
+
+//OrganizationCreate holds the api string for creating a organization
+const OrganizationCreate string = "/api/v1/organization/create"
+
+//OrganizationRead holds the api string for reading organizations
+const OrganizationRead string = "/api/v1/organization/get/{id}"
+
+//OrganizationUpdate holds the api string for updating organization
+const OrganizationUpdate string = "/api/v1/organization/update"
+
+//OrganizationDelete holds the api string for getting a organization
+const OrganizationDelete string = "/api/v1/organization/delete"
+
+//PatientCreate holds the api string for creating a patient
+const PatientCreate string = "/api/v1/patient/create"
+
+//PatientRead holds the api string for reading comments
+const PatientRead string = "/api/v1/patient/get/{id}"
+
+//PatientUpdate holds the api string for updating comment
+const PatientUpdate string = "/api/v1/patient/update"
+
+//PatientDelete holds the api string for getting a blood request
+const PatientDelete string = "/api/v1/patient/delete"
+
+//PatientCreate holds the api string for creating a staticcontent
+const StaticContentCreate string = "/api/v1/staticcontent/create"
+
+//PatientRead holds the api string for reading staticcontents
+const StaticContentRead string = "/api/v1/staticcontent/get/{id}"
+
+//PatientUpdate holds the api string for updating staticcontent
+const StaticContentUpdate string = "/api/v1/staticcontent/update"
+
+//PatientDelete holds the api string for getting a staticcontent
+const StaticContentDelete string = "/api/v1/staticcontent/delete"
 
 //PublicUserList holds the api for giving public user list
 const PublicUserList string = "/api/v1/public/alluser"
