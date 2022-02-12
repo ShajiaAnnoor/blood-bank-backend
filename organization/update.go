@@ -1,4 +1,4 @@
-package status
+package organization
 
 import (
 	"fmt"
@@ -8,8 +8,8 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/errors"
 	"gitlab.com/Aubichol/blood-bank-backend/model"
 	"gitlab.com/Aubichol/blood-bank-backend/status/dto"
-	storenotice "gitlab.com/Aubichol/blood-bank-backend/store/notice"
-	storestatus "gitlab.com/Aubichol/blood-bank-backend/store/status"
+	storestatus "gitlab.com/Aubichol/blood-bank-backend/store/notice"
+	storeorganization "gitlab.com/Aubichol/blood-bank-backend/store/organization"
 	"gopkg.in/go-playground/validator.v9"
 )
 
@@ -20,8 +20,8 @@ type Updater interface {
 
 // update updates user status
 type update struct {
-	storeStatus storenotice.Notice
-	validate    *validator.Validate
+	storeorganization storeorganization.Organization
+	validate          *validator.Validate
 }
 
 func (u *update) toModel(userstatus *dto.Update) (status *model.Status) {
@@ -46,11 +46,11 @@ func (u *update) convertData(update *dto.Update) (
 	return
 }
 
-func (u *update) askStore(modelStatus *model.Status) (
+func (u *update) askStore(modelOrganization *model.Organization) (
 	id string,
 	err error,
 ) {
-	id, err = u.storeStatus.Save(modelStatus)
+	id, err = u.storeOrganization.Save(modelOrganization)
 	return
 }
 
@@ -60,13 +60,13 @@ func (u *update) giveResponse(
 ) *dto.UpdateResponse {
 	logrus.WithFields(logrus.Fields{
 		"id": modelStatus.UserID,
-	}).Debug("User updated status successfully")
+	}).Debug("User updated organization successfully")
 
 	return &dto.UpdateResponse{
-		Message:    "Status updated",
+		Message:    "Organization updated",
 		OK:         true,
 		ID:         id,
-		UpdateTime: modelStatus.UpdatedAt.String(),
+		UpdateTime: modelOrganization.UpdatedAt.String(),
 	}
 }
 
