@@ -5,19 +5,19 @@ import (
 	"net/http"
 
 	"github.com/sirupsen/logrus"
-	"gitlab.com/Aubichol/hrishi-backend/api/middleware"
-	"gitlab.com/Aubichol/hrishi-backend/api/routeutils"
-	"gitlab.com/Aubichol/hrishi-backend/apipattern"
-	"gitlab.com/Aubichol/hrishi-backend/comment/dto"
+	"gitlab.com/Aubichol/blood-bank-backend/api/middleware"
+	"gitlab.com/Aubichol/blood-bank-backend/api/routeutils"
+	"gitlab.com/Aubichol/blood-bank-backend/apipattern"
+	"gitlab.com/Aubichol/blood-bank-backend/organization/dto"
 	"go.uber.org/dig"
 )
 
 //createHandler holds handler for creating comments
-type deleteeHandler struct {
+type deleteHandler struct {
 	delete organization.Creater
 }
 
-func (ch *createHandler) decodeBody(
+func (ch *deleteHandler) decodeBody(
 	body io.ReadCloser,
 ) (
 	organization dto.Organization,
@@ -29,7 +29,7 @@ func (ch *createHandler) decodeBody(
 	return
 }
 
-func (ch *createHandler) handleError(
+func (ch *deleteHandler) handleError(
 	w http.ResponseWriter,
 	err error,
 	message string,
@@ -38,7 +38,7 @@ func (ch *createHandler) handleError(
 	routeutils.ServeError(w, err)
 }
 
-func (ch *createHandler) askController(
+func (ch *deleteHandler) askController(
 	organization *dto.Organization,
 ) (
 	data *dto.CreateResponse,
@@ -48,14 +48,14 @@ func (ch *createHandler) askController(
 	return
 }
 
-func (ch *createHandler) decodeContext(
+func (ch *deleteHandler) decodeContext(
 	r *http.Request,
 ) (userID string) {
 	userID = r.Context().Value("userID").(string)
 	return
 }
 
-func (ch *createHandler) responseSuccess(
+func (ch *deleteHandler) responseSuccess(
 	w http.ResponseWriter,
 	resp *dto.CreateResponse,
 ) {
@@ -67,7 +67,7 @@ func (ch *createHandler) responseSuccess(
 }
 
 //ServeHTTP implements http.Handler interface
-func (ch *createHandler) ServeHTTP(
+func (ch *deleteHandler) ServeHTTP(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
