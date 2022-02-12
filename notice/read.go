@@ -16,13 +16,12 @@ type Reader interface {
 }
 
 //statusReader implements Reader interface
-type statusReader struct {
+type noticeReader struct {
 	notices status.Notice
-	friends friendrequest.FriendRequests
 }
 
-func (read *statusReader) askStore(statusID string) (
-	status *model.Status,
+func (read *noticeReader) askStore(noticeID string) (
+	notice *model.Notice,
 	err error,
 ) {
 	status, err = read.statuses.FindByID(statusID)
