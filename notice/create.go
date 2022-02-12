@@ -20,19 +20,19 @@ type Creater interface {
 
 // create creates user status
 type create struct {
-	storeStatus storenotice.Notice
+	storeNotice storenotice.Notice
 	validate    *validator.Validate
 }
 
-func (c *create) toModel(userstatus *dto.Status) (
-	status *model.Status,
+func (c *create) toModel(usernotice *dto.Notice) (
+	notice *model.Notice,
 ) {
 	notice = &model.Notice{}
 	notice.CreatedAt = time.Now().UTC()
-	notice.UpdatedAt = status.CreatedAt
-	notice.Description = userstatus.Description
+	notice.UpdatedAt = notice.CreatedAt
+	notice.Description = usernotice.Description
 	notice.Title = usernotice.Title
-	notice.UserID = userstatus.UserID
+	notice.UserID = usernotice.UserID
 	return
 }
 
@@ -66,7 +66,7 @@ func (c *create) giveResponse(modelStatus *model.Notice, id string) (
 	}).Debug("User created status successfully")
 
 	return &dto.CreateResponse{
-		Message:    "status created",
+		Message:    "notice created",
 		OK:         true,
 		StatusTime: modelNotice.CreatedAt.String(),
 		ID:         id,
