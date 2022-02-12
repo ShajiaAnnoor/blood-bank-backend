@@ -8,13 +8,13 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/api/middleware"
 	"gitlab.com/Aubichol/blood-bank-backend/api/routeutils"
 	"gitlab.com/Aubichol/blood-bank-backend/apipattern"
-	"gitlab.com/Aubichol/blood-bank-backend/comment/dto"
+	"gitlab.com/Aubichol/blood-bank-backend/bloodrequest/dto"
 	"go.uber.org/dig"
 )
 
-//createHandler holds handler for creating comments
+//createHandler holds handler for creating blood requests
 type createHandler struct {
-	create bloodreq.Creater
+	create bloodrequest.Creater
 }
 
 func (ch *createHandler) decodeBody(
