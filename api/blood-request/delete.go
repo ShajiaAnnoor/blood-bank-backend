@@ -13,11 +13,11 @@ import (
 )
 
 //updateHandler holds comment update handler
-type updateHandler struct {
+type deleteHandler struct {
 	update bloodreq.Updater
 }
 
-func (ch *updateHandler) decodeBody(
+func (ch *deleteHandler) decodeBody(
 	body io.ReadCloser,
 ) (
 	bloodreq dto.Update,
@@ -27,7 +27,7 @@ func (ch *updateHandler) decodeBody(
 	return
 }
 
-func (ch *updateHandler) handleError(
+func (ch *deleteHandler) handleError(
 	w http.ResponseWriter,
 	err error,
 	message string,
@@ -36,14 +36,14 @@ func (ch *updateHandler) handleError(
 	routeutils.ServeError(w, err)
 }
 
-func (ch *updateHandler) decodeContext(
+func (ch *deleteHandler) decodeContext(
 	r *http.Request,
 ) (userID string) {
 	userID = r.Context().Value("userID").(string)
 	return
 }
 
-func (ch *updateHandler) askController(update *dto.Update) (
+func (ch *deleteHandler) askController(update *dto.Update) (
 	resp *dto.UpdateResponse,
 	err error,
 ) {
@@ -51,7 +51,7 @@ func (ch *updateHandler) askController(update *dto.Update) (
 	return
 }
 
-func (ch *updateHandler) responseSuccess(
+func (ch *deleteHandler) responseSuccess(
 	w http.ResponseWriter,
 	resp *dto.UpdateResponse,
 ) {
@@ -63,7 +63,7 @@ func (ch *updateHandler) responseSuccess(
 }
 
 //ServeHTTP implements http.Handler interface
-func (ch *updateHandler) ServeHTTP(
+func (ch *deleteHandler) ServeHTTP(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
@@ -92,14 +92,14 @@ func (ch *updateHandler) ServeHTTP(
 }
 
 //UpdateParams provide parameters for blood request update handler
-type UpdateParams struct {
+type DeleteParams struct {
 	dig.In
 	Update     bloodreq.Updater
 	Middleware *middleware.Auth
 }
 
 //UpdateRoute provides a route that updates blood request
-func UpdateRoute(params UpdateParams) *routeutils.Route {
+func UpdateRoute(params DeleteParams) *routeutils.Route {
 	handler := updateHandler{params.Update}
 	return &routeutils.Route{
 		Method:  http.MethodPost,
