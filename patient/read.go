@@ -6,7 +6,7 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/model"
 	"gitlab.com/Aubichol/blood-bank-backend/notice/dto"
 	"gitlab.com/Aubichol/blood-bank-backend/pkg/tag"
-	storestatus "gitlab.com/Aubichol/blood-bank-backend/store/notice"
+	storestatus "gitlab.com/Aubichol/blood-bank-backend/store/status"
 	"go.uber.org/dig"
 )
 
@@ -18,7 +18,6 @@ type Reader interface {
 //statusReader implements Reader interface
 type statusReader struct {
 	statuses statusnotice.Notice
-	friends  friendrequest.FriendRequests
 }
 
 func (read *statusReader) askStore(statusID string) (
@@ -39,11 +38,11 @@ func (read *statusReader) giveError() (err error) {
 }
 
 func (read *statusReader) prepareResponse(
-	status *model.Status,
+	patient *model.Patient,
 ) (
 	resp dto.ReadResp,
 ) {
-	resp.FromModel(status)
+	resp.FromModel(patient)
 	return
 }
 
