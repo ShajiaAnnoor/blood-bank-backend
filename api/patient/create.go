@@ -8,7 +8,7 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/api/middleware"
 	"gitlab.com/Aubichol/blood-bank-backend/api/routeutils"
 	"gitlab.com/Aubichol/blood-bank-backend/apipattern"
-	"gitlab.com/Aubichol/blood-bank-backend/comment/dto"
+	"gitlab.com/Aubichol/blood-bank-backend/patient/dto"
 	"go.uber.org/dig"
 )
 
@@ -86,7 +86,7 @@ func (ch *createHandler) ServeHTTP(
 	data, err := ch.askController(&patient)
 
 	if err != nil {
-		message := "Unable to create patient for status error: "
+		message := "Unable to create patient error: "
 		ch.handleError(w, err, message)
 		return
 	}
