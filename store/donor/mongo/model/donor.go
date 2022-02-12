@@ -12,7 +12,6 @@ type Donor struct {
 	ID        primitive.ObjectID `bson:"_id,omitempty"`
 	Comment   string             `bson:"comment"`
 	UserID    primitive.ObjectID `bson:"user_id"`
-	StatusID  primitive.ObjectID `bson:"status_id"`
 	CreatedAt time.Time          `bson:"created_at"`
 	UpdatedAt time.Time          `bson:"updated_at"`
 }
