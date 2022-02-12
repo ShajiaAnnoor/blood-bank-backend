@@ -8,7 +8,6 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/errors"
 	"gitlab.com/Aubichol/blood-bank-backend/model"
 	"gitlab.com/Aubichol/blood-bank-backend/status/dto"
-	storestatus "gitlab.com/Aubichol/blood-bank-backend/store/status"
 	"gopkg.in/go-playground/validator.v9"
 )
 
@@ -19,17 +18,16 @@ type Updater interface {
 
 // update updates user status
 type update struct {
-	storeStatus storestatus.Status
-	validate    *validator.Validate
+	storeDonor storedonor.Donor
+	validate   *validator.Validate
 }
 
-func (u *update) toModel(userstatus *dto.Update) (status *model.Status) {
-	status = &model.Status{}
-	status.CreatedAt = time.Now().UTC()
-	status.UpdatedAt = status.CreatedAt
-	status.Status = userstatus.Status
-	status.UserID = userstatus.UserID
-	status.ID = userstatus.StatusID
+func (u *update) toModel(userdonor *dto.Update) (donor *model.Donor) {
+	donor = &model.Donor{}
+	donor.CreatedAt = time.Now().UTC()
+	donor.UpdatedAt = donor.CreatedAt
+	donor.UserID = userdonor.UserID
+	donor.ID = userdonor.StatusID
 	return
 }
 
@@ -39,33 +37,33 @@ func (u *update) validateData(update *dto.Update) (err error) {
 }
 
 func (u *update) convertData(update *dto.Update) (
-	modelStatus *model.Status,
+	modelDonor *model.Donor,
 ) {
-	modelStatus = u.toModel(update)
+	modelDonor = u.toModel(update)
 	return
 }
 
-func (u *update) askStore(modelStatus *model.Status) (
+func (u *update) askStore(modelStatus *model.Donor) (
 	id string,
 	err error,
 ) {
-	id, err = u.storeStatus.Save(modelStatus)
+	id, err = u.storeDonor.Save(modelDonor)
 	return
 }
 
 func (u *update) giveResponse(
-	modelStatus *model.Status,
+	modelDonor *model.Donor,
 	id string,
 ) *dto.UpdateResponse {
 	logrus.WithFields(logrus.Fields{
-		"id": modelStatus.UserID,
+		"id": modelDonor.UserID,
 	}).Debug("User updated status successfully")
 
 	return &dto.UpdateResponse{
-		Message:    "Status updated",
+		Message:    "Donor updated",
 		OK:         true,
 		ID:         id,
-		UpdateTime: modelStatus.UpdatedAt.String(),
+		UpdateTime: modelDonor.UpdatedAt.String(),
 	}
 }
 
@@ -92,19 +90,19 @@ func (u *update) Update(update *dto.Update) (
 		return nil, err
 	}
 
-	modelStatus := u.convertData(update)
-	id, err := u.askStore(modelStatus)
+	modelDonor := u.convertData(update)
+	id, err := u.askStore(modelDonor)
 	if err == nil {
-		return u.giveResponse(modelStatus, id), nil
+		return u.giveResponse(modelDonor, id), nil
 	}
 
-	logrus.Error("Could not update status ", err)
+	logrus.Error("Could not update donor ", err)
 	err = u.giveError()
 	return nil, err
 }
 
 //NewUpdate returns new instance of NewCreate
-func NewUpdate(store storestatus.Status, validate *validator.Validate) Updater {
+func NewUpdate(store storedonor.Donor, validate *validator.Validate) Updater {
 	return &update{
 		store,
 		validate,
