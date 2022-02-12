@@ -39,7 +39,7 @@ func (ch *createHandler) handleError(
 }
 
 func (ch *createHandler) askController(
-	organization *dto.Comment,
+	organization *dto.Organization,
 ) (
 	data *dto.CreateResponse,
 	err error,
