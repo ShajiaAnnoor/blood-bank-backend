@@ -1,4 +1,4 @@
-package status
+package organization
 
 import (
 	"github.com/sirupsen/logrus"
