@@ -8,8 +8,8 @@ import (
 	"gitlab.com/Aubichol/blook-bank-backend/api/middleware"
 	"gitlab.com/Aubichol/blook-bank-backend/api/routeutils"
 	"gitlab.com/Aubichol/blook-bank-backend/apipattern"
-	"gitlab.com/Aubichol/blook-bank-backend/comment"
-	"gitlab.com/Aubichol/blook-bank-backend/comment/dto"
+	"gitlab.com/Aubichol/blook-bank-backend/staticcontent"
+	"gitlab.com/Aubichol/blook-bank-backend/staticcontent/dto"
 	"go.uber.org/dig"
 )
 
