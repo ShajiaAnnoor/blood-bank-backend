@@ -66,13 +66,14 @@ func (ch *createHandler) responseSuccess(
 	)
 }
 
-//ServeHTTP implements http.Handler interface
+//ServeHTTP implements http.Handler interface. It marks the start of a particular request from the developer perspective
 func (ch *createHandler) ServeHTTP(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
 	defer r.Body.Close()
 
+	//the follwing line will decode a blood request given by the user
 	bloodreqDat, err := ch.decodeBody(r.Body)
 
 	if err != nil {
