@@ -12,7 +12,7 @@ import (
 	"go.uber.org/dig"
 )
 
-//createHandler holds handler for creating comments
+//deleteHandler holds handler for creating static contents
 type deleteHandler struct {
 	delete staticcontent.Deleter
 }
@@ -106,7 +106,7 @@ func CreateRoute(params DeleteParams) *routeutils.Route {
 	handler := deleteHandler{params.Create}
 	return &routeutils.Route{
 		Method:  http.MethodPost,
-		Pattern: apipattern.StaticContentCreate,
+		Pattern: apipattern.StaticContentUpdate,
 		Handler: params.Middleware.Middleware(&handler),
 	}
 }
