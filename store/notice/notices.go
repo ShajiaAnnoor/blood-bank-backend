@@ -1,4 +1,4 @@
-package comment
+package notice
 
 import "gitlab.com/Aubichol/blood-bank-backend/model"
 
