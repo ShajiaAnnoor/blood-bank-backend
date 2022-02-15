@@ -7,7 +7,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-//Patient holds db data type for comments
+//Patient holds db data type for patients
 type Patient struct {
 	ID        primitive.ObjectID `bson:"_id,omitempty"`
 	Comment   string             `bson:"comment"`
@@ -48,15 +48,15 @@ func (c *Patient) FromModel(modelComment *model.Patient) error {
 	return nil
 }
 
-//ModelComment converts bson to model
-func (c *Comment) ModelComment() *model.Comment {
-	patient := model.Comment{}
-	patient.ID = c.ID.Hex()
-	patientcomment.Comment = c.Comment
-	patient.UserID = c.UserID.Hex()
-	patient.StatusID = c.StatusID.Hex()
-	patient.CreatedAt = c.CreatedAt
-	patient.UpdatedAt = c.UpdatedAt
+//ModelPatient converts bson to model
+func (p *Patient) ModelComment() *model.Comment {
+	patient := model.Patient{}
+	patient.ID = p.ID.Hex()
+	patientcomment.Comment = p.Comment
+	patient.UserID = p.UserID.Hex()
+	patient.StatusID = p.StatusID.Hex()
+	patient.CreatedAt = p.CreatedAt
+	patient.UpdatedAt = p.UpdatedAt
 
-	return &comment
+	return &patient
 }
