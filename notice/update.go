@@ -1,4 +1,4 @@
-package status
+package notice
 
 import (
 	"fmt"
@@ -7,17 +7,17 @@ import (
 	"github.com/sirupsen/logrus"
 	"gitlab.com/Aubichol/blood-bank-backend/errors"
 	"gitlab.com/Aubichol/blood-bank-backend/model"
-	"gitlab.com/Aubichol/blood-bank-backend/status/dto"
+	"gitlab.com/Aubichol/blood-bank-backend/notice/dto"
 	storenotice "gitlab.com/Aubichol/blood-bank-backend/store/notice"
 	"gopkg.in/go-playground/validator.v9"
 )
 
-//Updater provides an interface for updating statuses
+//Updater provides an interface for updating noticees
 type Updater interface {
 	Update(*dto.Update) (*dto.UpdateResponse, error)
 }
 
-// update updates user status
+// update updates user notice
 type update struct {
 	storeNotice storenotice.Notice
 	validate    *validator.Validate
@@ -59,7 +59,7 @@ func (u *update) giveResponse(
 ) *dto.UpdateResponse {
 	logrus.WithFields(logrus.Fields{
 		"id": modelNotice.UserID,
-	}).Debug("User updated status successfully")
+	}).Debug("User updated notice successfully")
 
 	return &dto.UpdateResponse{
 		Message:    "Status updated",
