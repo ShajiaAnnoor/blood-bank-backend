@@ -7,7 +7,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-//BloodReq holds db data type for comments
+//BloodReq holds db data type for blood requests
 type BloodReq struct {
 	ID        primitive.ObjectID `bson:"_id,omitempty"`
 	Request   string             `bson:"request"`
