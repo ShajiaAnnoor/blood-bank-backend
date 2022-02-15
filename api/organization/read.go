@@ -66,7 +66,7 @@ func (read *readHandler) handleRead(
 	req.OrganizationID = read.decodeURL(r)
 
 	req.UserID = read.decodeContext(r)
-	// Read comment from database using comment id and user id
+	// Read organization from database using organization id
 	resp, err := read.askController(&req)
 
 	if err != nil {
