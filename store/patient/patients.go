@@ -2,7 +2,7 @@ package comment
 
 import "gitlab.com/Aubichol/hrishi-backend/model"
 
-// Patients wraps user's comment functionality
+// Patients wraps patients functionality
 type Patients interface {
 	Save(*model.Patient) (id string, err error)
 	FindByID(id string) (*model.Patient, error)
