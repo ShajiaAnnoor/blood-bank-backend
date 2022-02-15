@@ -7,30 +7,30 @@ import (
 	"github.com/sirupsen/logrus"
 	"gitlab.com/Aubichol/blood-bank-backend/errors"
 	"gitlab.com/Aubichol/blood-bank-backend/model"
-	"gitlab.com/Aubichol/blood-bank-backend/status/dto"
-	storestatus "gitlab.com/Aubichol/blood-bank-backend/store/notice"
+	"gitlab.com/Aubichol/blood-bank-backend/organization/dto"
+	storeorganization "gitlab.com/Aubichol/blood-bank-backend/store/notice"
 	storeorganization "gitlab.com/Aubichol/blood-bank-backend/store/organization"
 	"gopkg.in/go-playground/validator.v9"
 )
 
-//Updater provides an interface for updating statuses
+//Updater provides an interface for updating organizationes
 type Updater interface {
 	Update(*dto.Update) (*dto.UpdateResponse, error)
 }
 
-// update updates user status
+// update updates user organization
 type update struct {
 	storeorganization storeorganization.Organization
 	validate          *validator.Validate
 }
 
-func (u *update) toModel(userstatus *dto.Update) (status *model.Status) {
-	status = &model.Status{}
-	status.CreatedAt = time.Now().UTC()
-	status.UpdatedAt = status.CreatedAt
-	status.Status = userstatus.Status
-	status.UserID = userstatus.UserID
-	status.ID = userstatus.StatusID
+func (u *update) toModel(userorganization *dto.Update) (organization *model.Organization) {
+	organization = &model.Organization{}
+	organization.CreatedAt = time.Now().UTC()
+	organization.UpdatedAt = organization.CreatedAt
+	organization.Organization = userorganization.Organization
+	organization.UserID = userorganization.UserID
+	organization.ID = userorganization.OrganizationID
 	return
 }
 
@@ -40,9 +40,9 @@ func (u *update) validateData(update *dto.Update) (err error) {
 }
 
 func (u *update) convertData(update *dto.Update) (
-	modelStatus *model.Status,
+	modelOrganization *model.Organization,
 ) {
-	modelStatus = u.toModel(update)
+	modelOrganization = u.toModel(update)
 	return
 }
 
@@ -55,11 +55,11 @@ func (u *update) askStore(modelOrganization *model.Organization) (
 }
 
 func (u *update) giveResponse(
-	modelStatus *model.Status,
+	modelOrganization *model.Organization,
 	id string,
 ) *dto.UpdateResponse {
 	logrus.WithFields(logrus.Fields{
-		"id": modelStatus.UserID,
+		"id": modelOrganization.UserID,
 	}).Debug("User updated organization successfully")
 
 	return &dto.UpdateResponse{
@@ -93,19 +93,19 @@ func (u *update) Update(update *dto.Update) (
 		return nil, err
 	}
 
-	modelStatus := u.convertData(update)
-	id, err := u.askStore(modelStatus)
+	modelOrganization := u.convertData(update)
+	id, err := u.askStore(modelOrganization)
 	if err == nil {
-		return u.giveResponse(modelStatus, id), nil
+		return u.giveResponse(modelOrganization, id), nil
 	}
 
-	logrus.Error("Could not update status ", err)
+	logrus.Error("Could not update organization ", err)
 	err = u.giveError()
 	return nil, err
 }
 
 //NewUpdate returns new instance of NewCreate
-func NewUpdate(store storestatus.Status, validate *validator.Validate) Updater {
+func NewUpdate(store storeorganization.Organization, validate *validator.Validate) Updater {
 	return &update{
 		store,
 		validate,
