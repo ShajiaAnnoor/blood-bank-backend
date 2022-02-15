@@ -32,7 +32,7 @@ func (c *notices) Save(modelNotice *model.Notice) (string, error) {
 	var err error
 	mongoNotice, err = c.convertData(modelNotice)
 	if err != nil {
-		return "", fmt.Errorf("Could not convert model notice to mongo comment: %w", err)
+		return "", fmt.Errorf("Could not convert model notice to mongo notice: %w", err)
 	}
 
 	if modelNotice.ID == "" {
