@@ -91,15 +91,15 @@ func (ch *deleteHandler) ServeHTTP(
 	ch.responseSuccess(w, data)
 }
 
-//UpdateParams provide parameters for comment update handler
-type UpdateParams struct {
+//DeleteParams provide parameters for donor update handler
+type DeleteParams struct {
 	dig.In
 	Update     donor.Updater
 	Middleware *middleware.Auth
 }
 
-//UpdateRoute provides a route that updates comment
-func UpdateRoute(params UpdateParams) *routeutils.Route {
+//UpdateRoute provides a route that updates donor
+func UpdateRoute(params DeleteParams) *routeutils.Route {
 	handler := deleteHandler{params.Update}
 	return &routeutils.Route{
 		Method:  http.MethodPost,
