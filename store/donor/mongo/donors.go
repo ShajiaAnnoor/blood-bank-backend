@@ -32,7 +32,7 @@ func (c *donors) Save(modelDonor *model.Donor) (string, error) {
 	var err error
 	mongoDonor, err = c.convertData(modelDonor)
 	if err != nil {
-		return "", fmt.Errorf("Could not convert model comment to mongo comment: %w", err)
+		return "", fmt.Errorf("Could not convert model donor to mongo donor: %w", err)
 	}
 
 	if modelDonor.ID == "" {
@@ -55,7 +55,7 @@ func (c *donors) Save(modelDonor *model.Donor) (string, error) {
 	return mongoDonor.ID.Hex(), err
 }
 
-//FindByID finds a comment by id
+//FindByID finds a donor by id
 func (c *donors) FindByID(id string) (*model.Donor, error) {
 	objectID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
@@ -167,7 +167,7 @@ func (c *donors) cursorToDonors(cursor *mongo.Cursor) ([]*model.Donor, error) {
 	modelDonors := []*model.Donor{}
 
 	for cursor.Next(context.Background()) {
-		donor := mongoModel.Comment{}
+		donor := mongoModel.Donor{}
 		if err := cursor.Decode(&donor); err != nil {
 			return nil, fmt.Errorf("Could not decode data from mongo %w", err)
 		}
