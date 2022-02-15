@@ -12,7 +12,7 @@ import (
 	"go.uber.org/dig"
 )
 
-//deleteHandler holds comment update handler
+//deleteHandler holds notice update handler
 type deleteHandler struct {
 	update notice.Updater
 }
@@ -73,7 +73,7 @@ func (ch *deleteHandler) ServeHTTP(
 	noticeDat, err := ch.decodeBody(r.Body)
 
 	if err != nil {
-		message := "Unable to decode comment error: "
+		message := "Unable to decode notice error: "
 		ch.handleError(w, err, message)
 		return
 	}
@@ -83,7 +83,7 @@ func (ch *deleteHandler) ServeHTTP(
 	data, err := ch.askController(&noticeDat)
 
 	if err != nil {
-		message := "Unable to update comment for user error: "
+		message := "Unable to update notice error: "
 		ch.handleError(w, err, message)
 		return
 	}
@@ -91,7 +91,7 @@ func (ch *deleteHandler) ServeHTTP(
 	ch.responseSuccess(w, data)
 }
 
-//DeleteParams provide parameters for comment update handler
+//DeleteParams provide parameters for notice update handler
 type DeleteParams struct {
 	dig.In
 	Update     notice.Updater
