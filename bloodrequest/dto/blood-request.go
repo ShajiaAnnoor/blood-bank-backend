@@ -11,26 +11,27 @@ import (
 
 // Bloodreq provides dto for blood request
 type Bloodreq struct {
-	ID      string `json:"blood_request_id"`
-	Request string `json:"request"`
-	UserID  string `json:"user_id"`
+	ID         string `json:"blood_request_id"`
+	Request    string `json:"request"`
+	BloodGroup string `json:"blood_group"`
+	UserID     string `json:"user_id"`
 }
 
-//Validate validates comment data
+//Validate validates blood request data
 func (c *Bloodreq) Validate(validate *validator.Validate) error {
 	if err := validate.Struct(c); err != nil {
 		return fmt.Errorf(
 			"%s:%w",
 			err.Error(),
 			&errors.Invalid{
-				errors.Base{"invalid data", false},
+				errors.Base{"invalid data for blood request", false},
 			},
 		)
 	}
 	return nil
 }
 
-//FromReader reads blood request (?) from request body
+//FromReader reads blood request from request body
 func (c *Bloodreq) FromReader(reader io.Reader) error {
 	err := json.NewDecoder(reader).Decode(c)
 	if err != nil {
