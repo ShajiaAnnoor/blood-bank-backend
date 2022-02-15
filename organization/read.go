@@ -4,32 +4,32 @@ import (
 	"github.com/sirupsen/logrus"
 	"gitlab.com/Aubichol/blood-bank-backend/errors"
 	"gitlab.com/Aubichol/blood-bank-backend/model"
-	"gitlab.com/Aubichol/blood-bank-backend/notice/dto"
+	"gitlab.com/Aubichol/blood-bank-backend/organization/dto"
 	"gitlab.com/Aubichol/blood-bank-backend/pkg/tag"
-	storestatus "gitlab.com/Aubichol/blood-bank-backend/store/notice"
+	storeorganization "gitlab.com/Aubichol/blood-bank-backend/store/organization"
 	"go.uber.org/dig"
 )
 
-//Reader provides an interface for reading statuses
+//Reader provides an interface for reading organizationes
 type Reader interface {
 	Read(*dto.ReadReq) (*dto.ReadResp, error)
 }
 
-//statusReader implements Reader interface
-type statusReader struct {
-	statuses status.Notice
-	friends  friendrequest.FriendRequests
+//organizationReader implements Reader interface
+type organizationReader struct {
+	organizationes organization.Notice
+	friends        friendrequest.FriendRequests
 }
 
-func (read *statusReader) askStore(statusID string) (
-	status *model.Status,
+func (read *organizationReader) askStore(organizationID string) (
+	organization *model.Organization,
 	err error,
 ) {
-	status, err = read.statuses.FindByID(statusID)
+	organization, err = read.organizationes.FindByID(organizationID)
 	return
 }
 
-func (read *statusReader) giveError() (err error) {
+func (read *organizationReader) giveError() (err error) {
 	err = &errors.Unknown{
 		errors.Base{
 			"Invalid request", false,
@@ -38,23 +38,23 @@ func (read *statusReader) giveError() (err error) {
 	return
 }
 
-func (read *statusReader) prepareResponse(
-	status *model.Status,
+func (read *organizationReader) prepareResponse(
+	organization *model.Organization,
 ) (
 	resp dto.ReadResp,
 ) {
-	resp.FromModel(status)
+	resp.FromModel(organization)
 	return
 }
 
-func (read *statusReader) isSameUser(giverID, userID string) (
+func (read *organizationReader) isSameUser(giverID, userID string) (
 	isSame bool,
 ) {
 	isSame = giverID == userID
 	return
 }
 
-func (read *statusReader) checkFriendShip(giverID, userID string) (
+func (read *organizationReader) checkFriendShip(giverID, userID string) (
 	currentRequest *model.FriendRequest,
 	err error,
 ) {
@@ -63,33 +63,33 @@ func (read *statusReader) checkFriendShip(giverID, userID string) (
 	return
 }
 
-func (read *statusReader) Read(statusReq *dto.ReadReq) (*dto.ReadResp, error) {
+func (read *organizationReader) Read(organizationReq *dto.ReadReq) (*dto.ReadResp, error) {
 	//TO-DO: some validation on the input data is required
-	status, err := read.askStore(statusReq.StatusID)
+	organization, err := read.askStore(organizationReq.OrganizationID)
 	if err != nil {
-		logrus.Error("Could not find status error : ", err)
+		logrus.Error("Could not find organization error : ", err)
 		return nil, read.giveError()
 	}
 
 	var resp dto.ReadResp
-	resp = read.prepareResponse(status)
-	giverID := status.UserID
-	//If the same person who has given the status asks for
-	//the status, we should give them.
-	if read.isSameUser(giverID, statusReq.UserID) {
+	resp = read.prepareResponse(organization)
+	giverID := organization.UserID
+	//If the same person who has given the organization asks for
+	//the organization, we should give them.
+	if read.isSameUser(giverID, organizationReq.UserID) {
 		return &resp, nil
 	}
 
 	currentRequest, err := read.checkFriendShip(
 		giverID,
-		statusReq.UserID,
+		organizationReq.UserID,
 	)
 	if err != nil {
 		logrus.Error("Could not find friendship error : ", err)
 		return nil, read.giveError()
 	}
 
-	if currentRequest.Status != "accepted" {
+	if currentRequest.Organization != "accepted" {
 		return nil, err
 	}
 
@@ -99,14 +99,14 @@ func (read *statusReader) Read(statusReq *dto.ReadReq) (*dto.ReadResp, error) {
 //NewReaderParams lists params for the NewReader
 type NewReaderParams struct {
 	dig.In
-	Status  storestatus.Status
-	Friends friendrequest.FriendRequests
+	Organization storeorganization.Organization
+	Friends      friendrequest.FriendRequests
 }
 
 //NewReader provides Reader
 func NewReader(params NewReaderParams) Reader {
-	return &statusReader{
-		statuses: params.Status,
-		friends:  params.Friends,
+	return &organizationReader{
+		organizationes: params.Organization,
+		friends:        params.Friends,
 	}
 }
