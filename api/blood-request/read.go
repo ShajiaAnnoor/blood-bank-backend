@@ -8,7 +8,7 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/api/middleware"
 	"gitlab.com/Aubichol/blood-bank-backend/api/routeutils"
 	"gitlab.com/Aubichol/blood-bank-backend/apipattern"
-	"gitlab.com/Aubichol/blood-bank-backend/comment/dto"
+	"gitlab.com/Aubichol/blood-bank-backend/bloodrequest/dto"
 	"go.uber.org/dig"
 )
 
@@ -66,7 +66,8 @@ func (read *readHandler) handleRead(
 	req.BloodreqID = read.decodeURL(r)
 
 	req.BloodreqID = read.decodeContext(r)
-	// Read comment from database using comment id and user id
+
+	// Read request from database using request id and user id
 	resp, err := read.askController(&req)
 
 	if err != nil {
