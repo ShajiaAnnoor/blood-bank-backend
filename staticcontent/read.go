@@ -4,31 +4,31 @@ import (
 	"github.com/sirupsen/logrus"
 	"gitlab.com/Aubichol/blood-bank-backend/errors"
 	"gitlab.com/Aubichol/blood-bank-backend/model"
-	"gitlab.com/Aubichol/blood-bank-backend/notice/dto"
 	"gitlab.com/Aubichol/blood-bank-backend/pkg/tag"
-	storestatus "gitlab.com/Aubichol/blood-bank-backend/store/notice"
+	"gitlab.com/Aubichol/blood-bank-backend/staticcontent/dto"
+	storestaticcontent "gitlab.com/Aubichol/blood-bank-backend/store/staticcontent"
 	"go.uber.org/dig"
 )
 
-//Reader provides an interface for reading statuses
+//Reader provides an interface for reading staticcontentes
 type Reader interface {
 	Read(*dto.ReadReq) (*dto.ReadResp, error)
 }
 
-//statusReader implements Reader interface
+//staticcontentReader implements Reader interface
 type staticcontentReader struct {
-	staticcontent status.Notice
+	staticcontent staticcontent.StaticContent
 }
 
-func (read *statusReader) askStore(statusID string) (
-	status *model.Status,
+func (read *staticcontentReader) askStore(staticcontentID string) (
+	staticcontent *model.Status,
 	err error,
 ) {
-	status, err = read.statuses.FindByID(statusID)
+	staticcontent, err = read.staticcontentes.FindByID(staticcontentID)
 	return
 }
 
-func (read *statusReader) giveError() (err error) {
+func (read *staticcontentReader) giveError() (err error) {
 	err = &errors.Unknown{
 		errors.Base{
 			"Invalid request", false,
@@ -37,23 +37,23 @@ func (read *statusReader) giveError() (err error) {
 	return
 }
 
-func (read *statusReader) prepareResponse(
-	status *model.Status,
+func (read *staticcontentReader) prepareResponse(
+	staticcontent *model.Status,
 ) (
 	resp dto.ReadResp,
 ) {
-	resp.FromModel(status)
+	resp.FromModel(staticcontent)
 	return
 }
 
-func (read *statusReader) isSameUser(giverID, userID string) (
+func (read *staticcontentReader) isSameUser(giverID, userID string) (
 	isSame bool,
 ) {
 	isSame = giverID == userID
 	return
 }
 
-func (read *statusReader) checkFriendShip(giverID, userID string) (
+func (read *staticcontentReader) checkFriendShip(giverID, userID string) (
 	currentRequest *model.FriendRequest,
 	err error,
 ) {
@@ -62,26 +62,26 @@ func (read *statusReader) checkFriendShip(giverID, userID string) (
 	return
 }
 
-func (read *statusReader) Read(statusReq *dto.ReadReq) (*dto.ReadResp, error) {
+func (read *staticcontentReader) Read(staticcontentReq *dto.ReadReq) (*dto.ReadResp, error) {
 	//TO-DO: some validation on the input data is required
-	status, err := read.askStore(statusReq.StatusID)
+	staticcontent, err := read.askStore(staticcontentReq.StatusID)
 	if err != nil {
-		logrus.Error("Could not find status error : ", err)
+		logrus.Error("Could not find staticcontent error : ", err)
 		return nil, read.giveError()
 	}
 
 	var resp dto.ReadResp
-	resp = read.prepareResponse(status)
-	giverID := status.UserID
-	//If the same person who has given the status asks for
-	//the status, we should give them.
-	if read.isSameUser(giverID, statusReq.UserID) {
+	resp = read.prepareResponse(staticcontent)
+	giverID := staticcontent.UserID
+	//If the same person who has given the staticcontent asks for
+	//the staticcontent, we should give them.
+	if read.isSameUser(giverID, staticcontentReq.UserID) {
 		return &resp, nil
 	}
 
 	currentRequest, err := read.checkFriendShip(
 		giverID,
-		statusReq.UserID,
+		staticcontentReq.UserID,
 	)
 	if err != nil {
 		logrus.Error("Could not find friendship error : ", err)
@@ -98,14 +98,14 @@ func (read *statusReader) Read(statusReq *dto.ReadReq) (*dto.ReadResp, error) {
 //NewReaderParams lists params for the NewReader
 type NewReaderParams struct {
 	dig.In
-	Status  storestatus.Status
+	Status  storestaticcontent.Status
 	Friends friendrequest.FriendRequests
 }
 
 //NewReader provides Reader
 func NewReader(params NewReaderParams) Reader {
-	return &statusReader{
-		statuses: params.Status,
-		friends:  params.Friends,
+	return &staticcontentReader{
+		staticcontentes: params.Status,
+		friends:         params.Friends,
 	}
 }
