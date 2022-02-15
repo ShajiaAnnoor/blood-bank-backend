@@ -13,7 +13,7 @@ import (
 	"go.uber.org/dig"
 )
 
-//users handles user related database queries
+//patients handles patient related database queries
 type patients struct {
 	c *mongo.Collection
 }
@@ -32,7 +32,7 @@ func (c *patients) Save(modelNotice *model.Notice) (string, error) {
 	var err error
 	mongoNotice, err = c.convertData(modelNotice)
 	if err != nil {
-		return "", fmt.Errorf("Could not convert model comment to mongo comment: %w", err)
+		return "", fmt.Errorf("Could not convert model patient to mongo patient: %w", err)
 	}
 
 	if modelNotice.ID == "" {
