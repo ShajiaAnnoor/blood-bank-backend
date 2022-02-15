@@ -7,29 +7,29 @@ import (
 	"github.com/sirupsen/logrus"
 	"gitlab.com/Aubichol/blood-bank-backend/errors"
 	"gitlab.com/Aubichol/blood-bank-backend/model"
-	"gitlab.com/Aubichol/blood-bank-backend/status/dto"
-	storestatus "gitlab.com/Aubichol/blood-bank-backend/store/status"
+	"gitlab.com/Aubichol/blood-bank-backend/patient/dto"
+	storepatient "gitlab.com/Aubichol/blood-bank-backend/store/patient"
 	"gopkg.in/go-playground/validator.v9"
 )
 
-//Updater provides an interface for updating statuses
+//Updater provides an interface for updating patientes
 type Updater interface {
 	Update(*dto.Update) (*dto.UpdateResponse, error)
 }
 
-// update updates user status
+// update updates user patient
 type update struct {
-	storeStatus storestatus.Status
-	validate    *validator.Validate
+	storePatient storepatient.Patient
+	validate     *validator.Validate
 }
 
 func (u *update) toModel(userpatient *dto.Update) (patient *model.Patient) {
-	patient = &model.Status{}
+	patient = &model.Patient{}
 	patient.CreatedAt = time.Now().UTC()
 	patient.UpdatedAt = patient.CreatedAt
-	patient.Status = userpatient.Status
+	patient.Patient = userpatient.Patient
 	patient.UserID = userpatient.UserID
-	patient.ID = userpatient.StatusID
+	patient.ID = userpatient.PatientID
 	return
 }
 
@@ -39,7 +39,7 @@ func (u *update) validateData(update *dto.Update) (err error) {
 }
 
 func (u *update) convertData(update *dto.Update) (
-	modelPatient *model.Status,
+	modelPatient *model.Patient,
 ) {
 	modelPatient = u.toModel(update)
 	return
@@ -59,10 +59,10 @@ func (u *update) giveResponse(
 ) *dto.UpdateResponse {
 	logrus.WithFields(logrus.Fields{
 		"id": modelPatient.UserID,
-	}).Debug("User updated status successfully")
+	}).Debug("User updated patient successfully")
 
 	return &dto.UpdateResponse{
-		Message:    "Status updated",
+		Message:    "Patient updated",
 		OK:         true,
 		ID:         id,
 		UpdateTime: modelPatient.UpdatedAt.String(),
