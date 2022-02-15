@@ -7,7 +7,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-//Notice holds db data type for comments
+//Notice holds db data type for notices
 type Notice struct {
 	ID        primitive.ObjectID `bson:"_id,omitempty"`
 	Notice    string             `bson:"notice"`
