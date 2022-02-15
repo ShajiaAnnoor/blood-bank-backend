@@ -15,29 +15,29 @@ import (
 )
 
 //users handles user related database queries
-type comments struct {
+type bloodrequests struct {
 	c *mongo.Collection
 }
 
-func (c *comments) convertData(modelComment *model.Comment) (
-	mongoComment mongoModel.Comment,
+func (c *bloodrequests) convertData(modelBloodRequests *model.BloodRequests) (
+	mongoBloodRequests mongoModel.BloodRequests,
 	err error,
 ) {
 	err = mongoComment.FromModel(modelComment)
 	return
 }
 
-// Save saves comments from model to database
-func (c *comments) Save(modelComment *model.Comment) (string, error) {
-	mongoComment := mongoModel.Comment{}
+// Save saves bloodrequests from model to database
+func (c *bloodrequests) Save(modelBloodRequests *model.Comment) (string, error) {
+	mongoBloodRequests := mongoModel.BloodRequests{}
 	var err error
 	mongoComment, err = c.convertData(modelComment)
 	if err != nil {
-		return "", fmt.Errorf("Could not convert model comment to mongo comment: %w", err)
+		return "", fmt.Errorf("Could not convert model bloodrequests to mongo bloodrequest: %w", err)
 	}
 
-	if modelComment.ID == "" {
-		mongoComment.ID = primitive.NewObjectID()
+	if modelBloodRequests.ID == "" {
+		mongoBloodRequests.ID = primitive.NewObjectID()
 	}
 
 	filter := bson.M{"_id": mongoComment.ID}
@@ -57,7 +57,7 @@ func (c *comments) Save(modelComment *model.Comment) (string, error) {
 }
 
 //FindByID finds a comment by id
-func (c *comments) FindByID(id string) (*model.Comment, error) {
+func (c *bloodrequests) FindByID(id string) (*model.BloodRequests, error) {
 	objectID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return nil, fmt.Errorf("Invalid id %s : %w", id, err)
@@ -69,22 +69,22 @@ func (c *comments) FindByID(id string) (*model.Comment, error) {
 		return nil, err
 	}
 
-	comment := mongoModel.Comment{}
-	if err := result.Decode(&comment); err != nil {
+	bloodrequests := mongoModel.BloodRequest{}
+	if err := result.Decode(&bloodrequests); err != nil {
 		return nil, fmt.Errorf("Could not decode mongo model to model : %w", err)
 	}
 
-	return comment.ModelComment(), nil
+	return bloodrequests.ModelBloodRequests(), nil
 }
 
-//FindByStatusID finds a comment by status id
-func (c *comments) FindByStatusID(id string, skip int64, limit int64) ([]*model.Comment, error) {
+//FindByBloodRequestsID finds a blood requests id
+func (c *bloodrequests) FindByBloodRequestsID(id string, skip int64, limit int64) ([]*model.Comment, error) {
 	objectID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return nil, fmt.Errorf("Invalid id %s : %w", id, err)
 	}
 
-	filter := bson.M{"status_id": objectID}
+	filter := bson.M{"blood_requests_id": objectID}
 
 	findOptions := options.Find()
 	findOptions.SetSort(map[string]int{"updated_at": -1})
@@ -97,11 +97,11 @@ func (c *comments) FindByStatusID(id string, skip int64, limit int64) ([]*model.
 		return nil, err
 	}
 
-	return c.cursorToComments(cursor)
+	return c.cursorToBloodRequests(cursor)
 }
 
-//CountByStatusID returns comments from status id
-func (c *comments) CountByStatusID(id string) (int64, error) {
+//CountByBloodRequestsID returns blood requests id
+func (c *bloodrequests) CountByBloodRequestsID(id string) (int64, error) {
 	objectID, err := primitive.ObjectIDFromHex(id)
 
 	if err != nil {
@@ -119,7 +119,7 @@ func (c *comments) CountByStatusID(id string) (int64, error) {
 }
 
 //FindByIDs returns all the users from multiple user ids
-func (c *comments) FindByIDs(ids ...string) ([]*model.Comment, error) {
+func (c *bloodrequests) FindByIDs(ids ...string) ([]*model.Comment, error) {
 	objectIDs := []primitive.ObjectID{}
 	for _, id := range ids {
 		objectID, err := primitive.ObjectIDFromHex(id)
@@ -141,11 +141,11 @@ func (c *comments) FindByIDs(ids ...string) ([]*model.Comment, error) {
 		return nil, err
 	}
 
-	return c.cursorToComments(cursor)
+	return c.cursorToBloodRequests(cursor)
 }
 
 //Search search for users given the text, skip and limit
-func (c *comments) Search(text string, skip, limit int64) ([]*model.Comment, error) {
+func (c *bloodrequests) Search(text string, skip, limit int64) ([]*model.Comment, error) {
 	filter := bson.M{"$text": bson.M{"$search": text}}
 	cursor, err := c.c.Find(context.Background(), filter, &options.FindOptions{
 		Skip:  &skip,
@@ -155,33 +155,33 @@ func (c *comments) Search(text string, skip, limit int64) ([]*model.Comment, err
 		return nil, err
 	}
 
-	return c.cursorToComments(cursor)
+	return c.cursorToBloodRequests(cursor)
 }
 
 //cursorToComments decodes users one by one from the search result
-func (c *comments) cursorToComments(cursor *mongo.Cursor) ([]*model.Comment, error) {
+func (c *bloodrequests) cursorToBloodRequests(cursor *mongo.Cursor) ([]*model.BloodRequests, error) {
 	defer cursor.Close(context.Background())
-	modelComments := []*model.Comment{}
+	modelBloodRequests := []*model.BloodRequests{}
 
 	for cursor.Next(context.Background()) {
-		comment := mongoModel.Comment{}
-		if err := cursor.Decode(&comment); err != nil {
+		bloodreq := mongoModel.BloodRequests{}
+		if err := cursor.Decode(&bloodreq); err != nil {
 			return nil, fmt.Errorf("Could not decode data from mongo %w", err)
 		}
 
-		modelComments = append(modelComments, comment.ModelComment())
+		modelBloodRequests = append(modelBloodRequests, comment.ModelBloodRequest())
 	}
 
-	return modelComments, nil
+	return modelBloodRequests, nil
 }
 
-//CommentsParams provides parameters for comment specific Collection
-type CommentsParams struct {
+//BloodRequestsParams provides parameters for comment specific Collection
+type BloodRequestsParams struct {
 	dig.In
-	Collection *mongo.Collection `name:"comments"`
+	Collection *mongo.Collection `name:"patients"`
 }
 
 //Store provides store for comments
-func Store(params CommentsParams) storecomment.Comments {
-	return &comments{params.Collection}
+func Store(params BloodRequestsParams) storepatient.BloodRequests {
+	return &patients{params.Collection}
 }
