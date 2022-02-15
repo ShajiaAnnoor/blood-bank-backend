@@ -98,7 +98,7 @@ type UpdateParams struct {
 	Middleware *middleware.Auth
 }
 
-//UpdateRoute provides a route that updates comment
+//UpdateRoute provides a route that updates donor
 func UpdateRoute(params UpdateParams) *routeutils.Route {
 	handler := updateHandler{params.Update}
 	return &routeutils.Route{
