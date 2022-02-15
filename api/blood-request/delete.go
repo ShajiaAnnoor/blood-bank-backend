@@ -100,7 +100,7 @@ type DeleteParams struct {
 
 //UpdateRoute provides a route that updates blood request
 func UpdateRoute(params DeleteParams) *routeutils.Route {
-	handler := updateHandler{params.Update}
+	handler := deleteHandler{params.Update}
 	return &routeutils.Route{
 		Method:  http.MethodPost,
 		Pattern: apipattern.BloodreqUpdate,
