@@ -96,15 +96,15 @@ func (ch *deleteHandler) ServeHTTP(
 }
 
 //CreateParams provide parameters for NewCommentRoute
-type DeleteParams struct {
+type DeleteParams struct 
 	dig.In
-	Create     patient.Creater
+	Update     patient.Updater
 	Middleware *middleware.Auth
 }
 
 //CreateRoute provides a route that lets users make comments
 func DeleteRoute(params DeleteParams) *routeutils.Route {
-	handler := deleteHandler{params.Create}
+	handler := deleteHandler{params.Update}
 	return &routeutils.Route{
 		Method:  http.MethodPost,
 		Pattern: apipattern.PatientUpdate,
