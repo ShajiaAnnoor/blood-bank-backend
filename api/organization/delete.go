@@ -83,10 +83,10 @@ func (ch *deleteHandler) ServeHTTP(
 
 	organization.UserID = ch.decodeContext(r)
 
-	data, err := ch.askController(&comment)
+	data, err := ch.askController(organization)
 
 	if err != nil {
-		message := "Unable to create comment for status error: "
+		message := "Unable to create organization error: "
 		ch.handleError(w, err, message)
 		return
 	}
@@ -97,13 +97,13 @@ func (ch *deleteHandler) ServeHTTP(
 //CreateParams provide parameters for NewCommentRoute
 type DeleteParams struct {
 	dig.In
-	Create     organization.Updater
+	Update     organization.Updater
 	Middleware *middleware.Auth
 }
 
 //CreateRoute provides a route that lets users make comments
 func DeleteRoute(params DeleteParams) *routeutils.Route {
-	handler := deleteHandler{params.Delete}
+	handler := deleteHandler{params.Update}
 	return &routeutils.Route{
 		Method:  http.MethodPost,
 		Pattern: apipattern.OrganizationDelete,
