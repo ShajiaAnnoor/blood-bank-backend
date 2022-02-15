@@ -1,4 +1,4 @@
-package status
+package staticcontent
 
 import (
 	"fmt"
@@ -7,16 +7,16 @@ import (
 	"github.com/sirupsen/logrus"
 	"gitlab.com/Aubichol/blood-bank-backend/errors"
 	"gitlab.com/Aubichol/blood-bank-backend/model"
-	"gitlab.com/Aubichol/blood-bank-backend/status/dto"
+	"gitlab.com/Aubichol/blood-bank-backend/staticcontent/dto"
 	"gopkg.in/go-playground/validator.v9"
 )
 
-//Updater provides an interface for updating statuses
+//Updater provides an interface for updating staticcontentes
 type Updater interface {
 	Update(*dto.Update) (*dto.UpdateResponse, error)
 }
 
-// update updates user status
+// update updates user staticcontent
 type update struct {
 	storeStatus storestaticcontent.StaticContent
 	validate    *validator.Validate
@@ -58,7 +58,7 @@ func (u *update) giveResponse(
 ) *dto.UpdateResponse {
 	logrus.WithFields(logrus.Fields{
 		"id": modelStatus.UserID,
-	}).Debug("User updated status successfully")
+	}).Debug("User updated staticcontent successfully")
 
 	return &dto.UpdateResponse{
 		Message:    "Status updated",
@@ -97,7 +97,7 @@ func (u *update) Update(update *dto.Update) (
 		return u.giveResponse(modelStaticContent, id), nil
 	}
 
-	logrus.Error("Could not update status ", err)
+	logrus.Error("Could not update staticcontent ", err)
 	err = u.giveError()
 	return nil, err
 }
