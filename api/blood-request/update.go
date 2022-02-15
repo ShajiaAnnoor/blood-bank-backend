@@ -12,7 +12,7 @@ import (
 	"go.uber.org/dig"
 )
 
-//updateHandler holds donor update handler
+//updateHandler holds blood request update handler
 type updateHandler struct {
 	update donor.Updater
 }
