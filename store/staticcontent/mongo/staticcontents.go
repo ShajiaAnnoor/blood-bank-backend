@@ -13,7 +13,7 @@ import (
 	"go.uber.org/dig"
 )
 
-//users handles user related database queries
+//static cobtents handles static cobtents related database queries
 type staticcontents struct {
 	c *mongo.Collection
 }
@@ -32,7 +32,7 @@ func (s *staticcontents) Save(modelStaticContent *model.StaticContent) (string, 
 	var err error
 	mongoStaticContent, err = s.convertData(modelStaticContent)
 	if err != nil {
-		return "", fmt.Errorf("Could not convert model comment to mongo comment: %w", err)
+		return "", fmt.Errorf("Could not convert model static contents to mongo static contents: %w", err)
 	}
 
 	if modelStaticContent.ID == "" {
@@ -80,7 +80,7 @@ func (s *staticcontents) FindByID(id string) (*model.StaticContent, error) {
 	return staticcontents.ModelStaticContent(), nil
 }
 
-//FindByStatusID finds a comment by status id
+//FindByStatusID finds a static content by id
 func (s *staticcontents) FindByStaticContentID(id string, skip int64, limit int64) ([]*model.StaticContent, error) {
 	objectID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
