@@ -94,14 +94,14 @@ func (ch *createHandler) ServeHTTP(
 	ch.responseSuccess(w, data)
 }
 
-//CreateParams provide parameters for NewCommentRoute
+//CreateParams provide parameters for CreateDonor
 type CreateParams struct {
 	dig.In
 	Create     donor.Creater
 	Middleware *middleware.Auth
 }
 
-//CreateRoute provides a route that lets users make comments
+//CreateRoute provides a route that lets users make donors
 func CreateRoute(params CreateParams) *routeutils.Route {
 	handler := createHandler{params.Create}
 	return &routeutils.Route{
