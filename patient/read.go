@@ -1,4 +1,4 @@
-package status
+package patient
 
 import (
 	"github.com/sirupsen/logrus"
@@ -6,29 +6,28 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/model"
 	"gitlab.com/Aubichol/blood-bank-backend/notice/dto"
 	"gitlab.com/Aubichol/blood-bank-backend/pkg/tag"
-	storestatus "gitlab.com/Aubichol/blood-bank-backend/store/status"
 	"go.uber.org/dig"
 )
 
-//Reader provides an interface for reading statuses
+//Reader provides an interface for reading patients
 type Reader interface {
 	Read(*dto.ReadReq) (*dto.ReadResp, error)
 }
 
-//statusReader implements Reader interface
-type statusReader struct {
-	statuses statusnotice.Notice
+//patientReader implements Reader interface
+type patientReader struct {
+	patients patientnotice.Notice
 }
 
-func (read *statusReader) askStore(statusID string) (
-	status *model.Status,
+func (read *patientReader) askStore(patientID string) (
+	patient *model.Patient,
 	err error,
 ) {
-	status, err = read.statuses.FindByID(statusID)
+	patient, err = read.patients.FindByID(patientID)
 	return
 }
 
-func (read *statusReader) giveError() (err error) {
+func (read *patientReader) giveError() (err error) {
 	err = &errors.Unknown{
 		errors.Base{
 			"Invalid request", false,
@@ -37,7 +36,7 @@ func (read *statusReader) giveError() (err error) {
 	return
 }
 
-func (read *statusReader) prepareResponse(
+func (read *patientReader) prepareResponse(
 	patient *model.Patient,
 ) (
 	resp dto.ReadResp,
@@ -46,14 +45,14 @@ func (read *statusReader) prepareResponse(
 	return
 }
 
-func (read *statusReader) isSameUser(giverID, userID string) (
+func (read *patientReader) isSameUser(giverID, userID string) (
 	isSame bool,
 ) {
 	isSame = giverID == userID
 	return
 }
 
-func (read *statusReader) checkFriendShip(giverID, userID string) (
+func (read *patientReader) checkFriendShip(giverID, userID string) (
 	currentRequest *model.FriendRequest,
 	err error,
 ) {
@@ -62,33 +61,33 @@ func (read *statusReader) checkFriendShip(giverID, userID string) (
 	return
 }
 
-func (read *statusReader) Read(statusReq *dto.ReadReq) (*dto.ReadResp, error) {
+func (read *patientReader) Read(patientReq *dto.ReadReq) (*dto.ReadResp, error) {
 	//TO-DO: some validation on the input data is required
-	status, err := read.askStore(statusReq.StatusID)
+	patient, err := read.askStore(patientReq.PatientID)
 	if err != nil {
-		logrus.Error("Could not find status error : ", err)
+		logrus.Error("Could not find patient error : ", err)
 		return nil, read.giveError()
 	}
 
 	var resp dto.ReadResp
-	resp = read.prepareResponse(status)
-	giverID := status.UserID
-	//If the same person who has given the status asks for
-	//the status, we should give them.
-	if read.isSameUser(giverID, statusReq.UserID) {
+	resp = read.prepareResponse(patient)
+	giverID := patient.UserID
+	//If the same person who has given the patient asks for
+	//the patient, we should give them.
+	if read.isSameUser(giverID, patientReq.UserID) {
 		return &resp, nil
 	}
 
 	currentRequest, err := read.checkFriendShip(
 		giverID,
-		statusReq.UserID,
+		patientReq.UserID,
 	)
 	if err != nil {
 		logrus.Error("Could not find friendship error : ", err)
 		return nil, read.giveError()
 	}
 
-	if currentRequest.Status != "accepted" {
+	if currentRequest.Patient != "accepted" {
 		return nil, err
 	}
 
@@ -98,14 +97,13 @@ func (read *statusReader) Read(statusReq *dto.ReadReq) (*dto.ReadResp, error) {
 //NewReaderParams lists params for the NewReader
 type NewReaderParams struct {
 	dig.In
-	Status  storestatus.Status
-	Friends friendrequest.FriendRequests
+	Patient storepatient.Patient
 }
 
 //NewReader provides Reader
 func NewReader(params NewReaderParams) Reader {
-	return &statusReader{
-		statuses: params.Status,
+	return &patientReader{
+		patients: params.Patient,
 		friends:  params.Friends,
 	}
 }
