@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"io"
 
-	"gitlab.com/Aubichol/donor-bank-backend/errors"
+	"gitlab.com/Aubichol/blood-bank-backend/errors"
 	"gopkg.in/go-playground/validator.v9"
 )
 
@@ -18,7 +18,6 @@ type Donor struct {
 	BloodGroup   string `json:"blood_group"`
 	Address      string `json:"address"`
 	Availability bool   `json:"availability"`
-	Status       string `json:"status"`
 	TimesDonated int    `json:"times_donated"`
 	UserID       string `json:"user_id"`
 }
