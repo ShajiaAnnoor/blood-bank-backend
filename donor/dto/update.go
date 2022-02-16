@@ -11,9 +11,9 @@ import (
 
 // Update provides dto for user status update
 type Update struct {
-	Comment   string `json:"donor"`
-	UserID    string `json:"user_id"`
-	CommentID string `json:"donor_id"`
+	Donor   string `json:"donor"`
+	UserID  string `json:"user_id"`
+	DonorID string `json:"donor_id"`
 }
 
 //Validate validates donor update data
