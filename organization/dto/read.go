@@ -1,7 +1,7 @@
 package dto
 
-//ReadReq stores comment read request data
+//ReadReq stores organization read request data
 type ReadReq struct {
-	UserID    string
-	CommentID string
+	UserID         string
+	OrganizationID string
 }
