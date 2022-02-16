@@ -2,14 +2,14 @@ package dto
 
 import "gitlab.com/Aubichol/hrishi-backend/model"
 
-//ReadResp holds the response data for reading comment
+//ReadResp holds the response data for reading donor
 type ReadResp struct {
-	Comment string `json:"comment"`
-	Sender  string `json:"sender"`
+	Donor  string `json:"donor"`
+	Sender string `json:"sender"`
 }
 
 //FromModel converts the model data to response data
-func (r *ReadResp) FromModel(comment *model.Comment) {
-	r.Comment = comment.Comment
-	r.Sender = comment.UserID
+func (r *ReadResp) FromModel(donor *model.Donor) {
+	r.Donor = donor.Donor
+	r.Sender = donor.UserID
 }
