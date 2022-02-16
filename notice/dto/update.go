@@ -11,26 +11,26 @@ import (
 
 // Update provides dto for user status update
 type Update struct {
-	Comment   string `json:"comment"`
-	UserID    string `json:"user_id"`
-	CommentID string `json:"comment_id"`
+	Notice   string `json:"notice"`
+	UserID   string `json:"user_id"`
+	NoticeID string `json:"notice_id"`
 }
 
-//Validate validates comment update data
+//Validate validates notice update data
 func (c *Update) Validate(validate *validator.Validate) error {
 	if err := validate.Struct(c); err != nil {
 		return fmt.Errorf(
 			"%s:%w",
 			err.Error(),
 			&errors.Invalid{
-				errors.Base{"invalid comment update data", false},
+				errors.Base{"invalid notice update data", false},
 			},
 		)
 	}
 	return nil
 }
 
-//FromReader decodes comment update data from request
+//FromReader decodes notice update data from request
 func (c *Update) FromReader(reader io.Reader) error {
 	err := json.NewDecoder(reader).Decode(c)
 	if err != nil {
@@ -38,7 +38,7 @@ func (c *Update) FromReader(reader io.Reader) error {
 			"%s:%w",
 			err.Error(),
 			&errors.Invalid{
-				Base: errors.Base{"invalid comment update data", false},
+				Base: errors.Base{"invalid notice update data", false},
 			},
 		)
 	}
