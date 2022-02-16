@@ -2,7 +2,7 @@ package dto
 
 import "fmt"
 
-// BaseResponse provides base response for comments
+// BaseResponse provides base response for notices
 type BaseResponse struct {
 	Message string `json:"message"`
 	OK      bool   `json:"ok"`
@@ -15,10 +15,10 @@ func (b *BaseResponse) String() string {
 
 // CreateResponse provides create response
 type CreateResponse struct {
-	Message     string `json:"message"`
-	OK          bool   `json:"ok"`
-	ID          string `json:"comment_id"`
-	CommentTime string `json:"comment_time"`
+	Message    string `json:"message"`
+	OK         bool   `json:"ok"`
+	ID         string `json:"notice_id"`
+	NoticeTime string `json:"notice_time"`
 }
 
 // String provides string repsentation
@@ -30,7 +30,7 @@ func (c *CreateResponse) String() string {
 type UpdateResponse struct {
 	Message    string `json:"message"`
 	OK         bool   `json:"ok"`
-	ID         string `json:"comment_id"`
+	ID         string `json:"notice_id"`
 	UpdateTime string `json:"update_time"`
 }
 
