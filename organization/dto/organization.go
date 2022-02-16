@@ -11,16 +11,13 @@ import (
 
 // Organization provides dto for organization request
 type Organization struct {
-	ID           string `json:"organization_request_id"`
-	Name         string `json:"name"`
-	Phone        string `json:"phone_number"`
-	District     string `json:"district"`
-	BloodGroup   string `json:"blood_group"`
-	Address      string `json:"address"`
-	Availability bool   `json:"availability"`
-	Status       string `json:"status"`
-	TimesDonated int    `json:"times_donated"`
-	UserID       string `json:"user_id"`
+	ID          string `json:"organization_request_id"`
+	Name        string `json:"name"`
+	Phone       string `json:"phone_number"`
+	District    string `json:"district"`
+	Description string `json:"description"`
+	Address     string `json:"address"`
+	UserID      string `json:"user_id"`
 }
 
 //Validate validates organization request data
