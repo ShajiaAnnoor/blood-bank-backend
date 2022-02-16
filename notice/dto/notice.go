@@ -40,7 +40,7 @@ func (c *Notice) FromReader(reader io.Reader) error {
 	err := json.NewDecoder(reader).Decode(c)
 	if err != nil {
 		return fmt.Errorf("%s:%w", err.Error(), &errors.Invalid{
-			Base: errors.Base{"invalid notice request data", false},
+			Base: errors.Base{"invalid notice data", false},
 		})
 	}
 
