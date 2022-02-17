@@ -12,9 +12,9 @@ import (
 	"go.uber.org/dig"
 )
 
-//updateHandler holds comment update handler
+//deleteHandler holds comment update handler
 type deleteHandler struct {
-	update donor.Updater
+	delete donor.Updater
 }
 
 func (ch *deleteHandler) decodeBody(
@@ -47,7 +47,7 @@ func (ch *deleteHandler) askController(update *dto.Update) (
 	resp *dto.UpdateResponse,
 	err error,
 ) {
-	resp, err = ch.update.Update(update)
+	resp, err = ch.delete.Update(update)
 	return
 }
 
@@ -94,13 +94,13 @@ func (ch *deleteHandler) ServeHTTP(
 //DeleteParams provide parameters for donor update handler
 type DeleteParams struct {
 	dig.In
-	Update     donor.Updater
+	Delete     donor.Updater
 	Middleware *middleware.Auth
 }
 
-//UpdateRoute provides a route that updates donor
-func UpdateRoute(params DeleteParams) *routeutils.Route {
-	handler := deleteHandler{params.Update}
+//DeleteRoute provides a route that deletes donor
+func DeleteRoute(params DeleteParams) *routeutils.Route {
+	handler := deleteHandler{params.Delete}
 	return &routeutils.Route{
 		Method:  http.MethodPost,
 		Pattern: apipattern.DonorUpdate,
