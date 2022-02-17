@@ -10,7 +10,7 @@ import (
 )
 
 // Bloodreq provides dto for blood request
-type Bloodreq struct {
+type BloodReq struct {
 	ID         string `json:"blood_request_id"`
 	Request    string `json:"request"`
 	BloodGroup string `json:"blood_group"`
