@@ -101,7 +101,7 @@ type CreateParams struct {
 	Middleware *middleware.Auth
 }
 
-//CreateRoute provides a route that lets users make comments
+//CreateRoute provides a route that lets users make organizations
 func CreateRoute(params CreateParams) *routeutils.Route {
 	handler := createHandler{params.Create}
 	return &routeutils.Route{
