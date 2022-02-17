@@ -8,6 +8,7 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/api/middleware"
 	"gitlab.com/Aubichol/blood-bank-backend/api/routeutils"
 	"gitlab.com/Aubichol/blood-bank-backend/apipattern"
+	bloodreq "gitlab.com/Aubichol/blood-bank-backend/bloodrequest"
 	"gitlab.com/Aubichol/blood-bank-backend/bloodrequest/dto"
 	"go.uber.org/dig"
 )
@@ -54,7 +55,11 @@ func (read *readHandler) responseSuccess(
 	resp *dto.ReadResp,
 ) {
 	// Serve a response to the client
-	routeutils.ServeResponse(w, http.StatusOK, resp)
+	routeutils.ServeResponse(
+		w,
+		http.StatusOK,
+		resp,
+	)
 }
 
 func (read *readHandler) handleRead(
@@ -65,7 +70,7 @@ func (read *readHandler) handleRead(
 	req := dto.ReadReq{}
 	req.BloodreqID = read.decodeURL(r)
 
-	req.BloodreqID = read.decodeContext(r)
+	req.UserID = read.decodeContext(r)
 
 	// Read request from database using request id and user id
 	resp, err := read.askController(&req)
@@ -95,7 +100,7 @@ type ReadRouteParams struct {
 	Middleware *middleware.Auth
 }
 
-//ReadRoute provides a route to get comment
+//ReadRoute provides a route to get blood request
 func ReadRoute(params ReadRouteParams) *routeutils.Route {
 
 	handler := readHandler{
