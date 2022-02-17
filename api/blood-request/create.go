@@ -23,7 +23,7 @@ func (ch *createHandler) decodeBody(
 	bloodreqDat dto.Bloodreq,
 	err error,
 ) {
-	bloodreqDat = dto.Bloodreq{}
+	bloodreqDat = dto.BloodReq{}
 	err = bloodreqDat.FromReader(body)
 
 	return
