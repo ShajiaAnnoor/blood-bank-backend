@@ -12,7 +12,7 @@ import (
 	"go.uber.org/dig"
 )
 
-//createHandler holds handler for creating comments
+//createHandler holds handler for creating notices
 type createHandler struct {
 	create notice.Creater
 }
@@ -101,7 +101,7 @@ type CreateParams struct {
 	Middleware *middleware.Auth
 }
 
-//CreateRoute provides a route that lets users make comments
+//CreateRoute provides a route that lets users make notices
 func CreateRoute(params CreateParams) *routeutils.Route {
 	handler := createHandler{params.Create}
 	return &routeutils.Route{
