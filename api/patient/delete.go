@@ -13,9 +13,9 @@ import (
 	"go.uber.org/dig"
 )
 
-//deleteHandler holds handler for creating patients
+//deleteHandler holds handler for deleting patients
 type deleteHandler struct {
-	create patient.Creater
+	delete patient.Deleter
 }
 
 func (ch *deleteHandler) decodeBody(
@@ -45,7 +45,7 @@ func (ch *deleteHandler) askController(
 	data *dto.CreateResponse,
 	err error,
 ) {
-	data, err = ch.create.Create(patient)
+	data, err = ch.delete.Update(patient)
 	return
 }
 
