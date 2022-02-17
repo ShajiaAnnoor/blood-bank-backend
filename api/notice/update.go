@@ -8,7 +8,8 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/api/middleware"
 	"gitlab.com/Aubichol/blood-bank-backend/api/routeutils"
 	"gitlab.com/Aubichol/blood-bank-backend/apipattern"
-	"gitlab.com/Aubichol/blood-bank-backend/comment/dto"
+	"gitlab.com/Aubichol/blood-bank-backend/notice"
+	"gitlab.com/Aubichol/blood-bank-backend/notice/dto"
 	"go.uber.org/dig"
 )
 
@@ -73,7 +74,7 @@ func (ch *updateHandler) ServeHTTP(
 	noticeDat, err := ch.decodeBody(r.Body)
 
 	if err != nil {
-		message := "Unable to decode comment error: "
+		message := "Unable to decode notice error: "
 		ch.handleError(w, err, message)
 		return
 	}
@@ -83,7 +84,7 @@ func (ch *updateHandler) ServeHTTP(
 	data, err := ch.askController(&noticeDat)
 
 	if err != nil {
-		message := "Unable to update comment for user error: "
+		message := "Unable to update notice for user error: "
 		ch.handleError(w, err, message)
 		return
 	}
@@ -94,7 +95,7 @@ func (ch *updateHandler) ServeHTTP(
 //UpdateParams provide parameters for comment update handler
 type UpdateParams struct {
 	dig.In
-	Update     noticeDat.Updater
+	Update     notice.Updater
 	Middleware *middleware.Auth
 }
 
