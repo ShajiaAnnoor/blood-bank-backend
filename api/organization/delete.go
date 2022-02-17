@@ -8,6 +8,7 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/api/middleware"
 	"gitlab.com/Aubichol/blood-bank-backend/api/routeutils"
 	"gitlab.com/Aubichol/blood-bank-backend/apipattern"
+	"gitlab.com/Aubichol/blood-bank-backend/organization"
 	"gitlab.com/Aubichol/blood-bank-backend/organization/dto"
 	"go.uber.org/dig"
 )
@@ -101,7 +102,7 @@ type DeleteParams struct {
 	Middleware *middleware.Auth
 }
 
-//CreateRoute provides a route that lets users make comments
+//CreateRoute provides a route that lets users make organizations
 func DeleteRoute(params DeleteParams) *routeutils.Route {
 	handler := deleteHandler{params.Update}
 	return &routeutils.Route{
