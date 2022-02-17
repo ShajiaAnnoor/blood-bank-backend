@@ -8,6 +8,7 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/api/middleware"
 	"gitlab.com/Aubichol/blood-bank-backend/api/routeutils"
 	"gitlab.com/Aubichol/blood-bank-backend/apipattern"
+	"gitlab.com/Aubichol/blood-bank-backend/organization"
 	"gitlab.com/Aubichol/blood-bank-backend/organization/dto"
 	"go.uber.org/dig"
 )
@@ -73,7 +74,7 @@ func (ch *updateHandler) ServeHTTP(
 	organization, err := ch.decodeBody(r.Body)
 
 	if err != nil {
-		message := "Unable to decode comment error: "
+		message := "Unable to decode organization error: "
 		ch.handleError(w, err, message)
 		return
 	}
@@ -91,7 +92,7 @@ func (ch *updateHandler) ServeHTTP(
 	ch.responseSuccess(w, data)
 }
 
-//UpdateParams provide parameters for র update handler
+//UpdateParams provide parameters for organization update handler
 type UpdateParams struct {
 	dig.In
 	Update     organization.Updater
