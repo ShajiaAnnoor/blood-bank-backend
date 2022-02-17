@@ -8,13 +8,14 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/api/middleware"
 	"gitlab.com/Aubichol/blood-bank-backend/api/routeutils"
 	"gitlab.com/Aubichol/blood-bank-backend/apipattern"
+	bloodreq "gitlab.com/Aubichol/blood-bank-backend/bloodrequest"
 	"gitlab.com/Aubichol/blood-bank-backend/bloodrequest/dto"
 	"go.uber.org/dig"
 )
 
-//updateHandler holds comment update handler
+//deleteHandler holds blood request delete handler
 type deleteHandler struct {
-	update bloodreq.Updater
+	delete bloodreq.Updater
 }
 
 func (ch *deleteHandler) decodeBody(
@@ -47,7 +48,7 @@ func (ch *deleteHandler) askController(update *dto.Update) (
 	resp *dto.UpdateResponse,
 	err error,
 ) {
-	resp, err = ch.update.Update(update)
+	resp, err = ch.delete.Update(update)
 	return
 }
 
@@ -69,8 +70,8 @@ func (ch *deleteHandler) ServeHTTP(
 ) {
 	defer r.Body.Close()
 
-	bloodreq := dto.Update{}
-	bloodreq, err := ch.decodeBody(r.Body)
+	bloodreqDat := dto.Update{}
+	bloodreqDat, err := ch.decodeBody(r.Body)
 
 	if err != nil {
 		message := "Unable to decode blood request error: "
@@ -80,7 +81,7 @@ func (ch *deleteHandler) ServeHTTP(
 
 	bloodreq.UserID = ch.decodeContext(r)
 
-	data, err := ch.askController(&bloodreq)
+	data, err := ch.askController(&bloodreqDat)
 
 	if err != nil {
 		message := "Unable to update blood request error: "
@@ -91,16 +92,16 @@ func (ch *deleteHandler) ServeHTTP(
 	ch.responseSuccess(w, data)
 }
 
-//UpdateParams provide parameters for blood request update handler
+//DeleteParams provide parameters for blood request update handler
 type DeleteParams struct {
 	dig.In
-	Update     bloodreq.Updater
+	Delete     bloodreq.Updater
 	Middleware *middleware.Auth
 }
 
 //UpdateRoute provides a route that updates blood request
-func UpdateRoute(params DeleteParams) *routeutils.Route {
-	handler := deleteHandler{params.Update}
+func DeleteRoute(params DeleteParams) *routeutils.Route {
+	handler := deleteHandler{params.Delete}
 	return &routeutils.Route{
 		Method:  http.MethodPost,
 		Pattern: apipattern.BloodreqUpdate,
