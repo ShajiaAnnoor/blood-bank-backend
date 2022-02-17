@@ -8,7 +8,8 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/api/middleware"
 	"gitlab.com/Aubichol/blood-bank-backend/api/routeutils"
 	"gitlab.com/Aubichol/blood-bank-backend/apipattern"
-	"gitlab.com/Aubichol/blood-bank-backend/comment/dto"
+	"gitlab.com/Aubichol/blood-bank-backend/donor"
+	"gitlab.com/Aubichol/blood-bank-backend/donor/dto"
 	"go.uber.org/dig"
 )
 
@@ -54,7 +55,11 @@ func (read *readHandler) responseSuccess(
 	resp *dto.ReadResp,
 ) {
 	// Serve a response to the client
-	routeutils.ServeResponse(w, http.StatusOK, resp)
+	routeutils.ServeResponse(
+		w,
+		http.StatusOK,
+		resp,
+	)
 }
 
 func (read *readHandler) handleRead(
@@ -94,7 +99,7 @@ type ReadRouteParams struct {
 	Middleware *middleware.Auth
 }
 
-//ReadRoute provides a route to get comment
+//ReadRoute provides a route to get donor
 func ReadRoute(params ReadRouteParams) *routeutils.Route {
 
 	handler := readHandler{
