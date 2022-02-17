@@ -8,7 +8,8 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/api/middleware"
 	"gitlab.com/Aubichol/blood-bank-backend/api/routeutils"
 	"gitlab.com/Aubichol/blood-bank-backend/apipattern"
-	"gitlab.com/Aubichol/blood-bank-backend/comment/dto"
+	"gitlab.com/Aubichol/blood-bank-backend/donor"
+	"gitlab.com/Aubichol/blood-bank-backend/donor/dto"
 	"go.uber.org/dig"
 )
 
@@ -91,7 +92,7 @@ func (ch *updateHandler) ServeHTTP(
 	ch.responseSuccess(w, data)
 }
 
-//UpdateParams provide parameters for comment update handler
+//UpdateParams provide parameters for donor update handler
 type UpdateParams struct {
 	dig.In
 	Update     donor.Updater
