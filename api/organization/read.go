@@ -94,7 +94,7 @@ type ReadRouteParams struct {
 	Middleware *middleware.Auth
 }
 
-//ReadRoute provides a route to get comment
+//ReadRoute provides a route to get organization
 func ReadRoute(params ReadRouteParams) *routeutils.Route {
 
 	handler := readHandler{
