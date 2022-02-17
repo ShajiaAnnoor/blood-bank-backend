@@ -94,13 +94,13 @@ func (ch *deleteHandler) ServeHTTP(
 //DeleteParams provide parameters for notice update handler
 type DeleteParams struct {
 	dig.In
-	Update     notice.Updater
+	Delete     notice.Updater
 	Middleware *middleware.Auth
 }
 
-//UpdateRoute provides a route that updates comment
+//UpdateRoute provides a route that updates notice
 func UpdateRoute(params DeleteParams) *routeutils.Route {
-	handler := deleteHandler{params.Update}
+	handler := deleteHandler{params.Delete}
 	return &routeutils.Route{
 		Method:  http.MethodPost,
 		Pattern: apipattern.NoticeUpdate,
