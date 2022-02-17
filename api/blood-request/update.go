@@ -8,22 +8,23 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/api/middleware"
 	"gitlab.com/Aubichol/blood-bank-backend/api/routeutils"
 	"gitlab.com/Aubichol/blood-bank-backend/apipattern"
-	"gitlab.com/Aubichol/blood-bank-backend/comment/dto"
+	bloodreq "gitlab.com/Aubichol/blood-bank-backend/bloodrequest"
+	"gitlab.com/Aubichol/blood-bank-backend/bloodrequest/dto"
 	"go.uber.org/dig"
 )
 
 //updateHandler holds blood request update handler
 type updateHandler struct {
-	update donor.Updater
+	update bloodreq.Updater
 }
 
 func (ch *updateHandler) decodeBody(
 	body io.ReadCloser,
 ) (
-	bloodreq dto.Update,
+	bloodreqAtt dto.Update,
 	err error,
 ) {
-	err = bloodreq.FromReader(body)
+	err = bloodreqAtt.FromReader(body)
 	return
 }
 
@@ -69,8 +70,8 @@ func (ch *updateHandler) ServeHTTP(
 ) {
 	defer r.Body.Close()
 
-	donorDat := dto.Update{}
-	donorDat, err := ch.decodeBody(r.Body)
+	bloodreqDat := dto.Update{}
+	bloodreqDat, err := ch.decodeBody(r.Body)
 
 	if err != nil {
 		message := "Unable to decode blood request update error: "
@@ -78,9 +79,9 @@ func (ch *updateHandler) ServeHTTP(
 		return
 	}
 
-	donorDat.UserID = ch.decodeContext(r)
+	bloodreqDat.UserID = ch.decodeContext(r)
 
-	data, err := ch.askController(&donorDat)
+	data, err := ch.askController(&bloodreqDat)
 
 	if err != nil {
 		message := "Unable to update blood request error: "
