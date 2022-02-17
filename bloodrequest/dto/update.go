@@ -9,14 +9,14 @@ import (
 	"gopkg.in/go-playground/validator.v9"
 )
 
-// Update provides dto for user status update
+// Update provides dto for blood request update
 type Update struct {
 	Request    string `json:"request"`
 	BloodGroup string `json:"blood_group"`
 	UserID     string `json:"user_id"`
 }
 
-//Validate validates comment update data
+//Validate validates blood request update data
 func (c *Update) Validate(validate *validator.Validate) error {
 	if err := validate.Struct(c); err != nil {
 		return fmt.Errorf(
