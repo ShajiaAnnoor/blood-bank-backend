@@ -1,6 +1,6 @@
 package dto
 
-//CountByStatusReq helps gather the data for reading status by user
-type CountByStatusReq struct {
+//CountByBloodRequestReq helps gather the data for reading blood request
+type CountByBloodRequestReq struct {
 	StatusID string
 }
