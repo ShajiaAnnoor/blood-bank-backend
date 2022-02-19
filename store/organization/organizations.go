@@ -2,7 +2,7 @@ package organization
 
 import "gitlab.com/Aubichol/blood-bank-backend/model"
 
-// Comments wraps user's comment functionality
+// Organizations wraps organization's functionality
 type Organizations interface {
 	Save(*model.Organization) (id string, err error)
 	FindByID(id string) (*model.Organization, error)
