@@ -5,7 +5,6 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/errors"
 	"gitlab.com/Aubichol/blood-bank-backend/model"
 	"gitlab.com/Aubichol/blood-bank-backend/notice/dto"
-	"gitlab.com/Aubichol/blood-bank-backend/pkg/tag"
 	storenotice "gitlab.com/Aubichol/blood-bank-backend/store/notice"
 	"go.uber.org/dig"
 )
@@ -53,15 +52,6 @@ func (read *noticeReader) isSameUser(giverID, userID string) (
 	return
 }
 
-func (read *noticeReader) checkFriendShip(giverID, userID string) (
-	currentRequest *model.FriendRequest,
-	err error,
-) {
-	uniqueTag := tag.Unique(giverID, userID)
-	currentRequest, err = read.friends.FindByUniqueTag(uniqueTag)
-	return
-}
-
 func (read *noticeReader) Read(noticeReq *dto.ReadReq) (*dto.ReadResp, error) {
 	//TO-DO: some validation on the input data is required
 	notice, err := read.askStore(noticeReq.NoticeID)
@@ -79,33 +69,18 @@ func (read *noticeReader) Read(noticeReq *dto.ReadReq) (*dto.ReadResp, error) {
 		return &resp, nil
 	}
 
-	currentRequest, err := read.checkFriendShip(
-		giverID,
-		noticeReq.UserID,
-	)
-	if err != nil {
-		logrus.Error("Could not find friendship error : ", err)
-		return nil, read.giveError()
-	}
-
-	if currentRequest.Notice != "accepted" {
-		return nil, err
-	}
-
 	return &resp, nil
 }
 
 //NewReaderParams lists params for the NewReader
 type NewReaderParams struct {
 	dig.In
-	Notice  storenotice.Notice
-	Friends friendrequest.FriendRequests
+	Notice storenotice.Notice
 }
 
 //NewReader provides Reader
 func NewReader(params NewReaderParams) Reader {
 	return &noticeReader{
 		noticees: params.Notice,
-		friends:  params.Friends,
 	}
 }
