@@ -39,7 +39,7 @@ func (sc *StaticContent) FromModel(modelComment *model.StaticmodelStaticContent)
 		return nil
 	}
 
-	id, err := primitive.ObjectIDFromHex(modelComment.ID)
+	id, err := primitive.ObjectIDFromHex(modelStaticContent.ID)
 	if err != nil {
 		return err
 	}
@@ -48,13 +48,13 @@ func (sc *StaticContent) FromModel(modelComment *model.StaticmodelStaticContent)
 	return nil
 }
 
-//ModelComment converts bson to model
+//ModelStaticContent converts bson to model
 func (c *StaticContent) ModelStaticContent() *model.Comment {
 	sc := model.StaticContent{}
 	sc.ID = c.ID.Hex()
-	sc.StaticCoModelStaticContent = c.StaticCoModelStaticContent
+	sc.ModelStaticContent = c.StaticCoModelStaticContent
 	sc.UserID = c.UserID.Hex()
-	sc.StatusID = c.StatusID.Hex()
+	sc.StaticContenID = c.StatusID.Hex()
 	sc.CreatedAt = c.CreatedAt
 	sc.UpdatedAt = c.UpdatedAt
 
