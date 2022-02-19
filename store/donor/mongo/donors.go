@@ -56,14 +56,14 @@ func (c *donors) Save(modelDonor *model.Donor) (string, error) {
 }
 
 //FindByID finds a donor by id
-func (c *donors) FindByID(id string) (*model.Donor, error) {
+func (d *donors) FindByID(id string) (*model.Donor, error) {
 	objectID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return nil, fmt.Errorf("Invalid id %s : %w", id, err)
 	}
 
 	filter := bson.M{"_id": objectID}
-	result := c.c.FindOne(
+	result := d.c.FindOne(
 		context.Background(),
 		filter,
 		&options.FindOneOptions{},
@@ -80,8 +80,8 @@ func (c *donors) FindByID(id string) (*model.Donor, error) {
 	return donor.ModelDonor(), nil
 }
 
-//FindByStatusID finds a comment by status id
-func (c *donors) FindByDonorID(id string, skip int64, limit int64) ([]*model.Donor, error) {
+//FindByDonorID finds a donor by donor id
+func (d *donors) FindByDonorID(id string, skip int64, limit int64) ([]*model.Donor, error) {
 	objectID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return nil, fmt.Errorf("Invalid id %s : %w", id, err)
@@ -94,16 +94,16 @@ func (c *donors) FindByDonorID(id string, skip int64, limit int64) ([]*model.Don
 	findOptions.SetSkip(skip)
 	findOptions.SetLimit(limit)
 
-	cursor, err := c.c.Find(context.Background(), filter, findOptions)
+	cursor, err := d.c.Find(context.Background(), filter, findOptions)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return c.cursorToDonors(cursor)
+	return d.cursorToDonors(cursor)
 }
 
-//CountByStatusID returns comments from status id
+//CountByDonorID returns donors from donor id
 func (c *donors) CountByDonorID(id string) (int64, error) {
 	objectID, err := primitive.ObjectIDFromHex(id)
 
@@ -121,8 +121,8 @@ func (c *donors) CountByDonorID(id string) (int64, error) {
 	return cnt, nil
 }
 
-//FindByIDs returns all the users from multiple user ids
-func (c *donors) FindByIDs(ids ...string) ([]*model.Comment, error) {
+//FindByIDs returns all the donors from multiple donor ids
+func (d *donors) FindByIDs(ids ...string) ([]*model.Donor, error) {
 	objectIDs := []primitive.ObjectID{}
 	for _, id := range ids {
 		objectID, err := primitive.ObjectIDFromHex(id)
@@ -139,21 +139,25 @@ func (c *donors) FindByIDs(ids ...string) ([]*model.Comment, error) {
 		},
 	}
 
-	cursor, err := c.c.Find(context.Background(), filter, nil)
+	cursor, err := d.c.Find(context.Background(), filter, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return c.cursorToDonors(cursor)
+	return d.cursorToDonors(cursor)
 }
 
 //Search search for users given the text, skip and limit
-func (c *donors) Search(text string, skip, limit int64) ([]*model.Comment, error) {
+func (d *donors) Search(text string, skip, limit int64) ([]*model.Donor, error) {
 	filter := bson.M{"$text": bson.M{"$search": text}}
-	cursor, err := c.c.Find(context.Background(), filter, &options.FindOptions{
-		Skip:  &skip,
-		Limit: &limit,
-	})
+	cursor, err := d.c.Find(
+		context.Background(),
+		filter,
+		&options.FindOptions{
+			Skip:  &skip,
+			Limit: &limit,
+		}
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -161,7 +165,7 @@ func (c *donors) Search(text string, skip, limit int64) ([]*model.Comment, error
 	return c.cursorToDonors(cursor)
 }
 
-//cursorToComments decodes users one by one from the search result
+//cursorToDonors decodes donors one by one from the search result
 func (c *donors) cursorToDonors(cursor *mongo.Cursor) ([]*model.Donor, error) {
 	defer cursor.Close(context.Background())
 	modelDonors := []*model.Donor{}
@@ -178,7 +182,7 @@ func (c *donors) cursorToDonors(cursor *mongo.Cursor) ([]*model.Donor, error) {
 	return modelDonors, nil
 }
 
-//DonorsParams provides parameters for comment specific Collection
+//DonorsParams provides parameters for donor specific Collection
 type DonorsParams struct {
 	dig.In
 	Collection *mongo.Collection `name:"donors"`
