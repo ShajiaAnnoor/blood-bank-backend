@@ -30,7 +30,7 @@ func (c *Update) Validate(validate *validator.Validate) error {
 	return nil
 }
 
-//FromReader decodes comment update data from request
+//FromReader decodes blood request update data from request
 func (c *Update) FromReader(reader io.Reader) error {
 	err := json.NewDecoder(reader).Decode(c)
 	if err != nil {
