@@ -188,7 +188,7 @@ type DonorsParams struct {
 	Collection *mongo.Collection `name:"donors"`
 }
 
-//Store provides store for comments
+//Store provides store for donors
 func Store(params DonorsParams) storedonor.Donors {
 	return &donors{params.Collection}
 }
