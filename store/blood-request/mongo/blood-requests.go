@@ -5,8 +5,7 @@ import (
 	"fmt"
 
 	"gitlab.com/Aubichol/blood-bank-backend/model"
-	storecomment "gitlab.com/Aubichol/blood-bank-backend/store/comment"
-	mongoModel "gitlab.com/Aubichol/blood-bank-backend/store/comment/mongo/model"
+	mongoModel "gitlab.com/Aubichol/blood-bank-backend/store/bloodrequest/mongo/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -23,7 +22,7 @@ func (c *bloodrequests) convertData(modelBloodRequests *model.BloodRequests) (
 	mongoBloodRequests mongoModel.BloodRequests,
 	err error,
 ) {
-	err = mongoComment.FromModel(modelComment)
+	err = mongoBloodRequests.FromModel(modelBloodRequest)
 	return
 }
 
@@ -40,8 +39,8 @@ func (c *bloodrequests) Save(modelBloodRequests *model.Comment) (string, error) 
 		mongoBloodRequests.ID = primitive.NewObjectID()
 	}
 
-	filter := bson.M{"_id": mongoComment.ID}
-	update := bson.M{"$set": mongoComment}
+	filter := bson.M{"_id": mongoBloodRequest.ID}
+	update := bson.M{"$set": mongoBloodRequest}
 	upsert := true
 
 	_, err = c.c.UpdateOne(
@@ -53,7 +52,7 @@ func (c *bloodrequests) Save(modelBloodRequests *model.Comment) (string, error) 
 		},
 	)
 
-	return mongoComment.ID.Hex(), err
+	return mongoBloodRequest.ID.Hex(), err
 }
 
 //FindByID finds a comment by id
@@ -78,7 +77,7 @@ func (c *bloodrequests) FindByID(id string) (*model.BloodRequests, error) {
 }
 
 //FindByBloodRequestsID finds a blood requests id
-func (c *bloodrequests) FindByBloodRequestsID(id string, skip int64, limit int64) ([]*model.Comment, error) {
+func (c *bloodrequests) FindByBloodRequestsID(id string, skip int64, limit int64) ([]*model.BloodRequest, error) {
 	objectID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return nil, fmt.Errorf("Invalid id %s : %w", id, err)
@@ -118,7 +117,7 @@ func (c *bloodrequests) CountByBloodRequestsID(id string) (int64, error) {
 	return cnt, nil
 }
 
-//FindByIDs returns all the users from multiple user ids
+//FindByIDs returns all the blood requests from multiple blood requests
 func (c *bloodrequests) FindByIDs(ids ...string) ([]*model.Comment, error) {
 	objectIDs := []primitive.ObjectID{}
 	for _, id := range ids {
@@ -169,7 +168,7 @@ func (c *bloodrequests) cursorToBloodRequests(cursor *mongo.Cursor) ([]*model.Bl
 			return nil, fmt.Errorf("Could not decode data from mongo %w", err)
 		}
 
-		modelBloodRequests = append(modelBloodRequests, comment.ModelBloodRequest())
+		modelBloodRequests = append(modelBloodRequests, bloodrequest.ModelBloodRequest())
 	}
 
 	return modelBloodRequests, nil
@@ -178,10 +177,10 @@ func (c *bloodrequests) cursorToBloodRequests(cursor *mongo.Cursor) ([]*model.Bl
 //BloodRequestsParams provides parameters for comment specific Collection
 type BloodRequestsParams struct {
 	dig.In
-	Collection *mongo.Collection `name:"patients"`
+	Collection *mongo.Collection `name:"bloodrequests"`
 }
 
-//Store provides store for comments
-func Store(params BloodRequestsParams) storepatient.BloodRequests {
-	return &patients{params.Collection}
+//Store provides store for blood requests
+func Store(params BloodRequestsParams) storebloodrequests.BloodRequests {
+	return &bloodrequests{params.Collection}
 }
