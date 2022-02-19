@@ -18,24 +18,24 @@ type StaticContent struct {
 }
 
 //FromModel converts model data to db data for comments
-func (sc *StaticContent) FromModel(modelComment *model.Comment) error {
+func (sc *StaticContent) FromModel(modelComment *model.StaticmodelStaticContent) error {
 	sc.Comment = modelComment.Comment
 	sc.CreatedAt = modelComment.CreatedAt
 	sc.UpdatedAt = modelComment.UpdatedAt
 
 	var err error
-	sc.StatusID, err = primitive.ObjectIDFromHex(modelComment.StatusID)
+	sc.StatusID, err = primitive.ObjectIDFromHex(modelStaticContent.StatusID)
 
 	if err != nil {
 		return err
 	}
 
-	sc.UserID, err = primitive.ObjectIDFromHex(modelComment.UserID)
+	sc.UserID, err = primitive.ObjectIDFromHex(modelStaticContent.UserID)
 	if err != nil {
 		return err
 	}
 
-	if modelComment.ID == "" {
+	if modelStaticContent.ID == "" {
 		return nil
 	}
 
@@ -49,10 +49,10 @@ func (sc *StaticContent) FromModel(modelComment *model.Comment) error {
 }
 
 //ModelComment converts bson to model
-func (c *StaticContent) ModelComment() *model.Comment {
+func (c *StaticContent) ModelStaticContent() *model.Comment {
 	sc := model.StaticContent{}
 	sc.ID = c.ID.Hex()
-	sc.Comment = c.Comment
+	sc.StaticCoModelStaticContent = c.StaticCoModelStaticContent
 	sc.UserID = c.UserID.Hex()
 	sc.StatusID = c.StatusID.Hex()
 	sc.CreatedAt = c.CreatedAt
