@@ -2,7 +2,7 @@ package dto
 
 import "gitlab.com/Aubichol/blood-bank-backend/model"
 
-//ReadResp holds the response data for reading comment
+//ReadResp holds the response data for reading blood request
 type ReadResp struct {
 	Request string `json:"request"`
 	Sender  string `json:"sender"`
