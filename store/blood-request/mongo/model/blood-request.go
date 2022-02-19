@@ -17,7 +17,7 @@ type BloodReq struct {
 	UpdatedAt time.Time          `bson:"updated_at"`
 }
 
-//FromModel converts model data to db data for comments
+//FromModel converts model data to db data for blood requests
 func (c *BloodReq) FromModel(modelRequest *model.BloodReq) error {
 	c.Request = modelRequest.Request
 	c.CreatedAt = modelRequest.CreatedAt
