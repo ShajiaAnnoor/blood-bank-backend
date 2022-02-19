@@ -13,12 +13,12 @@ import (
 	"gopkg.in/go-playground/validator.v9"
 )
 
-// Creater provides create method for creating user status
+// Creater provides create method for creating user notice
 type Creater interface {
-	Create(create *dto.Status) (*dto.CreateResponse, error)
+	Create(create *dto.Notice) (*dto.CreateResponse, error)
 }
 
-// create creates user status
+// create creates user notice
 type create struct {
 	storeNotice storenotice.Notice
 	validate    *validator.Validate
@@ -36,7 +36,7 @@ func (c *create) toModel(usernotice *dto.Notice) (
 	return
 }
 
-func (c *create) validateData(create *dto.Status) (
+func (c *create) validateData(create *dto.Notice) (
 	err error,
 ) {
 	err = create.Validate(c.validate)
@@ -44,9 +44,9 @@ func (c *create) validateData(create *dto.Status) (
 }
 
 func (c *create) convertData(create *dto.Notice) (
-	modelStatus *model.Status,
+	modelNotice *model.Notice,
 ) {
-	modelStatus = c.toModel(create)
+	modelNotice = c.toModel(create)
 	return
 }
 
@@ -58,23 +58,23 @@ func (c *create) askStore(model *model.Notice) (
 	return
 }
 
-func (c *create) giveResponse(modelStatus *model.Notice, id string) (
+func (c *create) giveResponse(modelNotice *model.Notice, id string) (
 	*dto.CreateResponse, error,
 ) {
 	logrus.WithFields(logrus.Fields{
 		"id": modelNotice.UserID,
-	}).Debug("User created status successfully")
+	}).Debug("User created notice successfully")
 
 	return &dto.CreateResponse{
 		Message:    "notice created",
 		OK:         true,
-		StatusTime: modelNotice.CreatedAt.String(),
+		NoticeTime: modelNotice.CreatedAt.String(),
 		ID:         id,
 	}, nil
 }
 
 func (c *create) giveError() (err error) {
-	logrus.Error("Could not create status. Error: ", err)
+	logrus.Error("Could not create notice. Error: ", err)
 	errResp := errors.Unknown{
 		Base: errors.Base{
 			OK:      false,
@@ -87,7 +87,7 @@ func (c *create) giveError() (err error) {
 }
 
 //Create implements Creater interface
-func (c *create) Create(create *dto.Status) (
+func (c *create) Create(create *dto.Notice) (
 	*dto.CreateResponse, error,
 ) {
 	err := c.validateData(create)
@@ -95,11 +95,11 @@ func (c *create) Create(create *dto.Status) (
 		return nil, err
 	}
 
-	modelStatus := c.convertData(create)
+	modelNotice := c.convertData(create)
 
-	id, err := c.askStore(modelStatus)
+	id, err := c.askStore(modelNotice)
 	if err == nil {
-		return c.giveResponse(modelStatus, id)
+		return c.giveResponse(modelNotice, id)
 	}
 
 	err = c.giveError()
