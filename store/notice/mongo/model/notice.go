@@ -17,7 +17,7 @@ type Notice struct {
 	UpdatedAt time.Time          `bson:"updated_at"`
 }
 
-//FromModel converts model data to db data for comments
+//FromModel converts model data to db data for notices
 func (c *Notice) FromModel(modelNotice *model.Notice) error {
 	c.Notice = modelNotice.Notice
 	c.CreatedAt = modelNotice.CreatedAt
@@ -48,7 +48,7 @@ func (c *Notice) FromModel(modelNotice *model.Notice) error {
 	return nil
 }
 
-//ModelComment converts bson to model
+//ModelNotice converts bson to model
 func (c *Notice) ModelNotice() *model.Notice {
 	notice := model.Notice{}
 	notice.ID = c.ID.Hex()
