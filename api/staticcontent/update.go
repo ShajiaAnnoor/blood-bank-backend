@@ -69,8 +69,8 @@ func (ch *updateHandler) ServeHTTP(
 ) {
 	defer r.Body.Close()
 
-	staticcontent := dto.Update{}
-	staticcontent, err := ch.decodeBody(r.Body)
+	staticcontentDto := dto.Update{}
+	staticcontentDto, err := ch.decodeBody(r.Body)
 
 	if err != nil {
 		message := "Unable to decode staticcontent error: "
@@ -78,9 +78,9 @@ func (ch *updateHandler) ServeHTTP(
 		return
 	}
 
-	staticcontent.UserID = ch.decodeContext(r)
+	staticcontentDto.UserID = ch.decodeContext(r)
 
-	data, err := ch.askController(&staticcontent)
+	data, err := ch.askController(&staticcontentDto)
 
 	if err != nil {
 		message := "Unable to update staticcontent error: "
