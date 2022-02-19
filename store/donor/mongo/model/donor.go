@@ -18,27 +18,27 @@ type Donor struct {
 
 //FromModel converts model data to db data for comments
 func (c *Donor) FromModel(modelDonor *model.Donor) error {
-	c.Comment = modelComment.Comment
-	c.CreatedAt = modelComment.CreatedAt
-	c.UpdatedAt = modelComment.UpdatedAt
+	c.Comment = modelDonor.Comment
+	c.CreatedAt = modelDonor.CreatedAt
+	c.UpdatedAt = modelDonor.UpdatedAt
 
 	var err error
-	c.StatusID, err = primitive.ObjectIDFromHex(modelComment.StatusID)
+	c.StatusID, err = primitive.ObjectIDFromHex(modelDonor.StatusID)
 
 	if err != nil {
 		return err
 	}
 
-	c.UserID, err = primitive.ObjectIDFromHex(modelComment.UserID)
+	c.UserID, err = primitive.ObjectIDFromHex(modelDonor.UserID)
 	if err != nil {
 		return err
 	}
 
-	if modelComment.ID == "" {
+	if modelDonor.ID == "" {
 		return nil
 	}
 
-	id, err := primitive.ObjectIDFromHex(modelComment.ID)
+	id, err := primitive.ObjectIDFromHex(modelDonor.ID)
 	if err != nil {
 		return err
 	}
@@ -47,7 +47,7 @@ func (c *Donor) FromModel(modelDonor *model.Donor) error {
 	return nil
 }
 
-//ModelComment converts bson to model
+//ModelDonor converts bson to model
 func (c *Donor) ModelDonor() *model.Donor {
 	donor := model.Donor{}
 	donor.ID = c.ID.Hex()
