@@ -18,8 +18,8 @@ type Updater interface {
 
 // update updates user staticcontent
 type update struct {
-	storeStatus storestaticcontent.StaticContent
-	validate    *validator.Validate
+	storeStaticContent storestaticcontent.StaticContent
+	validate           *validator.Validate
 }
 
 func (u *update) toModel(userstaticcontent *dto.Update) (sc *model.StaticContent) {
