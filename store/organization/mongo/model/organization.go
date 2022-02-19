@@ -48,8 +48,8 @@ func (c *Organization) FromModel(modelOrganization *model.Organization) error {
 	return nil
 }
 
-//ModelComment converts bson to model
-func (c *Organization) ModelComment() *model.Organization {
+//ModelOrganization converts bson to model
+func (c *Organization) ModelOrganization() *model.Organization {
 	organization := model.Organization{}
 	organization.ID = c.ID.Hex()
 	organization.Comment = c.Organization
