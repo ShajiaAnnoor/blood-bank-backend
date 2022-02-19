@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"gitlab.com/Aubichol/blood-bank-backend/model"
-	mongoModel "gitlab.com/Aubichol/blood-bank-backend/store/comment/mongo/model"
+	mongoModel "gitlab.com/Aubichol/blood-bank-backend/store/notice/mongo/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -18,7 +18,7 @@ type notices struct {
 	c *mongo.Collection
 }
 
-func (c *notices) convertData(modelNotice *model.Notice) (
+func (n *notices) convertData(modelNotice *model.Notice) (
 	mongoNotice mongoModel.Notice,
 	err error,
 ) {
@@ -26,8 +26,8 @@ func (c *notices) convertData(modelNotice *model.Notice) (
 	return
 }
 
-// Save saves comments from model to database
-func (c *notices) Save(modelNotice *model.Notice) (string, error) {
+// Save saves notices from model to database
+func (n *notices) Save(modelNotice *model.Notice) (string, error) {
 	mongoNotice := mongoModel.Notice{}
 	var err error
 	mongoNotice, err = c.convertData(modelNotice)
@@ -43,7 +43,7 @@ func (c *notices) Save(modelNotice *model.Notice) (string, error) {
 	update := bson.M{"$set": mongoNotice}
 	upsert := true
 
-	_, err = c.c.UpdateOne(
+	_, err = n.c.UpdateOne(
 		context.Background(),
 		filter,
 		update,
@@ -55,15 +55,15 @@ func (c *notices) Save(modelNotice *model.Notice) (string, error) {
 	return mongoNotice.ID.Hex(), err
 }
 
-//FindByID finds a comment by id
-func (c *notices) FindByID(id string) (*model.Notice, error) {
+//FindByID finds a notice by id
+func (n *notices) FindByID(id string) (*model.Notice, error) {
 	objectID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return nil, fmt.Errorf("Invalid id %s : %w", id, err)
 	}
 
 	filter := bson.M{"_id": objectID}
-	result := c.c.FindOne(
+	result := n.c.FindOne(
 		context.Background(),
 		filter,
 		&options.FindOneOptions{},
@@ -81,20 +81,20 @@ func (c *notices) FindByID(id string) (*model.Notice, error) {
 }
 
 //FindByStatusID finds a comment by status id
-func (c *notices) FindByNoticeID(id string, skip int64, limit int64) ([]*model.Notice, error) {
+func (n *notices) FindByNoticeID(id string, skip int64, limit int64) ([]*model.Notice, error) {
 	objectID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return nil, fmt.Errorf("Invalid id %s : %w", id, err)
 	}
 
-	filter := bson.M{"status_id": objectID}
+	filter := bson.M{"notice_id": objectID}
 
 	findOptions := options.Find()
 	findOptions.SetSort(map[string]int{"updated_at": -1})
 	findOptions.SetSkip(skip)
 	findOptions.SetLimit(limit)
 
-	cursor, err := c.c.Find(
+	cursor, err := n.c.Find(
 		context.Background(),
 		filter,
 		findOptions,
@@ -104,19 +104,23 @@ func (c *notices) FindByNoticeID(id string, skip int64, limit int64) ([]*model.N
 		return nil, err
 	}
 
-	return c.cursorToNotices(cursor)
+	return n.cursorToNotices(cursor)
 }
 
 //CountByNoticeID returns notices from notice id
-func (c *notices) CountByNoticeID(id string) (int64, error) {
+func (n *notices) CountByNoticeID(id string) (int64, error) {
 	objectID, err := primitive.ObjectIDFromHex(id)
 
 	if err != nil {
 		return -1, fmt.Errorf("Invalid id %s : %w", id, err)
 	}
 
-	filter := bson.M{"status_id": objectID}
-	cnt, err := c.c.CountDocuments(context.Background(), filter, &options.CountOptions{})
+	filter := bson.M{"notice_id": objectID}
+	cnt, err := n.c.CountDocuments(
+		context.Background(), 
+		filter, 
+		&options.CountOptions{}
+	)
 
 	if err != nil {
 		return -1, err
@@ -155,7 +159,7 @@ func (c *notices) FindByIDs(ids ...string) ([]*model.Notice, error) {
 	return c.cursorToNotices(cursor)
 }
 
-//Search search for users given the text, skip and limit
+//Search search for notices given the text, skip and limit
 func (c *notices) Search(text string, skip, limit int64) ([]*model.Notice, error) {
 	filter := bson.M{"$text": bson.M{"$search": text}}
 	cursor, err := c.c.Find(
@@ -172,7 +176,7 @@ func (c *notices) Search(text string, skip, limit int64) ([]*model.Notice, error
 	return c.cursorToNotices(cursor)
 }
 
-//cursorToComments decodes users one by one from the search result
+//cursorToNotices decodes notices one by one from the search result
 func (c *notices) cursorToNotices(cursor *mongo.Cursor) ([]*model.Notice, error) {
 	defer cursor.Close(context.Background())
 	modelNotices := []*model.Notice{}
@@ -189,13 +193,13 @@ func (c *notices) cursorToNotices(cursor *mongo.Cursor) ([]*model.Notice, error)
 	return modelNotices, nil
 }
 
-//CommentsParams provides parameters for comment specific Collection
+//NoticesParams provides parameters for notice specific Collection
 type NoticesParams struct {
 	dig.In
 	Collection *mongo.Collection `name:"notices"`
 }
 
-//Store provides store for comments
+//Store provides store for notices
 func Store(params NoticesParams) storenotice.Notices {
 	return &notices{params.Collection}
 }
