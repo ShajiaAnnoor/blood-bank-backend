@@ -2,7 +2,7 @@ package dto
 
 import "fmt"
 
-// BaseResponse provides base response for comments
+// BaseResponse provides base response for bloodrequest
 type BaseResponse struct {
 	Message string `json:"message"`
 	OK      bool   `json:"ok"`
