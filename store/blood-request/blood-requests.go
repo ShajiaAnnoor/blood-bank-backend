@@ -2,7 +2,7 @@ package blood-request
 
 import "gitlab.com/Aubichol/blood-bank-backend/model"
 
-// Comments wraps user's comment functionality
+// Comments wraps user's blood request functionality
 type BloodRequests interface {
 	Save(*model.BloodRequest) (id string, err error)
 	FindByID(id string) (*model.BloodRequest, error)
