@@ -13,7 +13,7 @@ import (
 	"go.uber.org/dig"
 )
 
-//static cobtents handles static cobtents related database queries
+//static cobtents handles static contents related database queries
 type staticcontents struct {
 	c *mongo.Collection
 }
@@ -193,7 +193,7 @@ func (s *staticcontents) cursorToStaticContents(cursor *mongo.Cursor) ([]*model.
 	return modelStaticContents, nil
 }
 
-//StaticContentsParams provides parameters for comment specific Collection
+//StaticContentsParams provides parameters for static content specific Collection
 type StaticContentsParams struct {
 	dig.In
 	Collection *mongo.Collection `name:"staticcontents"`
