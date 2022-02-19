@@ -2,7 +2,7 @@ package donor
 
 import "gitlab.com/Aubichol/blood-bank-backend/model"
 
-// Donors wraps user's comment functionality
+// Donors wraps donor's functionality
 type Donors interface {
 	Save(*model.Donor) (id string, err error)
 	FindByID(id string) (*model.Donor, error)
