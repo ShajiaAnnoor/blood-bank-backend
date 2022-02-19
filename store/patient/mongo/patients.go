@@ -18,25 +18,25 @@ type patients struct {
 	c *mongo.Collection
 }
 
-func (c *patients) convertData(modelNotice *model.Notice) (
-	mongoNotice mongoModel.Notice,
+func (c *patients) convertData(modelNotice *model.Patient) (
+	mongoPatient mongoModel.Patient,
 	err error,
 ) {
-	err = mongoNotice.FromModel(modelNotice)
+	err = mongoPatient.FromModel(modelPatient)
 	return
 }
 
 // Save saves comments from model to database
-func (c *patients) Save(modelNotice *model.Notice) (string, error) {
-	mongoNotice := mongoModel.Notice{}
+func (c *patients) Save(modelPatient *model.Patient) (string, error) {
+	mongoNotice := mongoModel.Patient{}
 	var err error
-	mongoNotice, err = c.convertData(modelNotice)
+	mongoPatient, err = c.convertData(modelPatient)
 	if err != nil {
 		return "", fmt.Errorf("Could not convert model patient to mongo patient: %w", err)
 	}
 
-	if modelNotice.ID == "" {
-		mongoNotice.ID = primitive.NewObjectID()
+	if modelPatient.ID == "" {
+		mongoPatient.ID = primitive.NewObjectID()
 	}
 
 	filter := bson.M{"_id": mongoNotice.ID}
@@ -52,10 +52,10 @@ func (c *patients) Save(modelNotice *model.Notice) (string, error) {
 		},
 	)
 
-	return mongoNotice.ID.Hex(), err
+	return mongoPatient.ID.Hex(), err
 }
 
-//FindByID finds a comment by id
+//FindByID finds a patient by id
 func (c *patients) FindByID(id string) (*model.Patient, error) {
 	objectID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
@@ -72,12 +72,12 @@ func (c *patients) FindByID(id string) (*model.Patient, error) {
 		return nil, err
 	}
 
-	notice := mongoModel.Patient{}
+	patient := mongoModel.Patient{}
 	if err := result.Decode(&notice); err != nil {
 		return nil, fmt.Errorf("Could not decode mongo model to model : %w", err)
 	}
 
-	return notice.ModelNotice(), nil
+	return notice.ModelPatient(), nil
 }
 
 //FindByStatusID finds a comment by status id
@@ -107,7 +107,7 @@ func (c *patients) FindByNoticeID(id string, skip int64, limit int64) ([]*model.
 	return c.cursorToPatients(cursor)
 }
 
-//CountByStatusID returns comments from status id
+//CountByStatusID returns patients from patient id
 func (c *patients) CountByPatientID(id string) (int64, error) {
 	objectID, err := primitive.ObjectIDFromHex(id)
 
