@@ -12,7 +12,7 @@ import (
 	"go.uber.org/dig"
 )
 
-//deleteHandler holds handler for creating static contents
+//deleteHandler holds handler for deleting static contents
 type deleteHandler struct {
 	delete staticcontent.Deleter
 }
@@ -44,7 +44,7 @@ func (ch *deleteHandler) askController(
 	data *dto.CreateResponse,
 	err error,
 ) {
-	data, err = ch.delete.Delete(comment)
+	data, err = ch.delete.Delete(staticcontent)
 	return
 }
 
@@ -57,7 +57,7 @@ func (ch *deleteHandler) decodeContext(
 
 func (ch *deleteHandler) responseSuccess(
 	w http.ResponseWriter,
-	resp *dto.CreateResponse,
+	resp *dto.UpdateResponse,
 ) {
 	routeutils.ServeResponse(
 		w,
@@ -86,7 +86,7 @@ func (ch *deleteHandler) ServeHTTP(
 	data, err := ch.askController(&staticcontent)
 
 	if err != nil {
-		message := "Unable to create staticcontent error: "
+		message := "Unable to update staticcontent error: "
 		ch.handleError(w, err, message)
 		return
 	}
@@ -94,16 +94,16 @@ func (ch *deleteHandler) ServeHTTP(
 	ch.responseSuccess(w, data)
 }
 
-//CreateParams provide parameters for NewCommentRoute
+//DeleteParams provide parameters for DeleteRoute
 type DeleteParams struct {
 	dig.In
-	Create     staticcontent.Deleter
+	Delete     staticcontent.Deleter
 	Middleware *middleware.Auth
 }
 
-//CreateRoute provides a route that lets users make comments
-func CreateRoute(params DeleteParams) *routeutils.Route {
-	handler := deleteHandler{params.Create}
+//DeleteRoute provides a route that lets users make static contents
+func DeleteRoute(params DeleteParams) *routeutils.Route {
+	handler := deleteHandler{params.Delete}
 	return &routeutils.Route{
 		Method:  http.MethodPost,
 		Pattern: apipattern.StaticContentUpdate,
