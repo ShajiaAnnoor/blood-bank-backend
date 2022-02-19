@@ -5,7 +5,7 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/errors"
 	"gitlab.com/Aubichol/blood-bank-backend/model"
 	"gitlab.com/Aubichol/blood-bank-backend/notice/dto"
-	"gitlab.com/Aubichol/blood-bank-backend/pkg/tag"
+	storepatient "gitlab.com/Aubichol/blood-bank-backend/store/patient"
 	"go.uber.org/dig"
 )
 
@@ -52,15 +52,6 @@ func (read *patientReader) isSameUser(giverID, userID string) (
 	return
 }
 
-func (read *patientReader) checkFriendShip(giverID, userID string) (
-	currentRequest *model.FriendRequest,
-	err error,
-) {
-	uniqueTag := tag.Unique(giverID, userID)
-	currentRequest, err = read.friends.FindByUniqueTag(uniqueTag)
-	return
-}
-
 func (read *patientReader) Read(patientReq *dto.ReadReq) (*dto.ReadResp, error) {
 	//TO-DO: some validation on the input data is required
 	patient, err := read.askStore(patientReq.PatientID)
@@ -78,19 +69,6 @@ func (read *patientReader) Read(patientReq *dto.ReadReq) (*dto.ReadResp, error) 
 		return &resp, nil
 	}
 
-	currentRequest, err := read.checkFriendShip(
-		giverID,
-		patientReq.UserID,
-	)
-	if err != nil {
-		logrus.Error("Could not find friendship error : ", err)
-		return nil, read.giveError()
-	}
-
-	if currentRequest.Patient != "accepted" {
-		return nil, err
-	}
-
 	return &resp, nil
 }
 
@@ -104,6 +82,5 @@ type NewReaderParams struct {
 func NewReader(params NewReaderParams) Reader {
 	return &patientReader{
 		patients: params.Patient,
-		friends:  params.Friends,
 	}
 }
