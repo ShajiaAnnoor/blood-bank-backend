@@ -11,12 +11,12 @@ import (
 	"gopkg.in/go-playground/validator.v9"
 )
 
-//Updater provides an interface for updating statuses
+//Updater provides an interface for updating donors
 type Updater interface {
 	Update(*dto.Update) (*dto.UpdateResponse, error)
 }
 
-// update updates user status
+// update updates donor
 type update struct {
 	storeDonor storedonor.Donor
 	validate   *validator.Validate
