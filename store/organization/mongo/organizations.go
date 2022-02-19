@@ -14,11 +14,11 @@ import (
 )
 
 //users handles user related database queries
-type donors struct {
+type organizations struct {
 	c *mongo.Collection
 }
 
-func (c *donors) convertData(modelDonor *model.Donor) (
+func (c *organizations) convertData(modelDonor *model.Donor) (
 	mongoDonor mongoModel.Donor,
 	err error,
 ) {
@@ -27,7 +27,7 @@ func (c *donors) convertData(modelDonor *model.Donor) (
 }
 
 // Save saves comments from model to database
-func (c *donors) Save(modelDonor *model.Donor) (string, error) {
+func (c *organizations) Save(modelDonor *model.Donor) (string, error) {
 	mongoDonor := mongoModel.Donor{}
 	var err error
 	mongoDonor, err = c.convertData(modelDonor)
@@ -55,8 +55,8 @@ func (c *donors) Save(modelDonor *model.Donor) (string, error) {
 	return mongoDonor.ID.Hex(), err
 }
 
-//FindByID finds a donor by id
-func (d *donors) FindByID(id string) (*model.Donor, error) {
+//FindByID finds a organization by id
+func (d *organizations) FindByID(id string) (*model.Organization, error) {
 	objectID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return nil, fmt.Errorf("Invalid id %s : %w", id, err)
@@ -72,16 +72,16 @@ func (d *donors) FindByID(id string) (*model.Donor, error) {
 		return nil, err
 	}
 
-	donor := mongoModel.Donor{}
-	if err := result.Decode(&donor); err != nil {
+	organization := mongoModel.Organization{}
+	if err := result.Decode(&organization); err != nil {
 		return nil, fmt.Errorf("Could not decode mongo model to model : %w", err)
 	}
 
-	return donor.ModelDonor(), nil
+	return organization.ModelDonor(), nil
 }
 
 //FindByDonorID finds a donor by donor id
-func (d *donors) FindByDonorID(id string, skip int64, limit int64) ([]*model.Donor, error) {
+func (o *organizations) FindByOrganizationID(id string, skip int64, limit int64) ([]*model.Donor, error) {
 	objectID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return nil, fmt.Errorf("Invalid id %s : %w", id, err)
@@ -94,17 +94,17 @@ func (d *donors) FindByDonorID(id string, skip int64, limit int64) ([]*model.Don
 	findOptions.SetSkip(skip)
 	findOptions.SetLimit(limit)
 
-	cursor, err := d.c.Find(context.Background(), filter, findOptions)
+	cursor, err := o.c.Find(context.Background(), filter, findOptions)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return d.cursorToDonors(cursor)
+	return o.cursorToOrganizations(cursor)
 }
 
-//CountByDonorID returns donors from donor id
-func (c *donors) CountByDonorID(id string) (int64, error) {
+//CountByOrganizationID returns donors from donor id
+func (c *organizations) CountByOrganizationID(id string) (int64, error) {
 	objectID, err := primitive.ObjectIDFromHex(id)
 
 	if err != nil {
@@ -122,7 +122,7 @@ func (c *donors) CountByDonorID(id string) (int64, error) {
 }
 
 //FindByIDs returns all the donors from multiple donor ids
-func (d *donors) FindByIDs(ids ...string) ([]*model.Donor, error) {
+func (d *organizations) FindByIDs(ids ...string) ([]*model.Donor, error) {
 	objectIDs := []primitive.ObjectID{}
 	for _, id := range ids {
 		objectID, err := primitive.ObjectIDFromHex(id)
@@ -144,11 +144,11 @@ func (d *donors) FindByIDs(ids ...string) ([]*model.Donor, error) {
 		return nil, err
 	}
 
-	return d.cursorToDonors(cursor)
+	return d.cursorToOrganizations(cursor)
 }
 
 //Search search for users given the text, skip and limit
-func (d *donors) Search(text string, skip, limit int64) ([]*model.Donor, error) {
+func (d *organizations) Search(text string, skip, limit int64) ([]*model.Organization, error) {
 	filter := bson.M{"$text": bson.M{"$search": text}}
 	cursor, err := d.c.Find(
 		context.Background(),
@@ -162,33 +162,33 @@ func (d *donors) Search(text string, skip, limit int64) ([]*model.Donor, error) 
 		return nil, err
 	}
 
-	return c.cursorToDonors(cursor)
+	return c.cursorToOrganizations(cursor)
 }
 
-//cursorToDonors decodes donors one by one from the search result
-func (d *donors) cursorToDonors(cursor *mongo.Cursor) ([]*model.Donor, error) {
+//cursorToDonors decodes organizations one by one from the search result
+func (d *donors) cursorToOrganizations(cursor *mongo.Cursor) ([]*model.Organization, error) {
 	defer cursor.Close(context.Background())
 	modelDonors := []*model.Donor{}
 
 	for cursor.Next(context.Background()) {
-		donor := mongoModel.Donor{}
+		donor := mongoModel.Organization{}
 		if err := cursor.Decode(&donor); err != nil {
 			return nil, fmt.Errorf("Could not decode data from mongo %w", err)
 		}
 
-		modelDonors = append(modelDonors, donor.ModelDonor())
+		modelDonors = append(modelOrganizations, donor.ModelOrganization())
 	}
 
-	return modelDonors, nil
+	return modelOrganizations, nil
 }
 
-//DonorsParams provides parameters for donor specific Collection
-type DonorsParams struct {
+//OrganizationsParams provides parameters for organization specific Collection
+type OrganizationsParams struct {
 	dig.In
-	Collection *mongo.Collection `name:"donors"`
+	Collection *mongo.Collection `name:"organizations"`
 }
 
-//Store provides store for donors
-func Store(params DonorsParams) storedonor.Donors {
-	return &donors{params.Collection}
+//Store provides store for organizations
+func Store(params OrganizationsParams) storedonor.Organizations {
+	return &Organizations{params.Collection}
 }
