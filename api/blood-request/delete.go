@@ -92,7 +92,7 @@ func (ch *deleteHandler) ServeHTTP(
 	ch.responseSuccess(w, data)
 }
 
-//DeleteParams provide parameters for blood request update handler
+//DeleteParams provide parameters for blood request delete handler
 type DeleteParams struct {
 	dig.In
 	Delete     bloodreq.Updater
