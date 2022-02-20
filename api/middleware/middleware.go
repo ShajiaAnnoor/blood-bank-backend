@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"github.com/sirupsen/logrus"
-	"gitlab.com/Aubichol/hrishi-backend/api/routeutils"
-	"gitlab.com/Aubichol/hrishi-backend/user"
+	"gitlab.com/Aubichol/blood-bank-backend/api/routeutils"
+	"gitlab.com/Aubichol/blood-bank-backend/user"
 )
 
 //Auth holds the middleware that verifies the session
@@ -20,7 +20,7 @@ func (a *Auth) Middleware(h http.Handler) http.Handler {
 		token := r.Header.Get("Authorization")
 		session, err := a.userSessionVerifier.VerifySession(token)
 		if err != nil {
-			logrus.Error("Unable to verify user token, err :", err)
+			logrus.Error("Unable to verify user token, error :", err)
 			routeutils.ServeError(w, err)
 			return
 		}
