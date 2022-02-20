@@ -94,14 +94,14 @@ func (ch *createHandler) ServeHTTP(
 	ch.responseSuccess(w, data)
 }
 
-//CreateParams provide parameters for NewPatientRoute
+//CreateParams provide parameters for CreateRoute
 type CreateParams struct {
 	dig.In
 	Create     patient.Creater
 	Middleware *middleware.Auth
 }
 
-//CreateRoute provides a route that lets users make comments
+//CreateRoute provides a route that lets users make atients
 func CreateRoute(params CreateParams) *routeutils.Route {
 	handler := createHandler{params.Create}
 	return &routeutils.Route{
