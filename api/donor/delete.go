@@ -9,6 +9,7 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/api/routeutils"
 	"gitlab.com/Aubichol/blood-bank-backend/apipattern"
 	"gitlab.com/Aubichol/blood-bank-backend/comment/dto"
+	"gitlab.com/Aubichol/blood-bank-backend/donor"
 	"go.uber.org/dig"
 )
 
@@ -91,7 +92,7 @@ func (ch *deleteHandler) ServeHTTP(
 	ch.responseSuccess(w, data)
 }
 
-//DeleteParams provide parameters for donor update handler
+//DeleteParams provide parameters for donor delete handler
 type DeleteParams struct {
 	dig.In
 	Delete     donor.Updater
