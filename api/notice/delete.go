@@ -8,6 +8,7 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/api/middleware"
 	"gitlab.com/Aubichol/blood-bank-backend/api/routeutils"
 	"gitlab.com/Aubichol/blood-bank-backend/apipattern"
+	"gitlab.com/Aubichol/blood-bank-backend/notice"
 	"gitlab.com/Aubichol/blood-bank-backend/notice/dto"
 	"go.uber.org/dig"
 )
@@ -99,7 +100,7 @@ type DeleteParams struct {
 }
 
 //UpdateRoute provides a route that updates notice
-func UpdateRoute(params DeleteParams) *routeutils.Route {
+func DeleteRoute(params DeleteParams) *routeutils.Route {
 	handler := deleteHandler{params.Delete}
 	return &routeutils.Route{
 		Method:  http.MethodPost,
