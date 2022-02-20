@@ -95,7 +95,7 @@ func (ch *deleteHandler) ServeHTTP(
 	ch.responseSuccess(w, data)
 }
 
-//CreateParams provide parameters for NewCommentRoute
+//CreateParams provide parameters for DeleteRoute
 type DeleteParams struct {
 	dig.In
 	Update     organization.Updater
