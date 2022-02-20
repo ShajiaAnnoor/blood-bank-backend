@@ -92,14 +92,14 @@ func (ch *updateHandler) ServeHTTP(
 	ch.responseSuccess(w, data)
 }
 
-//UpdateParams provide parameters for comment update handler
+//UpdateParams provide parameters for blood request update handler
 type UpdateParams struct {
 	dig.In
 	Update     bloodreq.Updater
 	Middleware *middleware.Auth
 }
 
-//UpdateRoute provides a route that updates comment
+//UpdateRoute provides a route that updates blood request
 func UpdateRoute(params UpdateParams) *routeutils.Route {
 	handler := updateHandler{params.Update}
 	return &routeutils.Route{
