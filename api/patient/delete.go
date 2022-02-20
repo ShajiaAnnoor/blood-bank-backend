@@ -95,14 +95,14 @@ func (ch *deleteHandler) ServeHTTP(
 	ch.responseSuccess(w, data)
 }
 
-//CreateParams provide parameters for NewCommentRoute
+//DeleteParams provide parameters for DeleteRoute
 type DeleteParams struct 
 	dig.In
 	Update     patient.Updater
 	Middleware *middleware.Auth
 }
 
-//CreateRoute provides a route that lets users make comments
+//DeleteRoute provides a route that lets users make comments
 func DeleteRoute(params DeleteParams) *routeutils.Route {
 	handler := deleteHandler{params.Update}
 	return &routeutils.Route{
