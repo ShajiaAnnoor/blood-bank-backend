@@ -12,40 +12,40 @@ import (
 	"gopkg.in/go-playground/validator.v9"
 )
 
-//Updater provides an interface for updating noticees
-type Updater interface {
-	Update(*dto.Update) (*dto.UpdateResponse, error)
+//Deleter provides an interface for updating noticees
+type Deleter interface {
+	Delete(*dto.Delete) (*dto.DeleteResponse, error)
 }
 
-// update updates notice
-type update struct {
+// delete deletes notice
+type delete struct {
 	storeNotice storenotice.Notice
 	validate    *validator.Validate
 }
 
-func (u *update) toModel(usernotice *dto.Update) (notice *model.Notice) {
+func (u *delete) toModel(usernotice *dto.Delete) (notice *model.Notice) {
 	notice = &model.Notice{}
 	notice.CreatedAt = time.Now().UTC()
-	notice.UpdatedAt = notice.CreatedAt
+	notice.DeletedAt = notice.CreatedAt
 	notice.Status = usernotice.Status
 	notice.UserID = usernotice.UserID
 	notice.ID = usernotice.StatusID
 	return
 }
 
-func (u *update) validateData(update *dto.Update) (err error) {
-	err = update.Validate(u.validate)
+func (u *delete) validateData(delete *dto.Delete) (err error) {
+	err = delete.Validate(u.validate)
 	return
 }
 
-func (u *update) convertData(update *dto.Update) (
+func (u *delete) convertData(delete *dto.Delete) (
 	modelNotice *model.Notice,
 ) {
-	modelNotice = u.toModel(update)
+	modelNotice = u.toModel(delete)
 	return
 }
 
-func (u *update) askStore(modelNotice *model.Notice) (
+func (u *delete) askStore(modelNotice *model.Notice) (
 	id string,
 	err error,
 ) {
@@ -53,23 +53,23 @@ func (u *update) askStore(modelNotice *model.Notice) (
 	return
 }
 
-func (u *update) giveResponse(
+func (u *delete) giveResponse(
 	modelNotice *model.Notice,
 	id string,
-) *dto.UpdateResponse {
+) *dto.DeleteResponse {
 	logrus.WithFields(logrus.Fields{
 		"id": modelNotice.UserID,
-	}).Debug("User updated notice successfully")
+	}).Debug("User deleted notice successfully")
 
-	return &dto.UpdateResponse{
-		Message:    "Notice updated",
+	return &dto.DeleteResponse{
+		Message:    "Notice deleted",
 		OK:         true,
 		ID:         id,
-		UpdateTime: modelNotice.UpdatedAt.String(),
+		DeleteTime: modelNotice.DeletedAt.String(),
 	}
 }
 
-func (u *update) giveError() (err error) {
+func (u *delete) giveError() (err error) {
 	errResp := errors.Unknown{
 		Base: errors.Base{
 			OK:      false,
@@ -84,28 +84,28 @@ func (u *update) giveError() (err error) {
 	return
 }
 
-//Update implements Update interface
-func (u *update) Update(update *dto.Update) (
-	*dto.UpdateResponse, error,
+//Delete implements Delete interface
+func (u *delete) Delete(delete *dto.Delete) (
+	*dto.DeleteResponse, error,
 ) {
-	if err := u.validateData(update); err != nil {
+	if err := u.validateData(delete); err != nil {
 		return nil, err
 	}
 
-	modelNotice := u.convertData(update)
+	modelNotice := u.convertData(delete)
 	id, err := u.askStore(modelNotice)
 	if err == nil {
 		return u.giveResponse(modelNotice, id), nil
 	}
 
-	logrus.Error("Could not update notice ", err)
+	logrus.Error("Could not delete notice ", err)
 	err = u.giveError()
 	return nil, err
 }
 
-//NewUpdate returns new instance of NewCreate
-func NewUpdate(store storenotice.Notice, validate *validator.Validate) Updater {
-	return &update{
+//NewDelete returns new instance of NewCreate
+func NewDelete(store storenotice.Notice, validate *validator.Validate) Deleter {
+	return &delete{
 		store,
 		validate,
 	}
