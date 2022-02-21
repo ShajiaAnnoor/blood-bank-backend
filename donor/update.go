@@ -5,9 +5,10 @@ import (
 	"time"
 
 	"github.com/sirupsen/logrus"
+	"gitlab.com/Aubichol/blood-bank-backend/donor/dto"
 	"gitlab.com/Aubichol/blood-bank-backend/errors"
 	"gitlab.com/Aubichol/blood-bank-backend/model"
-	"gitlab.com/Aubichol/blood-bank-backend/status/dto"
+	storedonor "gitlab.com/Aubichol/blood-bank-backend/store/donor"
 	"gopkg.in/go-playground/validator.v9"
 )
 
@@ -57,7 +58,7 @@ func (u *update) giveResponse(
 ) *dto.UpdateResponse {
 	logrus.WithFields(logrus.Fields{
 		"id": modelDonor.UserID,
-	}).Debug("User updated status successfully")
+	}).Debug("User updated donor successfully")
 
 	return &dto.UpdateResponse{
 		Message:    "Donor updated",
