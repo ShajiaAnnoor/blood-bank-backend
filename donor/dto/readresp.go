@@ -1,6 +1,6 @@
 package dto
 
-import "gitlab.com/Aubichol/hrishi-backend/model"
+import "gitlab.com/Aubichol/blood-bank-backend/model"
 
 //ReadResp holds the response data for reading donor
 type ReadResp struct {
