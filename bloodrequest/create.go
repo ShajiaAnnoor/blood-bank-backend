@@ -38,10 +38,10 @@ func (c *create) validateData(create *dto.Comment) (err error) {
 	return err
 }
 
-func (c *create) convertData(create *dto.Comment) (
-	modelComment *model.Comment,
+func (c *create) convertData(create *dto.BloodReq) (
+	modelBloodReq *model.BloodReq,
 ) {
-	modelComment = c.toModel(create)
+	modelBloodReq = c.toModel(create)
 	return
 }
 
@@ -56,18 +56,18 @@ func (c *create) askStore(modelComment *model.Comment) (
 func (c *create) printLog(id string) {
 	logrus.WithFields(logrus.Fields{
 		"id": id,
-	}).Debug("User created comment successfully")
+	}).Debug("User created blood request successfully")
 }
 
 func (c *create) createResponse(
-	modelComment *model.Comment,
+	modelBloodReq *model.BloodReq,
 	id string,
 ) (resp *dto.CreateResponse) {
 	return &dto.CreateResponse{
-		Message:     "comment created",
-		OK:          true,
-		ID:          id,
-		CommentTime: modelComment.CreatedAt.String(),
+		Message:      "blood request created",
+		OK:           true,
+		ID:           id,
+		BloodReqTime: modelBloodReq.CreatedAt.String(),
 	}
 }
 
@@ -106,21 +106,21 @@ func (c *create) logError(message string, err error) {
 }
 
 //Create implements Creater interface
-func (c *create) Create(create *dto.Comment) (*dto.CreateResponse, error) {
+func (c *create) Create(create *dto.BloodReq) (*dto.CreateResponse, error) {
 	if err := c.validateData(create); err != nil {
 		return c.resopnseError(err)
 	}
 
-	modelComment := c.convertData(create)
+	modelBloodReq := c.convertData(create)
 
-	id, err := c.askStore(modelComment)
+	id, err := c.askStore(modelBloodReq)
 	if c.noError(err) {
-		c.printLog(modelComment.ID)
+		c.printLog(modelBloodReq.ID)
 		return c.giveResponse(
-			c.createResponse(modelComment, id),
+			c.createResponse(modelBloodReq, id),
 		)
 	}
-	message := "Could not create comment "
+	message := "Could not create blood request "
 	c.logError(message, err)
 	return c.resopnseError(c.giveError(err))
 }
