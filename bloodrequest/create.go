@@ -17,14 +17,14 @@ type Creater interface {
 	Create(create *dto.Bloodreq) (*dto.CreateResponse, error)
 }
 
-// create creates user comment
+// create creates user blood requests
 type create struct {
 	storeBloodRequest storebloodreq.BloodRequests
 	validate          *validator.Validate
 }
 
-func (c *create) toModel(userbloodreq *dto.Comment) (bloodreq *model.Comment) {
-	bloodreq = &model.Bloodreq{}
+func (c *create) toModel(userbloodreq *dto.BloodReq) (bloodreq *model.BloodReq) {
+	bloodreq = &model.BloodReq{}
 	bloodreq.CreatedAt = time.Now().UTC()
 	bloodreq.UpdatedAt = bloodreq.CreatedAt
 	bloodreq.Comment = userbloodreq.Comment
@@ -45,11 +45,11 @@ func (c *create) convertData(create *dto.BloodReq) (
 	return
 }
 
-func (c *create) askStore(modelComment *model.Comment) (
+func (c *create) askStore(modelBloodReq *model.BloodReq) (
 	id string,
 	err error,
 ) {
-	id, err = c.storeComment.Save(modelComment)
+	id, err = c.storeBloodReq.Save(modelBloodReq)
 	return
 }
 
@@ -122,11 +122,11 @@ func (c *create) Create(create *dto.BloodReq) (*dto.CreateResponse, error) {
 	}
 	message := "Could not create blood request "
 	c.logError(message, err)
-	return c.resopnseError(c.giveError(err))
+	return c.responseError(c.giveError(err))
 }
 
 //NewCreate returns new instance of Creater
-func NewCreate(store storecomment.Comments, validate *validator.Validate) Creater {
+func NewCreate(store storebloodrequest.BloodRequests, validate *validator.Validate) Creater {
 	return &create{
 		store,
 		validate,
