@@ -15,12 +15,12 @@ import (
 
 // Creater provides create method for creating user staticcontent
 type Creater interface {
-	Create(create *dto.Staticcontent) (*dto.CreateResponse, error)
+	Create(create *dto.StaticContent) (*dto.CreateResponse, error)
 }
 
 // create creates user staticcontent
 type create struct {
-	storeStaticcontent storestaticcontent.Staticcontent
+	storeStaticContent storestaticcontent.StaticContent
 	validate           *validator.Validate
 }
 
@@ -36,39 +36,39 @@ func (c *create) toModel(userstaticcontent *dto.StaticContent) (
 	return
 }
 
-func (c *create) validateData(create *dto.Staticcontent) (
+func (c *create) validateData(create *dto.StaticContent) (
 	err error,
 ) {
 	err = create.Validate(c.validate)
 	return
 }
 
-func (c *create) convertData(create *dto.Staticcontent) (
-	modelStaticcontent *model.Staticcontent,
+func (c *create) convertData(create *dto.StaticContent) (
+	modelStaticContent *model.StaticContent,
 ) {
-	modelStaticcontent = c.toModel(create)
+	modelStaticContent = c.toModel(create)
 	return
 }
 
-func (c *create) askStore(model *model.Staticcontent) (
+func (c *create) askStore(model *model.StaticContent) (
 	id string,
 	err error,
 ) {
-	id, err = c.storeStaticcontent.Save(model)
+	id, err = c.storeStaticContent.Save(model)
 	return
 }
 
-func (c *create) giveResponse(modelStaticcontent *model.Staticcontent, id string) (
+func (c *create) giveResponse(modelStaticContent *model.StaticContent, id string) (
 	*dto.CreateResponse, error,
 ) {
 	logrus.WithFields(logrus.Fields{
-		"id": modelStaticcontent.UserID,
+		"id": modelStaticContent.UserID,
 	}).Debug("User created staticcontent successfully")
 
 	return &dto.CreateResponse{
 		Message:           "staticcontent created",
 		OK:                true,
-		StaticcontentTime: modelStaticcontent.CreatedAt.String(),
+		StaticContentTime: modelStaticContent.CreatedAt.String(),
 		ID:                id,
 	}, nil
 }
@@ -87,7 +87,7 @@ func (c *create) giveError() (err error) {
 }
 
 //Create implements Creater interface
-func (c *create) Create(create *dto.Staticcontent) (
+func (c *create) Create(create *dto.StaticContent) (
 	*dto.CreateResponse, error,
 ) {
 	err := c.validateData(create)
@@ -95,11 +95,11 @@ func (c *create) Create(create *dto.Staticcontent) (
 		return nil, err
 	}
 
-	modelStaticcontent := c.convertData(create)
+	modelStaticContent := c.convertData(create)
 
-	id, err := c.askStore(modelStaticcontent)
+	id, err := c.askStore(modelStaticContent)
 	if err == nil {
-		return c.giveResponse(modelStaticcontent, id)
+		return c.giveResponse(modelStaticContent, id)
 	}
 
 	err = c.giveError()
@@ -109,14 +109,14 @@ func (c *create) Create(create *dto.Staticcontent) (
 //CreateParams give parameters for NewCreate
 type CreateParams struct {
 	dig.In
-	StoreStaticcontentes storestaticcontent.Staticcontent
+	StoreStaticContentes storestaticcontent.StaticContent
 	Validate             *validator.Validate
 }
 
 //NewCreate returns new instance of NewCreate
 func NewCreate(params CreateParams) Creater {
 	return &create{
-		params.StoreStaticcontentes,
+		params.StoreStaticContentes,
 		params.Validate,
 	}
 }
