@@ -44,11 +44,11 @@ func (ch *deleteHandler) decodeContext(
 	return
 }
 
-func (ch *deleteHandler) askController(update *dto.Update) (
+func (dh *deleteHandler) askController(update *dto.Update) (
 	resp *dto.UpdateResponse,
 	err error,
 ) {
-	resp, err = ch.delete.Update(update)
+	resp, err = dh.delete.Update(update)
 	return
 }
 
@@ -64,24 +64,24 @@ func (ch *deleteHandler) responseSuccess(
 }
 
 //ServeHTTP implements http.Handler interface
-func (ch *deleteHandler) ServeHTTP(
+func (dh *deleteHandler) ServeHTTP(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
 	defer r.Body.Close()
 
 	bloodreqDat := dto.Update{}
-	bloodreqDat, err := ch.decodeBody(r.Body)
+	bloodreqDat, err := dh.decodeBody(r.Body)
 
 	if err != nil {
 		message := "Unable to decode blood request error: "
-		ch.handleError(w, err, message)
+		dh.handleError(w, err, message)
 		return
 	}
 
-	bloodreq.UserID = ch.decodeContext(r)
+	bloodreq.UserID = dh.decodeContext(r)
 
-	data, err := ch.askController(&bloodreqDat)
+	data, err := dh.askController(&bloodreqDat)
 
 	if err != nil {
 		message := "Unable to update blood request error: "
@@ -89,7 +89,7 @@ func (ch *deleteHandler) ServeHTTP(
 		return
 	}
 
-	ch.responseSuccess(w, data)
+	dh.responseSuccess(w, data)
 }
 
 //DeleteParams provide parameters for blood request delete handler
