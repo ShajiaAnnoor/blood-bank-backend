@@ -33,7 +33,7 @@ func (c *create) toModel(userbloodreq *dto.BloodReq) (bloodreq *model.BloodReq) 
 	return
 }
 
-func (c *create) validateData(create *dto.Comment) (err error) {
+func (c *create) validateData(create *dto.BloodReq) (err error) {
 	err = create.Validate(c.validate)
 	return err
 }
