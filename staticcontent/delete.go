@@ -103,7 +103,7 @@ func (u *delete) Delete(delete *dto.Delete) (
 	return nil, err
 }
 
-//NewDelete returns new instance of NewCreate
+//NewDelete returns new instance of NewDelete
 func NewDelete(store storestaticcontent.Staticcontent, validate *validator.Validate) Deleter {
 	return &delete{
 		store,
