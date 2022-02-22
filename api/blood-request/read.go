@@ -68,7 +68,7 @@ func (read *readHandler) handleRead(
 ) {
 
 	req := dto.ReadReq{}
-	req.BloodreqID = read.decodeURL(r)
+	req.BloodReqID = read.decodeURL(r)
 
 	req.UserID = read.decodeContext(r)
 
