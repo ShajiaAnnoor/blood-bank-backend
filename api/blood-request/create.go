@@ -20,7 +20,7 @@ type createHandler struct {
 func (ch *createHandler) decodeBody(
 	body io.ReadCloser,
 ) (
-	bloodreqDat dto.Bloodreq,
+	bloodreqDat dto.BloodReq,
 	err error,
 ) {
 	bloodreqDat = dto.BloodReq{}
