@@ -8,8 +8,8 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/api/middleware"
 	"gitlab.com/Aubichol/blood-bank-backend/api/routeutils"
 	"gitlab.com/Aubichol/blood-bank-backend/apipattern"
-	"gitlab.com/Aubichol/blood-bank-backend/comment/dto"
 	"gitlab.com/Aubichol/blood-bank-backend/donor"
+	"gitlab.com/Aubichol/blood-bank-backend/donor/dto"
 	"go.uber.org/dig"
 )
 
@@ -44,15 +44,15 @@ func (ch *deleteHandler) decodeContext(
 	return
 }
 
-func (ch *deleteHandler) askController(update *dto.Update) (
+func (dh *deleteHandler) askController(update *dto.Update) (
 	resp *dto.UpdateResponse,
 	err error,
 ) {
-	resp, err = ch.delete.Update(update)
+	resp, err = dh.delete.Update(update)
 	return
 }
 
-func (ch *deleteHandler) responseSuccess(
+func (dh *deleteHandler) responseSuccess(
 	w http.ResponseWriter,
 	resp *dto.UpdateResponse,
 ) {
@@ -64,32 +64,32 @@ func (ch *deleteHandler) responseSuccess(
 }
 
 //ServeHTTP implements http.Handler interface
-func (ch *deleteHandler) ServeHTTP(
+func (dh *deleteHandler) ServeHTTP(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
 	defer r.Body.Close()
 
 	donor := dto.Update{}
-	donor, err := ch.decodeBody(r.Body)
+	donor, err := dh.decodeBody(r.Body)
 
 	if err != nil {
 		message := "Unable to decode donor delete error: "
-		ch.handleError(w, err, message)
+		dh.handleError(w, err, message)
 		return
 	}
 
-	donor.UserID = ch.decodeContext(r)
+	donor.UserID = dh.decodeContext(r)
 
-	data, err := ch.askController(&donor)
+	data, err := dh.askController(&donor)
 
 	if err != nil {
 		message := "Unable to delete donor error: "
-		ch.handleError(w, err, message)
+		dh.handleError(w, err, message)
 		return
 	}
 
-	ch.responseSuccess(w, data)
+	dh.responseSuccess(w, data)
 }
 
 //DeleteParams provide parameters for donor delete handler
