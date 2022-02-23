@@ -16,7 +16,7 @@ type Reader interface {
 
 //organizationReader implements Reader interface
 type organizationReader struct {
-	organizationes organization.Notice
+	organizationes organization.Organization
 }
 
 func (read *organizationReader) askStore(organizationID string) (
@@ -45,13 +45,6 @@ func (read *organizationReader) prepareResponse(
 	return
 }
 
-func (read *organizationReader) isSameUser(giverID, userID string) (
-	isSame bool,
-) {
-	isSame = giverID == userID
-	return
-}
-
 func (read *organizationReader) Read(organizationReq *dto.ReadReq) (*dto.ReadResp, error) {
 	//TO-DO: some validation on the input data is required
 	organization, err := read.askStore(organizationReq.OrganizationID)
@@ -62,12 +55,6 @@ func (read *organizationReader) Read(organizationReq *dto.ReadReq) (*dto.ReadRes
 
 	var resp dto.ReadResp
 	resp = read.prepareResponse(organization)
-	giverID := organization.UserID
-	//If the same person who has given the organization asks for
-	//the organization, we should give them.
-	if read.isSameUser(giverID, organizationReq.UserID) {
-		return &resp, nil
-	}
 
 	return &resp, nil
 }
