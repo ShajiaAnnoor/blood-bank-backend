@@ -39,13 +39,13 @@ func (ch *deleteHandler) handleError(
 	routeutils.ServeError(w, err)
 }
 
-func (ch *deleteHandler) askController(
+func (dh *deleteHandler) askController(
 	organization *dto.Organization,
 ) (
 	data *dto.CreateResponse,
 	err error,
 ) {
-	data, err = ch.delete.Update(organization)
+	data, err = dh.delete.Update(organization)
 	return
 }
 
@@ -68,31 +68,31 @@ func (ch *deleteHandler) responseSuccess(
 }
 
 //ServeHTTP implements http.Handler interface
-func (ch *deleteHandler) ServeHTTP(
+func (dh *deleteHandler) ServeHTTP(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
 	defer r.Body.Close()
 
-	organization, err := ch.decodeBody(r.Body)
+	organization, err := dh.decodeBody(r.Body)
 
 	if err != nil {
 		message := "Unable to decode error: "
-		ch.handleError(w, err, message)
+		dh.handleError(w, err, message)
 		return
 	}
 
-	organization.UserID = ch.decodeContext(r)
+	organization.UserID = dh.decodeContext(r)
 
-	data, err := ch.askController(organization)
+	data, err := dh.askController(organization)
 
 	if err != nil {
 		message := "Unable to create organization error: "
-		ch.handleError(w, err, message)
+		dh.handleError(w, err, message)
 		return
 	}
 
-	ch.responseSuccess(w, data)
+	dh.responseSuccess(w, data)
 }
 
 //CreateParams provide parameters for DeleteRoute
