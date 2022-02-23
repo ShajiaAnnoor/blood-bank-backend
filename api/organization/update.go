@@ -18,7 +18,7 @@ type updateHandler struct {
 	update organization.Updater
 }
 
-func (ch *updateHandler) decodeBody(
+func (uh *updateHandler) decodeBody(
 	body io.ReadCloser,
 ) (
 	organization dto.Update,
@@ -64,24 +64,24 @@ func (ch *updateHandler) responseSuccess(
 }
 
 //ServeHTTP implements http.Handler interface
-func (ch *updateHandler) ServeHTTP(
+func (uh *updateHandler) ServeHTTP(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
 	defer r.Body.Close()
 
 	organization := dto.Update{}
-	organization, err := dh.decodeBody(r.Body)
+	organization, err := uh.decodeBody(r.Body)
 
 	if err != nil {
 		message := "Unable to decode organization error: "
-		ch.handleError(w, err, message)
+		uh.handleError(w, err, message)
 		return
-	}
+	
 
-	organization.UserID = ch.decodeContext(r)
+	organization.UserID = uh.decodeContext(r)
 
-	data, err := ch.askController(&organization)
+	data, err := uh.askController(&organization)
 
 	if err != nil {
 		message := "Unable to update organization for user error: "
@@ -89,7 +89,7 @@ func (ch *updateHandler) ServeHTTP(
 		return
 	}
 
-	ch.responseSuccess(w, data)
+	uh.responseSuccess(w, data)
 }
 
 //UpdateParams provide parameters for organization update handler
