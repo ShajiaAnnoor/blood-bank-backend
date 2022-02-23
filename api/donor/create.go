@@ -94,7 +94,7 @@ func (ch *createHandler) ServeHTTP(
 	ch.responseSuccess(w, data)
 }
 
-//CreateParams provide parameters for CreateDonor
+//CreateParams provide parameters for CreateRoute
 type CreateParams struct {
 	dig.In
 	Create     donor.Creater
