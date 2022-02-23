@@ -104,7 +104,7 @@ func (u *update) Update(update *dto.Update) (
 	return nil, err
 }
 
-//NewUpdate returns new instance of NewCreate
+//NewUpdate returns new instance of update
 func NewUpdate(store storeorganization.Organization, validate *validator.Validate) Updater {
 	return &update{
 		store,
