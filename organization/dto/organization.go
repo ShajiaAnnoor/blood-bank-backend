@@ -35,8 +35,8 @@ func (c *Organization) Validate(validate *validator.Validate) error {
 }
 
 //FromReader reads organization request from request body
-func (c *Organization) FromReader(reader io.Reader) error {
-	err := json.NewDecoder(reader).Decode(c)
+func (o *Organization) FromReader(reader io.Reader) error {
+	err := json.NewDecoder(reader).Decode(o)
 	if err != nil {
 		return fmt.Errorf("%s:%w", err.Error(), &errors.Invalid{
 			Base: errors.Base{"invalid organization data", false},
