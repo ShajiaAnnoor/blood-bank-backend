@@ -11,34 +11,34 @@ import (
 
 // Update provides dto for user status update
 type Update struct {
-	Comment   string `json:"comment"`
-	UserID    string `json:"user_id"`
-	CommentID string `json:"comment_id"`
+	Organization   string `json:"organization"`
+	UserID         string `json:"user_id"`
+	OrganizationID string `json:"organization_id"`
 }
 
-//Validate validates comment update data
-func (c *Update) Validate(validate *validator.Validate) error {
-	if err := validate.Struct(c); err != nil {
+//Validate validates organization update data
+func (u *Update) Validate(validate *validator.Validate) error {
+	if err := validate.Struct(u); err != nil {
 		return fmt.Errorf(
 			"%s:%w",
 			err.Error(),
 			&errors.Invalid{
-				errors.Base{"invalid comment update data", false},
+				errors.Base{"invalid organization update data", false},
 			},
 		)
 	}
 	return nil
 }
 
-//FromReader decodes comment update data from request
-func (c *Update) FromReader(reader io.Reader) error {
-	err := json.NewDecoder(reader).Decode(c)
+//FromReader decodes organization update data from request
+func (u *Update) FromReader(reader io.Reader) error {
+	err := json.NewDecoder(reader).Decode(u)
 	if err != nil {
 		return fmt.Errorf(
 			"%s:%w",
 			err.Error(),
 			&errors.Invalid{
-				Base: errors.Base{"invalid comment update data", false},
+				Base: errors.Base{"invalid organization update data", false},
 			},
 		)
 	}
