@@ -37,8 +37,8 @@ func (c *Donor) Validate(validate *validator.Validate) error {
 }
 
 //FromReader reads donor request from request body
-func (c *Donor) FromReader(reader io.Reader) error {
-	err := json.NewDecoder(reader).Decode(c)
+func (d *Donor) FromReader(reader io.Reader) error {
+	err := json.NewDecoder(reader).Decode(d)
 	if err != nil {
 		return fmt.Errorf("%s:%w", err.Error(), &errors.Invalid{
 			Base: errors.Base{"invalid donor data", false},
