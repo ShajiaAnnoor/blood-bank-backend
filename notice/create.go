@@ -63,7 +63,7 @@ func (c *create) giveResponse(modelNotice *model.Notice, id string) (
 ) {
 	logrus.WithFields(logrus.Fields{
 		"id": modelNotice.UserID,
-	}).Debug("User created notice successfully")
+	}).Debug("Notice created successfully")
 
 	return &dto.CreateResponse{
 		Message:    "notice created",
