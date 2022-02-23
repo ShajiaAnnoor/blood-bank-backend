@@ -37,22 +37,22 @@ func (ch *updateHandler) handleError(
 	routeutils.ServeError(w, err)
 }
 
-func (ch *updateHandler) decodeContext(
+func (uh *updateHandler) decodeContext(
 	r *http.Request,
 ) (userID string) {
 	userID = r.Context().Value("userID").(string)
 	return
 }
 
-func (ch *updateHandler) askController(update *dto.Update) (
+func (uh *updateHandler) askController(update *dto.Update) (
 	resp *dto.UpdateResponse,
 	err error,
 ) {
-	resp, err = ch.update.Update(update)
+	resp, err = uh.update.Update(update)
 	return
 }
 
-func (ch *updateHandler) responseSuccess(
+func (uh *updateHandler) responseSuccess(
 	w http.ResponseWriter,
 	resp *dto.UpdateResponse,
 ) {
@@ -77,14 +77,14 @@ func (uh *updateHandler) ServeHTTP(
 		message := "Unable to decode organization error: "
 		uh.handleError(w, err, message)
 		return
-	
+	}
 
 	organization.UserID = uh.decodeContext(r)
 
 	data, err := uh.askController(&organization)
 
 	if err != nil {
-		message := "Unable to update organization for user error: "
+		message := "Unable to update organization error: "
 		ch.handleError(w, err, message)
 		return
 	}
