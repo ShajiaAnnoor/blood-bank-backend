@@ -71,7 +71,7 @@ func (ch *updateHandler) ServeHTTP(
 	defer r.Body.Close()
 
 	organization := dto.Update{}
-	organization, err := ch.decodeBody(r.Body)
+	organization, err := dh.decodeBody(r.Body)
 
 	if err != nil {
 		message := "Unable to decode organization error: "
