@@ -18,7 +18,7 @@ type deleteHandler struct {
 	delete organization.Deleter
 }
 
-func (ch *deleteHandler) decodeBody(
+func (dh *deleteHandler) decodeBody(
 	body io.ReadCloser,
 ) (
 	organization dto.Organization,
