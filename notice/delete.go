@@ -12,7 +12,7 @@ import (
 	"gopkg.in/go-playground/validator.v9"
 )
 
-//Deleter provides an interface for updating noticees
+//Deleter provides an interface for deleting noticees
 type Deleter interface {
 	Delete(*dto.Delete) (*dto.DeleteResponse, error)
 }
