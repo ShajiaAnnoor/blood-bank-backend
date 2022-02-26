@@ -21,8 +21,8 @@ type Patient struct {
 }
 
 //Validate validates patient request data
-func (c *Patient) Validate(validate *validator.Validate) error {
-	if err := validate.Struct(c); err != nil {
+func (p *Patient) Validate(validate *validator.Validate) error {
+	if err := validate.Struct(p); err != nil {
 		return fmt.Errorf(
 			"%s:%w",
 			err.Error(),
@@ -35,8 +35,8 @@ func (c *Patient) Validate(validate *validator.Validate) error {
 }
 
 //FromReader reads patient request from request body
-func (c *Patient) FromReader(reader io.Reader) error {
-	err := json.NewDecoder(reader).Decode(c)
+func (p *Patient) FromReader(reader io.Reader) error {
+	err := json.NewDecoder(reader).Decode(p)
 	if err != nil {
 		return fmt.Errorf("%s:%w", err.Error(), &errors.Invalid{
 			Base: errors.Base{"invalid patient data", false},
