@@ -17,7 +17,7 @@ type updateHandler struct {
 	update patient.Updater
 }
 
-func (ch *updateHandler) decodeBody(
+func (uh *updateHandler) decodeBody(
 	body io.ReadCloser,
 ) (
 	patient dto.Update,
@@ -27,7 +27,7 @@ func (ch *updateHandler) decodeBody(
 	return
 }
 
-func (ch *updateHandler) handleError(
+func (uh *updateHandler) handleError(
 	w http.ResponseWriter,
 	err error,
 	message string,
@@ -36,22 +36,22 @@ func (ch *updateHandler) handleError(
 	routeutils.ServeError(w, err)
 }
 
-func (ch *updateHandler) decodeContext(
+func (uh *updateHandler) decodeContext(
 	r *http.Request,
 ) (userID string) {
 	userID = r.Context().Value("userID").(string)
 	return
 }
 
-func (ch *updateHandler) askController(update *dto.Update) (
+func (uh *updateHandler) askController(update *dto.Update) (
 	resp *dto.UpdateResponse,
 	err error,
 ) {
-	resp, err = ch.update.Update(update)
+	resp, err = uh.update.Update(update)
 	return
 }
 
-func (ch *updateHandler) responseSuccess(
+func (uh *updateHandler) responseSuccess(
 	w http.ResponseWriter,
 	resp *dto.UpdateResponse,
 ) {
@@ -63,32 +63,32 @@ func (ch *updateHandler) responseSuccess(
 }
 
 //ServeHTTP implements http.Handler interface
-func (ch *updateHandler) ServeHTTP(
+func (uh *updateHandler) ServeHTTP(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
 	defer r.Body.Close()
 
 	patient := dto.Update{}
-	patient, err := ch.decodeBody(r.Body)
+	patient, err := uh.decodeBody(r.Body)
 
 	if err != nil {
 		message := "Unable to decode patient error: "
-		ch.handleError(w, err, message)
+		uh.handleError(w, err, message)
 		return
 	}
 
-	patient.UserID = ch.decodeContext(r)
+	patient.UserID = uh.decodeContext(r)
 
-	data, err := ch.askController(&patient)
+	data, err := uh.askController(&patient)
 
 	if err != nil {
 		message := "Unable to update patient error: "
-		ch.handleError(w, err, message)
+		uh.handleError(w, err, message)
 		return
 	}
 
-	ch.responseSuccess(w, data)
+	uh.responseSuccess(w, data)
 }
 
 //UpdateParams provide parameters for patient update handler
