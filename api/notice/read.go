@@ -64,7 +64,7 @@ func (read *readHandler) handleRead(
 ) {
 
 	req := dto.ReadReq{}
-	req.CommentID = read.decodeURL(r)
+	req.NoticeID = read.decodeURL(r)
 
 	req.UserID = read.decodeContext(r)
 	// Read comment from database using comment id and user id
@@ -95,7 +95,7 @@ type ReadRouteParams struct {
 	Middleware *middleware.Auth
 }
 
-//ReadRoute provides a route to get comment
+//ReadRoute provides a route to get notice
 func ReadRoute(params ReadRouteParams) *routeutils.Route {
 
 	handler := readHandler{
