@@ -39,17 +39,17 @@ func (ch *deleteHandler) handleError(
 	routeutils.ServeError(w, err)
 }
 
-func (ch *deleteHandler) askController(
+func (dh *deleteHandler) askController(
 	patient *dto.Patient,
 ) (
 	data *dto.CreateResponse,
 	err error,
 ) {
-	data, err = ch.delete.Update(patient)
+	data, err = dh.delete.Update(patient)
 	return
 }
 
-func (ch *deleteHandler) decodeContext(
+func (dh *deleteHandler) decodeContext(
 	r *http.Request,
 ) (userID string) {
 	userID = r.Context().Value("userID").(string)
@@ -68,23 +68,23 @@ func (ch *deleteHandler) responseSuccess(
 }
 
 //ServeHTTP implements http.Handler interface
-func (ch *deleteHandler) ServeHTTP(
+func (dh *deleteHandler) ServeHTTP(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
 	defer r.Body.Close()
 
-	patient, err := ch.decodeBody(r.Body)
+	patient, err := dh.decodeBody(r.Body)
 
 	if err != nil {
 		message := "Unable to decode error: "
-		ch.handleError(w, err, message)
+		dh.handleError(w, err, message)
 		return
 	}
 
-	patient.UserID = ch.decodeContext(r)
+	patient.UserID = dh.decodeContext(r)
 
-	data, err := ch.askController(&patient)
+	data, err := dh.askController(&patient)
 
 	if err != nil {
 		message := "Unable to delete patient error: "
