@@ -38,10 +38,10 @@ func (u *update) validateData(update *dto.Update) (err error) {
 	return
 }
 
-func (u *update) convertData(update *dto.Update) (
+func (u *update) convertData(upd *dto.Update) (
 	modelNotice *model.Notice,
 ) {
-	modelNotice = u.toModel(update)
+	modelNotice = u.toModel(upd)
 	return
 }
 
@@ -59,10 +59,10 @@ func (u *update) giveResponse(
 ) *dto.UpdateResponse {
 	logrus.WithFields(logrus.Fields{
 		"id": modelNotice.UserID,
-	}).Debug("User updated notice successfully")
+	}).Debug("Updated notice successfully")
 
 	return &dto.UpdateResponse{
-		Message:    "Status updated",
+		Message:    "Notice updated",
 		OK:         true,
 		ID:         id,
 		UpdateTime: modelNotice.UpdatedAt.String(),
@@ -85,14 +85,14 @@ func (u *update) giveError() (err error) {
 }
 
 //Update implements Update interface
-func (u *update) Update(update *dto.Update) (
+func (u *update) Update(upd *dto.Update) (
 	*dto.UpdateResponse, error,
 ) {
-	if err := u.validateData(update); err != nil {
+	if err := u.validateData(upd); err != nil {
 		return nil, err
 	}
 
-	modelNotice := u.convertData(update)
+	modelNotice := u.convertData(upd)
 	id, err := u.askStore(modelNotice)
 	if err == nil {
 		return u.giveResponse(modelNotice, id), nil
@@ -103,7 +103,7 @@ func (u *update) Update(update *dto.Update) (
 	return nil, err
 }
 
-//NewUpdate returns new instance of NewCreate
+//NewUpdate returns new instance of NewUpdate
 func NewUpdate(store storenotice.Notice, validate *validator.Validate) Updater {
 	return &update{
 		store,
