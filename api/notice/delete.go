@@ -44,15 +44,15 @@ func (ch *deleteHandler) decodeContext(
 	return
 }
 
-func (ch *deleteHandler) askController(update *dto.Update) (
+func (dh *deleteHandler) askController(update *dto.Update) (
 	resp *dto.UpdateResponse,
 	err error,
 ) {
-	resp, err = ch.update.Update(update)
+	resp, err = dh.update.Update(update)
 	return
 }
 
-func (ch *deleteHandler) responseSuccess(
+func (dh *deleteHandler) responseSuccess(
 	w http.ResponseWriter,
 	resp *dto.UpdateResponse,
 ) {
@@ -64,42 +64,42 @@ func (ch *deleteHandler) responseSuccess(
 }
 
 //ServeHTTP implements http.Handler interface
-func (ch *deleteHandler) ServeHTTP(
+func (dh *deleteHandler) ServeHTTP(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
 	defer r.Body.Close()
 
 	noticeDat := dto.Update{}
-	noticeDat, err := ch.decodeBody(r.Body)
+	noticeDat, err := dh.decodeBody(r.Body)
 
 	if err != nil {
 		message := "Unable to decode notice error: "
-		ch.handleError(w, err, message)
+		dh.handleError(w, err, message)
 		return
 	}
 
-	noticeDat.UserID = ch.decodeContext(r)
+	noticeDat.UserID = dh.decodeContext(r)
 
-	data, err := ch.askController(&noticeDat)
+	data, err := dh.askController(&noticeDat)
 
 	if err != nil {
 		message := "Unable to update notice error: "
-		ch.handleError(w, err, message)
+		dh.handleError(w, err, message)
 		return
 	}
 
-	ch.responseSuccess(w, data)
+	dh.responseSuccess(w, data)
 }
 
-//DeleteParams provide parameters for notice update handler
+//DeleteParams provide parameters for notice delete handler
 type DeleteParams struct {
 	dig.In
 	Delete     notice.Updater
 	Middleware *middleware.Auth
 }
 
-//UpdateRoute provides a route that updates notice
+//UpdateRoute provides a route that deletes notice
 func DeleteRoute(params DeleteParams) *routeutils.Route {
 	handler := deleteHandler{params.Delete}
 	return &routeutils.Route{
