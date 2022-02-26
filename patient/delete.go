@@ -23,6 +23,7 @@ type delete struct {
 	validate     *validator.Validate
 }
 
+//to-do
 func (u *delete) toModel(userpatient *dto.Delete) (patient *model.Patient) {
 	patient = &model.Patient{}
 	patient.CreatedAt = time.Now().UTC()
@@ -45,15 +46,15 @@ func (u *delete) convertData(delete *dto.Delete) (
 	return
 }
 
-func (u *delete) askStore(modelPatient *model.Patient) (
+func (d *delete) askStore(modelPatient *model.Patient) (
 	id string,
 	err error,
 ) {
-	id, err = u.storePatient.Save(modelPatient)
+	id, err = d.storePatient.Save(modelPatient)
 	return
 }
 
-func (u *delete) giveResponse(
+func (d *delete) giveResponse(
 	modelPatient *model.Patient,
 	id string,
 ) *dto.DeleteResponse {
@@ -69,7 +70,7 @@ func (u *delete) giveResponse(
 	}
 }
 
-func (u *delete) giveError() (err error) {
+func (d *delete) giveError() (err error) {
 	errResp := errors.Unknown{
 		Base: errors.Base{
 			OK:      false,
@@ -85,21 +86,21 @@ func (u *delete) giveError() (err error) {
 }
 
 //Delete implements Delete interface
-func (u *delete) Delete(delete *dto.Delete) (
+func (d *delete) Delete(del *dto.Delete) (
 	*dto.DeleteResponse, error,
 ) {
-	if err := u.validateData(delete); err != nil {
+	if err := d.validateData(del); err != nil {
 		return nil, err
 	}
 
-	modelPatient := u.convertData(delete)
-	id, err := u.askStore(modelPatient)
+	modelPatient := d.convertData(del)
+	id, err := d.askStore(modelPatient)
 	if err == nil {
-		return u.giveResponse(modelPatient, id), nil
+		return d.giveResponse(modelPatient, id), nil
 	}
 
 	logrus.Error("Could not delete patient ", err)
-	err = u.giveError()
+	err = d.giveError()
 	return nil, err
 }
 
