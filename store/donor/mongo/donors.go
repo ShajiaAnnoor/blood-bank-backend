@@ -13,12 +13,12 @@ import (
 	"go.uber.org/dig"
 )
 
-//users handles user related database queries
+//donors handles donor related database queries
 type donors struct {
 	c *mongo.Collection
 }
 
-func (c *donors) convertData(modelDonor *model.Donor) (
+func (d *donors) convertData(modelDonor *model.Donor) (
 	mongoDonor mongoModel.Donor,
 	err error,
 ) {
@@ -27,10 +27,10 @@ func (c *donors) convertData(modelDonor *model.Donor) (
 }
 
 // Save saves comments from model to database
-func (c *donors) Save(modelDonor *model.Donor) (string, error) {
+func (d *donors) Save(modelDonor *model.Donor) (string, error) {
 	mongoDonor := mongoModel.Donor{}
 	var err error
-	mongoDonor, err = c.convertData(modelDonor)
+	mongoDonor, err = d.convertData(modelDonor)
 	if err != nil {
 		return "", fmt.Errorf("Could not convert model donor to mongo donor: %w", err)
 	}
@@ -43,7 +43,7 @@ func (c *donors) Save(modelDonor *model.Donor) (string, error) {
 	update := bson.M{"$set": mongoDonor}
 	upsert := true
 
-	_, err = c.c.UpdateOne(
+	_, err = d.c.UpdateOne(
 		context.Background(),
 		filter,
 		update,
@@ -104,7 +104,7 @@ func (d *donors) FindByDonorID(id string, skip int64, limit int64) ([]*model.Don
 }
 
 //CountByDonorID returns donors from donor id
-func (c *donors) CountByDonorID(id string) (int64, error) {
+func (d *donors) CountByDonorID(id string) (int64, error) {
 	objectID, err := primitive.ObjectIDFromHex(id)
 
 	if err != nil {
@@ -112,7 +112,7 @@ func (c *donors) CountByDonorID(id string) (int64, error) {
 	}
 
 	filter := bson.M{"status_id": objectID}
-	cnt, err := c.c.CountDocuments(context.Background(), filter, &options.CountOptions{})
+	cnt, err := d.c.CountDocuments(context.Background(), filter, &options.CountOptions{})
 
 	if err != nil {
 		return -1, err
@@ -166,7 +166,7 @@ func (d *donors) Search(text string, skip, limit int64) ([]*model.Donor, error) 
 }
 
 //cursorToDonors decodes donors one by one from the search result
-func (c *donors) cursorToDonors(cursor *mongo.Cursor) ([]*model.Donor, error) {
+func (d *donors) cursorToDonors(cursor *mongo.Cursor) ([]*model.Donor, error) {
 	defer cursor.Close(context.Background())
 	modelDonors := []*model.Donor{}
 
