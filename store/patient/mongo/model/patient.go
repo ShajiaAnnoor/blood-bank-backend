@@ -18,19 +18,19 @@ type Patient struct {
 }
 
 //FromModel converts model data to db data for comments
-func (c *Patient) FromModel(modelComment *model.Patient) error {
-	c.Comment = modelPatient.Comment
-	c.CreatedAt = modelPatient.CreatedAt
-	c.UpdatedAt = modelPatient.UpdatedAt
+func (p *Patient) FromModel(modelComment *model.Patient) error {
+	p.Comment = modelPatient.Comment
+	p.CreatedAt = modelPatient.CreatedAt
+	p.UpdatedAt = modelPatient.UpdatedAt
 
 	var err error
-	c.StatusID, err = primitive.ObjectIDFromHex(modelPatient.PatientID)
+	p.StatusID, err = primitive.ObjectIDFromHex(modelPatient.PatientID)
 
 	if err != nil {
 		return err
 	}
 
-	c.UserID, err = primitive.ObjectIDFromHex(modelPatient.UserID)
+	p.UserID, err = primitive.ObjectIDFromHex(modelPatient.UserID)
 	if err != nil {
 		return err
 	}
@@ -44,7 +44,7 @@ func (c *Patient) FromModel(modelComment *model.Patient) error {
 		return err
 	}
 
-	c.ID = id
+	p.ID = id
 	return nil
 }
 
