@@ -18,7 +18,7 @@ type patients struct {
 	c *mongo.Collection
 }
 
-func (c *patients) convertData(modelNotice *model.Patient) (
+func (p *patients) convertData(modelNotice *model.Patient) (
 	mongoPatient mongoModel.Patient,
 	err error,
 ) {
@@ -26,11 +26,11 @@ func (c *patients) convertData(modelNotice *model.Patient) (
 	return
 }
 
-// Save saves comments from model to database
-func (c *patients) Save(modelPatient *model.Patient) (string, error) {
+// Save saves patients from model to database
+func (p *patients) Save(modelPatient *model.Patient) (string, error) {
 	mongoNotice := mongoModel.Patient{}
 	var err error
-	mongoPatient, err = c.convertData(modelPatient)
+	mongoPatient, err = p.convertData(modelPatient)
 	if err != nil {
 		return "", fmt.Errorf("Could not convert model patient to mongo patient: %w", err)
 	}
@@ -43,7 +43,7 @@ func (c *patients) Save(modelPatient *model.Patient) (string, error) {
 	update := bson.M{"$set": mongoNotice}
 	upsert := true
 
-	_, err = c.c.UpdateOne(
+	_, err = p.c.UpdateOne(
 		context.Background(),
 		filter,
 		update,
@@ -56,14 +56,14 @@ func (c *patients) Save(modelPatient *model.Patient) (string, error) {
 }
 
 //FindByID finds a patient by id
-func (c *patients) FindByID(id string) (*model.Patient, error) {
+func (p *patients) FindByID(id string) (*model.Patient, error) {
 	objectID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return nil, fmt.Errorf("Invalid id %s : %w", id, err)
 	}
 
 	filter := bson.M{"_id": objectID}
-	result := c.c.FindOne(
+	result := p.c.FindOne(
 		context.Background(),
 		filter,
 		&options.FindOneOptions{},
@@ -73,15 +73,15 @@ func (c *patients) FindByID(id string) (*model.Patient, error) {
 	}
 
 	patient := mongoModel.Patient{}
-	if err := result.Decode(&notice); err != nil {
+	if err := result.Decode(&patient); err != nil {
 		return nil, fmt.Errorf("Could not decode mongo model to model : %w", err)
 	}
 
-	return notice.ModelPatient(), nil
+	return patient.ModelPatient(), nil
 }
 
-//FindByStatusID finds a comment by status id
-func (c *patients) FindByNoticeID(id string, skip int64, limit int64) ([]*model.Patient, error) {
+//FindByStatusID finds a patient by patient id
+func (p *patients) FindByNoticeID(id string, skip int64, limit int64) ([]*model.Patient, error) {
 	objectID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return nil, fmt.Errorf("Invalid id %s : %w", id, err)
@@ -94,7 +94,7 @@ func (c *patients) FindByNoticeID(id string, skip int64, limit int64) ([]*model.
 	findOptions.SetSkip(skip)
 	findOptions.SetLimit(limit)
 
-	cursor, err := c.c.Find(
+	cursor, err := p.c.Find(
 		context.Background(),
 		filter,
 		findOptions,
@@ -104,11 +104,11 @@ func (c *patients) FindByNoticeID(id string, skip int64, limit int64) ([]*model.
 		return nil, err
 	}
 
-	return c.cursorToPatients(cursor)
+	return p.cursorToPatients(cursor)
 }
 
 //CountByStatusID returns patients from patient id
-func (c *patients) CountByPatientID(id string) (int64, error) {
+func (p *patients) CountByPatientID(id string) (int64, error) {
 	objectID, err := primitive.ObjectIDFromHex(id)
 
 	if err != nil {
