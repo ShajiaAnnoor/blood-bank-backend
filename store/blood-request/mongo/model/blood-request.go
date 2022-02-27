@@ -18,19 +18,19 @@ type BloodReq struct {
 }
 
 //FromModel converts model data to db data for blood requests
-func (c *BloodReq) FromModel(modelRequest *model.BloodReq) error {
-	c.Request = modelRequest.Request
-	c.CreatedAt = modelRequest.CreatedAt
-	c.UpdatedAt = modelRequest.UpdatedAt
+func (b *BloodReq) FromModel(modelRequest *model.BloodReq) error {
+	b.Request = modelRequest.Request
+	b.CreatedAt = modelRequest.CreatedAt
+	b.UpdatedAt = modelRequest.UpdatedAt
 
 	var err error
-	c.RequestID, err = primitive.ObjectIDFromHex(modelRequest.RequestID)
+	b.RequestID, err = primitive.ObjectIDFromHex(modelRequest.RequestID)
 
 	if err != nil {
 		return err
 	}
 
-	c.UserID, err = primitive.ObjectIDFromHex(modelRequest.UserID)
+	b.UserID, err = primitive.ObjectIDFromHex(modelRequest.UserID)
 	if err != nil {
 		return err
 	}
@@ -44,19 +44,19 @@ func (c *BloodReq) FromModel(modelRequest *model.BloodReq) error {
 		return err
 	}
 
-	c.ID = id
+	b.ID = id
 	return nil
 }
 
 //ModelRequest converts bson to model
-func (c *BloodReq) ModelRequest() *model.Request {
+func (b *BloodReq) ModelRequest() *model.Request {
 	bloodreq := model.Request{}
-	bloodreq.ID = c.ID.Hex()
-	bloodreq.Request = c.Request
-	bloodreq.UserID = c.UserID.Hex()
-	bloodreq.RequestID = c.RequestID.Hex()
-	bloodreq.CreatedAt = c.CreatedAt
-	bloodreq.UpdatedAt = c.UpdatedAt
+	bloodreq.ID = b.ID.Hex()
+	bloodreq.Request = b.Request
+	bloodreq.UserID = b.UserID.Hex()
+	bloodreq.RequestID = b.RequestID.Hex()
+	bloodreq.CreatedAt = b.CreatedAt
+	bloodreq.UpdatedAt = b.UpdatedAt
 
 	return &bloodreq
 }
