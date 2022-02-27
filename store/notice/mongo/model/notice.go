@@ -18,19 +18,19 @@ type Notice struct {
 }
 
 //FromModel converts model data to db data for notices
-func (c *Notice) FromModel(modelNotice *model.Notice) error {
-	c.Notice = modelNotice.Notice
-	c.CreatedAt = modelNotice.CreatedAt
-	c.UpdatedAt = modelNotice.UpdatedAt
+func (n *Notice) FromModel(modelNotice *model.Notice) error {
+	n.Notice = modelNotice.Notice
+	n.CreatedAt = modelNotice.CreatedAt
+	n.UpdatedAt = modelNotice.UpdatedAt
 
 	var err error
-	c.StatusID, err = primitive.ObjectIDFromHex(modelNotice.StatusID)
+	n.StatusID, err = primitive.ObjectIDFromHex(modelNotice.StatusID)
 
 	if err != nil {
 		return err
 	}
 
-	c.UserID, err = primitive.ObjectIDFromHex(modelNotice.UserID)
+	n.UserID, err = primitive.ObjectIDFromHex(modelNotice.UserID)
 	if err != nil {
 		return err
 	}
@@ -44,19 +44,19 @@ func (c *Notice) FromModel(modelNotice *model.Notice) error {
 		return err
 	}
 
-	c.ID = id
+	n.ID = id
 	return nil
 }
 
 //ModelNotice converts bson to model
-func (c *Notice) ModelNotice() *model.Notice {
+func (n *Notice) ModelNotice() *model.Notice {
 	notice := model.Notice{}
-	notice.ID = c.ID.Hex()
-	notice.Notice = c.Notice
-	notice.UserID = c.UserID.Hex()
-	notice.StatusID = c.StatusID.Hex()
-	notice.CreatedAt = c.CreatedAt
-	notice.UpdatedAt = c.UpdatedAt
+	notice.ID = n.ID.Hex()
+	notice.Notice = n.Notice
+	notice.UserID = n.UserID.Hex()
+	notice.StatusID = n.StatusID.Hex()
+	notice.CreatedAt = n.CreatedAt
+	notice.UpdatedAt = n.UpdatedAt
 
 	return &notice
 }
