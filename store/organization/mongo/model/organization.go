@@ -18,19 +18,19 @@ type Organization struct {
 }
 
 //FromModel converts model data to db data for comments
-func (c *Organization) FromModel(modelOrganization *model.Organization) error {
-	c.Organization = modelOrganization.Organization
-	c.CreatedAt = modelOrganization.CreatedAt
-	c.UpdatedAt = modelOrganization.UpdatedAt
+func (o *Organization) FromModel(modelOrganization *model.Organization) error {
+	o.Organization = modelOrganization.Organization
+	o.CreatedAt = modelOrganization.CreatedAt
+	o.UpdatedAt = modelOrganization.UpdatedAt
 
 	var err error
-	c.StatusID, err = primitive.ObjectIDFromHex(modelOrganization.StatusID)
+	o.StatusID, err = primitive.ObjectIDFromHex(modelOrganization.StatusID)
 
 	if err != nil {
 		return err
 	}
 
-	c.UserID, err = primitive.ObjectIDFromHex(modelOrganization.UserID)
+	o.UserID, err = primitive.ObjectIDFromHex(modelOrganization.UserID)
 	if err != nil {
 		return err
 	}
@@ -44,19 +44,19 @@ func (c *Organization) FromModel(modelOrganization *model.Organization) error {
 		return err
 	}
 
-	c.ID = id
+	o.ID = id
 	return nil
 }
 
 //ModelOrganization converts bson to model
-func (c *Organization) ModelOrganization() *model.Organization {
+func (o *Organization) ModelOrganization() *model.Organization {
 	organization := model.Organization{}
-	organization.ID = c.ID.Hex()
-	organization.Comment = c.Organization
-	organization.UserID = c.UserID.Hex()
-	organization.StatusID = c.StatusID.Hex()
-	organization.CreatedAt = c.CreatedAt
-	organization.UpdatedAt = c.UpdatedAt
+	organization.ID = o.ID.Hex()
+	organization.Comment = o.Organization
+	organization.UserID = o.UserID.Hex()
+	organization.StatusID = o.StatusID.Hex()
+	organization.CreatedAt = o.CreatedAt
+	organization.UpdatedAt = o.UpdatedAt
 
 	return &organization
 }
