@@ -130,7 +130,7 @@ func (n *notices) CountByNoticeID(id string) (int64, error) {
 }
 
 //FindByIDs returns all the users from multiple user ids
-func (c *notices) FindByIDs(ids ...string) ([]*model.Notice, error) {
+func (n *notices) FindByIDs(ids ...string) ([]*model.Notice, error) {
 	objectIDs := []primitive.ObjectID{}
 	for _, id := range ids {
 		objectID, err := primitive.ObjectIDFromHex(id)
@@ -147,7 +147,7 @@ func (c *notices) FindByIDs(ids ...string) ([]*model.Notice, error) {
 		},
 	}
 
-	cursor, err := c.c.Find(
+	cursor, err := n.c.Find(
 		context.Background(),
 		filter,
 		nil,
@@ -156,13 +156,13 @@ func (c *notices) FindByIDs(ids ...string) ([]*model.Notice, error) {
 		return nil, err
 	}
 
-	return c.cursorToNotices(cursor)
+	return n.cursorToNotices(cursor)
 }
 
 //Search search for notices given the text, skip and limit
-func (c *notices) Search(text string, skip, limit int64) ([]*model.Notice, error) {
+func (n *notices) Search(text string, skip, limit int64) ([]*model.Notice, error) {
 	filter := bson.M{"$text": bson.M{"$search": text}}
-	cursor, err := c.c.Find(
+	cursor, err := n.c.Find(
 		context.Background(),
 		filter,
 		&options.FindOptions{
@@ -173,11 +173,11 @@ func (c *notices) Search(text string, skip, limit int64) ([]*model.Notice, error
 		return nil, err
 	}
 
-	return c.cursorToNotices(cursor)
+	return n.cursorToNotices(cursor)
 }
 
 //cursorToNotices decodes notices one by one from the search result
-func (c *notices) cursorToNotices(cursor *mongo.Cursor) ([]*model.Notice, error) {
+func (n *notices) cursorToNotices(cursor *mongo.Cursor) ([]*model.Notice, error) {
 	defer cursor.Close(context.Background())
 	modelNotices := []*model.Notice{}
 
