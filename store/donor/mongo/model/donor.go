@@ -16,20 +16,20 @@ type Donor struct {
 	UpdatedAt time.Time          `bson:"updated_at"`
 }
 
-//FromModel converts model data to db data for comments
-func (c *Donor) FromModel(modelDonor *model.Donor) error {
-	c.Comment = modelDonor.Comment
-	c.CreatedAt = modelDonor.CreatedAt
-	c.UpdatedAt = modelDonor.UpdatedAt
+//FromModel converts model data to db data for donors
+func (d *Donor) FromModel(modelDonor *model.Donor) error {
+	d.Donor = modelDonor.Donor
+	d.CreatedAt = modelDonor.CreatedAt
+	d.UpdatedAt = modelDonor.UpdatedAt
 
 	var err error
-	c.StatusID, err = primitive.ObjectIDFromHex(modelDonor.StatusID)
+	d.StatusID, err = primitive.ObjectIDFromHex(modelDonor.StatusID)
 
 	if err != nil {
 		return err
 	}
 
-	c.UserID, err = primitive.ObjectIDFromHex(modelDonor.UserID)
+	d.UserID, err = primitive.ObjectIDFromHex(modelDonor.UserID)
 	if err != nil {
 		return err
 	}
@@ -43,19 +43,19 @@ func (c *Donor) FromModel(modelDonor *model.Donor) error {
 		return err
 	}
 
-	c.ID = id
+	d.ID = id
 	return nil
 }
 
 //ModelDonor converts bson to model
-func (c *Donor) ModelDonor() *model.Donor {
+func (d *Donor) ModelDonor() *model.Donor {
 	donor := model.Donor{}
-	donor.ID = c.ID.Hex()
-	donor.Comment = c.Comment
-	donor.UserID = c.UserID.Hex()
-	donor.StatusID = c.StatusID.Hex()
-	donor.CreatedAt = c.CreatedAt
-	donor.UpdatedAt = c.UpdatedAt
+	donor.ID = d.ID.Hex()
+	donor.Comment = d.Comment
+	donor.UserID = d.UserID.Hex()
+	donor.StatusID = d.StatusID.Hex()
+	donor.CreatedAt = d.CreatedAt
+	donor.UpdatedAt = d.UpdatedAt
 
 	return &donor
 }
