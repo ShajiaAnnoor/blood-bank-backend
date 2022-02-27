@@ -13,12 +13,12 @@ import (
 	"go.uber.org/dig"
 )
 
-//users handles user related database queries
+//users handles organization related database queries
 type organizations struct {
 	c *mongo.Collection
 }
 
-func (c *organizations) convertData(modelDonor *model.Donor) (
+func (o *organizations) convertData(modelDonor *model.Donor) (
 	mongoDonor mongoModel.Donor,
 	err error,
 ) {
@@ -26,24 +26,24 @@ func (c *organizations) convertData(modelDonor *model.Donor) (
 	return
 }
 
-// Save saves comments from model to database
-func (c *organizations) Save(modelDonor *model.Donor) (string, error) {
-	mongoDonor := mongoModel.Donor{}
+// Save saves organizations from model to database
+func (o *organizations) Save(modelDonor *model.Organization) (string, error) {
+	mongoOrganization := mongoModel.Organization{}
 	var err error
-	mongoDonor, err = c.convertData(modelDonor)
+	mongoOrganization, err = c.convertData(modelOrganization)
 	if err != nil {
 		return "", fmt.Errorf("Could not convert model donor to mongo donor: %w", err)
 	}
 
-	if modelDonor.ID == "" {
-		mongoDonor.ID = primitive.NewObjectID()
+	if modelOrganization.ID == "" {
+		mongoOrganization.ID = primitive.NewObjectID()
 	}
 
 	filter := bson.M{"_id": mongoDonor.ID}
 	update := bson.M{"$set": mongoDonor}
 	upsert := true
 
-	_, err = c.c.UpdateOne(
+	_, err = o.c.UpdateOne(
 		context.Background(),
 		filter,
 		update,
@@ -52,7 +52,7 @@ func (c *organizations) Save(modelDonor *model.Donor) (string, error) {
 		},
 	)
 
-	return mongoDonor.ID.Hex(), err
+	return mongoOrganization.ID.Hex(), err
 }
 
 //FindByID finds a organization by id
@@ -81,7 +81,7 @@ func (d *organizations) FindByID(id string) (*model.Organization, error) {
 }
 
 //FindByDonorID finds a donor by donor id
-func (o *organizations) FindByOrganizationID(id string, skip int64, limit int64) ([]*model.Donor, error) {
+func (o *organizations) FindByOrganizationID(id string, skip int64, limit int64) ([]*model.Organization, error) {
 	objectID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return nil, fmt.Errorf("Invalid id %s : %w", id, err)
@@ -104,15 +104,15 @@ func (o *organizations) FindByOrganizationID(id string, skip int64, limit int64)
 }
 
 //CountByOrganizationID returns donors from donor id
-func (c *organizations) CountByOrganizationID(id string) (int64, error) {
+func (o *organizations) CountByOrganizationID(id string) (int64, error) {
 	objectID, err := primitive.ObjectIDFromHex(id)
 
 	if err != nil {
 		return -1, fmt.Errorf("Invalid id %s : %w", id, err)
 	}
 
-	filter := bson.M{"status_id": objectID}
-	cnt, err := c.c.CountDocuments(context.Background(), filter, &options.CountOptions{})
+	filter := bson.M{"organization_id": objectID}
+	cnt, err := o.c.CountDocuments(context.Background(), filter, &options.CountOptions{})
 
 	if err != nil {
 		return -1, err
@@ -122,7 +122,7 @@ func (c *organizations) CountByOrganizationID(id string) (int64, error) {
 }
 
 //FindByIDs returns all the donors from multiple donor ids
-func (d *organizations) FindByIDs(ids ...string) ([]*model.Donor, error) {
+func (o *organizations) FindByIDs(ids ...string) ([]*model.Organization, error) {
 	objectIDs := []primitive.ObjectID{}
 	for _, id := range ids {
 		objectID, err := primitive.ObjectIDFromHex(id)
@@ -139,16 +139,16 @@ func (d *organizations) FindByIDs(ids ...string) ([]*model.Donor, error) {
 		},
 	}
 
-	cursor, err := d.c.Find(context.Background(), filter, nil)
+	cursor, err := o.c.Find(context.Background(), filter, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return d.cursorToOrganizations(cursor)
+	return o.cursorToOrganizations(cursor)
 }
 
 //Search search for users given the text, skip and limit
-func (d *organizations) Search(text string, skip, limit int64) ([]*model.Organization, error) {
+func (o *organizations) Search(text string, skip, limit int64) ([]*model.Organization, error) {
 	filter := bson.M{"$text": bson.M{"$search": text}}
 	cursor, err := d.c.Find(
 		context.Background(),
