@@ -86,7 +86,7 @@ func (a *MessageNotification) Middleware(h http.Handler) http.Handler {
 			return
 		}
 
-		opt := option.WithCredentialsFile("/root/src/src/gitlab.com/Aubichol/hrishi-backend/firebase/fire.json")
+		opt := option.WithCredentialsFile("/root/src/src/gitlab.com/Aubichol/blood-bank-backend/firebase/fire.json")
 
 		app, err := firebase.NewApp(context.Background(), nil, opt)
 
