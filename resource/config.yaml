@@ -31,6 +31,6 @@ wsclient:
   read_message_size: 512
 
 file:
-  location: "/root/src/src/gitlab.com/Aubichol/hrishi-backend/images"
-  firebase: "/root/src/src/gitlab.com/Aubichol/hrishi-backend/firebase"
+  location: "/root/src/src/gitlab.com/Aubichol/blood-bank-backend/images"
+  firebase: "/root/src/src/gitlab.com/Aubichol/blood-bank-backend/firebase"
   max_size: 6291456
