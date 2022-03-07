@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"io"
 
-	"gitlab.com/Aubichol/hrishi-backend/errors"
+	"gitlab.com/Aubichol/blood-bank-backend/errors"
 	"gopkg.in/go-playground/validator.v9"
 )
 
