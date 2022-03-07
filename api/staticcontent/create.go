@@ -5,11 +5,11 @@ import (
 	"net/http"
 
 	"github.com/sirupsen/logrus"
-	"gitlab.com/Aubichol/blook-bank-backend/api/middleware"
-	"gitlab.com/Aubichol/blook-bank-backend/api/routeutils"
-	"gitlab.com/Aubichol/blook-bank-backend/apipattern"
-	"gitlab.com/Aubichol/blook-bank-backend/staticcontent"
-	"gitlab.com/Aubichol/blook-bank-backend/staticcontent/dto"
+	"gitlab.com/Aubichol/blood-bank-backend/api/middleware"
+	"gitlab.com/Aubichol/blood-bank-backend/api/routeutils"
+	"gitlab.com/Aubichol/blood-bank-backend/apipattern"
+	"gitlab.com/Aubichol/blood-bank-backend/staticcontent"
+	"gitlab.com/Aubichol/blood-bank-backend/staticcontent/dto"
 	"go.uber.org/dig"
 )
 
