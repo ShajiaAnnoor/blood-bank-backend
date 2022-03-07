@@ -5,7 +5,7 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
-	"gitlab.com/Aubichol/hrishi-backend/api/routeutils"
+	"gitlab.com/Aubichol/blood-bank-backend/api/routeutils"
 	"go.uber.org/dig"
 )
 
