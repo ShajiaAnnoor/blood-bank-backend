@@ -45,13 +45,6 @@ func (read *patientReader) prepareResponse(
 	return
 }
 
-func (read *patientReader) isSameUser(giverID, userID string) (
-	isSame bool,
-) {
-	isSame = giverID == userID
-	return
-}
-
 func (read *patientReader) Read(patientReq *dto.ReadReq) (*dto.ReadResp, error) {
 	//TO-DO: some validation on the input data is required
 	patient, err := read.askStore(patientReq.PatientID)
