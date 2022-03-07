@@ -12,12 +12,12 @@ import (
 	"gopkg.in/go-playground/validator.v9"
 )
 
-//Updater provides an interface for updating patientes
+//Updater provides an interface for updating patients
 type Updater interface {
 	Update(*dto.Update) (*dto.UpdateResponse, error)
 }
 
-// update updates user patient
+// update updates user
 type update struct {
 	storePatient storepatient.Patient
 	validate     *validator.Validate
