@@ -8,7 +8,6 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/errors"
 	"gitlab.com/Aubichol/blood-bank-backend/model"
 	"gitlab.com/Aubichol/blood-bank-backend/organization/dto"
-	storeorganization "gitlab.com/Aubichol/blood-bank-backend/store/notice"
 	storeorganization "gitlab.com/Aubichol/blood-bank-backend/store/organization"
 	"gopkg.in/go-playground/validator.v9"
 )
