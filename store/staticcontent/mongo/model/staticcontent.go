@@ -3,7 +3,7 @@ package model
 import (
 	"time"
 
-	"gitlab.com/Aubichol/hrishi-backend/model"
+	"gitlab.com/Aubichol/blood-bank-backend/model"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
