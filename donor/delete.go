@@ -1,4 +1,4 @@
-package notice
+package donor
 
 import (
 	"fmt"
