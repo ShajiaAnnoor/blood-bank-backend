@@ -1,6 +1,6 @@
 package comment
 
-import "gitlab.com/Aubichol/hrishi-backend/model"
+import "gitlab.com/Aubichol/blood-bank-backend/model"
 
 // Patients wraps patients functionality
 type Patients interface {
