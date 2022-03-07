@@ -16,14 +16,14 @@ type Reader interface {
 
 //noticeReader implements Reader interface
 type noticeReader struct {
-	notices notice.Notice
+	notices storenotice.Notice
 }
 
 func (read *noticeReader) askStore(noticeID string) (
 	notice *model.Notice,
 	err error,
 ) {
-	notice, err = read.noticees.FindByID(noticeID)
+	notice, err = read.notices.FindByID(noticeID)
 	return
 }
 
@@ -81,6 +81,6 @@ type NewReaderParams struct {
 //NewReader provides Reader
 func NewReader(params NewReaderParams) Reader {
 	return &noticeReader{
-		noticees: params.Notice,
+		notices: params.Notice,
 	}
 }
