@@ -1,7 +1,7 @@
 package model
 
 import (
-	"gitlab.com/Aubichol/hrishi-backend/model"
+	"gitlab.com/Aubichol/blood-bank-backend/model"
 )
 
 //BirthDate defines mongodb data type for BirthDate
