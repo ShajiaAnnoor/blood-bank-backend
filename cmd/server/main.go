@@ -1,8 +1,9 @@
 package main
 
 import (
-	"blood-bank-backend/bootstrap/server"
 	"net/http"
+
+	"gitlab.com/Aubichol/blood-bank-backend/bootstrap/server"
 
 	"github.com/sirupsen/logrus"
 	"gitlab.com/Aubichol/blood-bank-backend/bootstrap/server"
