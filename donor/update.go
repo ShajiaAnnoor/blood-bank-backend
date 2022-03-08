@@ -44,7 +44,7 @@ func (u *update) convertData(update *dto.Update) (
 	return
 }
 
-func (u *update) askStore(modelStatus *model.Donor) (
+func (u *update) askStore(modelDonor *model.Donor) (
 	id string,
 	err error,
 ) {
