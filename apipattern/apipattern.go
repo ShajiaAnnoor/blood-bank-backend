@@ -22,7 +22,7 @@ const DonorRead string = "/api/v1/donor/get/{id}"
 const DonorUpdate string = "/api/v1/donor/update"
 
 //BloodReqDelete holds the api string for getting a blood request
-const DonorDelete string = "/api/v1/bloodrequest/delete"
+const DonorDelete string = "/api/v1/donor/delete"
 
 //NoticeCreate holds the api string for creating a notice
 const NoticeCreate string = "/api/v1/notice/create"
@@ -60,16 +60,16 @@ const PatientUpdate string = "/api/v1/patient/update"
 //PatientDelete holds the api string for getting a blood request
 const PatientDelete string = "/api/v1/patient/delete"
 
-//PatientCreate holds the api string for creating a staticcontent
+// StaticContentCreate holds the api string for creating a staticcontent
 const StaticContentCreate string = "/api/v1/staticcontent/create"
 
-//PatientRead holds the api string for reading staticcontents
+// StaticContentRead holds the api string for reading staticcontents
 const StaticContentRead string = "/api/v1/staticcontent/get/{id}"
 
-//PatientUpdate holds the api string for updating staticcontent
+// StaticContentUpdate holds the api string for updating staticcontent
 const StaticContentUpdate string = "/api/v1/staticcontent/update"
 
-//PatientDelete holds the api string for getting a staticcontent
+// StaticContentDelete holds the api string for getting a staticcontent
 const StaticContentDelete string = "/api/v1/staticcontent/delete"
 
 //PublicUserList holds the api for giving public user list
@@ -98,21 +98,6 @@ const ProfileUpdate string = "/api/v1/users/me"
 
 //ProfileUser holds the api for giving information about a user's profile
 const ProfileUser string = "/api/v1/users/me"
-
-//StatusCreate holds the api for creating a status by a user
-const StatusCreate string = "/api/v1/status/create"
-
-//StatusByUser holds the api for giving status by user id
-const StatusByUser string = "/api/v1/status/getbyuser/{id}"
-
-//NewsFeed holds the api for giving news feed given user id
-const NewsFeed string = "/api/v1/newsfeed/user/{id}"
-
-//StatusRead holds the api for reading status by id
-const StatusRead string = "/api/v1/status/get/{id}"
-
-//StatusUpdate holds the api for updating status
-const StatusUpdate string = "/api/v1/status/update"
 
 //PictureDownload holds the api for downloading picture
 const PictureDownload string = "/api/v1/pictures/{id}"
