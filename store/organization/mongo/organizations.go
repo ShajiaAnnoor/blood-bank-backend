@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"gitlab.com/Aubichol/blood-bank-backend/model"
-	mongoModel "gitlab.com/Aubichol/blood-bank-backend/store/donor/mongo/model"
+	mongoModel "gitlab.com/Aubichol/blood-bank-backend/store/organization/mongo/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
