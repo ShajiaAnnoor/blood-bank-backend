@@ -1,6 +1,7 @@
 package main
 
 import (
+	"blood-bank-backend/bootstrap/server"
 	"net/http"
 
 	"github.com/sirupsen/logrus"
@@ -36,6 +37,10 @@ func main() {
 	//All data
 	server.Patient(c)
 	server.Organization(c)
+	server.BloodRequest(c)
+	server.Donor(c)
+	server.Notice(c)
+	server.StaticContent(c)
 
 	server.WS(c)
 	server.Event(c)
