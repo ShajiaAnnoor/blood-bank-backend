@@ -9,9 +9,9 @@ import (
 
 	"github.com/gorilla/websocket"
 	"github.com/sirupsen/logrus"
-	"gitlab.com/Aubichol/hrishi-backend/cfg"
-	"gitlab.com/Aubichol/hrishi-backend/pkg/queue"
-	pkgsync "gitlab.com/Aubichol/hrishi-backend/pkg/sync"
+	"gitlab.com/Aubichol/blood-bank-backend/cfg"
+	"gitlab.com/Aubichol/blood-bank-backend/pkg/queue"
+	pkgsync "gitlab.com/Aubichol/blood-bank-backend/pkg/sync"
 )
 
 var (
