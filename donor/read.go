@@ -5,7 +5,7 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/donor/dto"
 	"gitlab.com/Aubichol/blood-bank-backend/errors"
 	"gitlab.com/Aubichol/blood-bank-backend/model"
-	storedonor "gitlab.com/Aubichol/blood-bank-backend/store/Donor"
+	storedonor "gitlab.com/Aubichol/blood-bank-backend/store/donor"
 	"go.uber.org/dig"
 )
 
@@ -16,14 +16,14 @@ type Reader interface {
 
 //donorReader implements Reader interface
 type donorReader struct {
-	donores donor.Donor
+	donors storedonor.Donor
 }
 
 func (read *donorReader) askStore(donorID string) (
 	donor *model.Donor,
 	err error,
 ) {
-	donor, err = read.donores.FindByID(donorID)
+	donor, err = read.donors.FindByID(donorID)
 	return
 }
 
@@ -68,6 +68,6 @@ type NewReaderParams struct {
 //NewReader provides Reader
 func NewReader(params NewReaderParams) Reader {
 	return &donorReader{
-		donores: params.Donor,
+		donors: params.Donor,
 	}
 }
