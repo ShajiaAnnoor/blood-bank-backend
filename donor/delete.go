@@ -5,10 +5,10 @@ import (
 	"time"
 
 	"github.com/sirupsen/logrus"
+	"gitlab.com/Aubichol/blood-bank-backend/donor/dto"
 	"gitlab.com/Aubichol/blood-bank-backend/errors"
 	"gitlab.com/Aubichol/blood-bank-backend/model"
-	"gitlab.com/Aubichol/blood-bank-backend/notice/dto"
-	storenotice "gitlab.com/Aubichol/blood-bank-backend/store/notice"
+	storedonor "gitlab.com/Aubichol/blood-bank-backend/store/donor"
 	"gopkg.in/go-playground/validator.v9"
 )
 
@@ -19,8 +19,8 @@ type Deleter interface {
 
 // delete deletes notice
 type delete struct {
-	storeNotice storenotice.Notice
-	validate    *validator.Validate
+	storeDonor storedonor.Donor
+	validate   *validator.Validate
 }
 
 func (u *delete) toModel(usernotice *dto.Delete) (notice *model.Notice) {
@@ -49,7 +49,7 @@ func (u *delete) askStore(modelNotice *model.Notice) (
 	id string,
 	err error,
 ) {
-	id, err = u.storeNotice.Save(modelNotice)
+	id, err = u.storeDonor.Save(modelNotice)
 	return
 }
 
@@ -104,7 +104,7 @@ func (u *delete) Delete(delete *dto.Delete) (
 }
 
 //NewDelete returns new instance of NewCreate
-func NewDelete(store storenotice.Notice, validate *validator.Validate) Deleter {
+func NewDelete(store storedonor.Donor, validate *validator.Validate) Deleter {
 	return &delete{
 		store,
 		validate,
