@@ -4,7 +4,7 @@ import (
 	"errors"
 
 	"github.com/sirupsen/logrus"
-	"gitlab.com/Aubichol/hrishi-backend/user"
+	"gitlab.com/Aubichol/blood-bank-backend/user"
 )
 
 const token = "token"
