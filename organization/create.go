@@ -10,7 +10,7 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/organization/dto"
 	storeorganization "gitlab.com/Aubichol/blood-bank-backend/store/organization"
 	"go.uber.org/dig"
-	"gopkg.in/go-playground/validator.v9"
+	validator "gopkg.in/go-playground/validator.v9"
 )
 
 // Creater provides create method for creating user organization
