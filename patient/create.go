@@ -15,13 +15,13 @@ import (
 
 // Creater provides create method for creating patient
 type Creater interface {
-	Create(create *dto.Patient (*dto.CreateResponse, error)
+	Create(create *dto.Patient) (*dto.CreateResponse, error)
 }
 
 // create creates patient
 type create struct {
 	storePatient storepatient.Patient
-	validate    *validator.Validate
+	validate     *validator.Validate
 }
 
 func (c *create) toModel(userpatient *dto.Patient) (
@@ -66,10 +66,10 @@ func (c *create) giveResponse(modelPatient *model.Patient, id string) (
 	}).Debug("Patient created successfully")
 
 	return &dto.CreateResponse{
-		Message:    "patient created",
-		OK:         true,
+		Message:     "patient created",
+		OK:          true,
 		PatientTime: modelPatient.CreatedAt.String(),
-		ID:         id,
+		ID:          id,
 	}, nil
 }
 
