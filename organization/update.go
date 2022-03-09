@@ -9,7 +9,7 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/model"
 	"gitlab.com/Aubichol/blood-bank-backend/organization/dto"
 	storeorganization "gitlab.com/Aubichol/blood-bank-backend/store/organization"
-	"gopkg.in/go-playground/validator.v9"
+	validator "gopkg.in/go-playground/validator.v9"
 )
 
 //Updater provides an interface for updating organizationes
