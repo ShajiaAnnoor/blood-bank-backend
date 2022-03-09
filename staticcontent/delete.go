@@ -9,7 +9,7 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/model"
 	"gitlab.com/Aubichol/blood-bank-backend/staticcontent/dto"
 	storestaticcontent "gitlab.com/Aubichol/blood-bank-backend/store/staticcontent"
-	"gopkg.in/go-playground/validator.v9"
+	validator "gopkg.in/go-playground/validator.v9"
 )
 
 //Deleter provides an interface for updating staticcontentes
