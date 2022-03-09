@@ -9,7 +9,7 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/errors"
 	"gitlab.com/Aubichol/blood-bank-backend/model"
 	storedonor "gitlab.com/Aubichol/blood-bank-backend/store/donor"
-	"gopkg.in/go-playground/validator.v9"
+	validator "gopkg.in/go-playground/validator.v9"
 )
 
 //Deleter provides an interface for updating noticees
