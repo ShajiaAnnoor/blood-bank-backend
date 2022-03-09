@@ -9,7 +9,7 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/model"
 	"gitlab.com/Aubichol/blood-bank-backend/patient/dto"
 	storepatient "gitlab.com/Aubichol/blood-bank-backend/store/patient"
-	"gopkg.in/go-playground/validator.v9"
+	validator "gopkg.in/go-playground/validator.v9"
 )
 
 //Updater provides an interface for updating patients
