@@ -8,7 +8,8 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/errors"
 	"gitlab.com/Aubichol/blood-bank-backend/model"
 	"gitlab.com/Aubichol/blood-bank-backend/staticcontent/dto"
-	"gopkg.in/go-playground/validator.v9"
+	storestaticcontent "gitlab.com/Aubichol/blood-bank-backend/store/staticcontent"
+	validator "gopkg.in/go-playground/validator.v9"
 )
 
 //Updater provides an interface for updating staticcontentes
@@ -38,9 +39,9 @@ func (u *update) validateData(update *dto.Update) (err error) {
 }
 
 func (u *update) convertData(update *dto.Update) (
-	modelStatus *model.Status,
+	modelStaticContent *model.StaticContent,
 ) {
-	modelStatus = u.toModel(update)
+	modelStaticContent = u.toModel(update)
 	return
 }
 
@@ -48,7 +49,7 @@ func (u *update) askStore(modelStatus *model.Status) (
 	id string,
 	err error,
 ) {
-	id, err = u.storeStatus.Save(modelStatus)
+	id, err = u.storeStaticContent.Save(modelStatus)
 	return
 }
 
