@@ -4,7 +4,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"gitlab.com/Aubichol/blood-bank-backend/errors"
 	"gitlab.com/Aubichol/blood-bank-backend/model"
-	"gitlab.com/Aubichol/blood-bank-backend/notice/dto"
+	"gitlab.com/Aubichol/blood-bank-backend/patient/dto"
 	storepatient "gitlab.com/Aubichol/blood-bank-backend/store/patient"
 	"go.uber.org/dig"
 )
@@ -16,7 +16,7 @@ type Reader interface {
 
 //patientReader implements Reader interface
 type patientReader struct {
-	patients patientnotice.Notice
+	patients storepatient.Patient
 }
 
 func (read *patientReader) askStore(patientID string) (
@@ -55,12 +55,6 @@ func (read *patientReader) Read(patientReq *dto.ReadReq) (*dto.ReadResp, error) 
 
 	var resp dto.ReadResp
 	resp = read.prepareResponse(patient)
-	giverID := patient.UserID
-	//If the same person who has given the patient asks for
-	//the patient, we should give them.
-	if read.isSameUser(giverID, patientReq.UserID) {
-		return &resp, nil
-	}
 
 	return &resp, nil
 }
