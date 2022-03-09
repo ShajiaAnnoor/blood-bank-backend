@@ -6,7 +6,7 @@ import (
 	"io"
 
 	"gitlab.com/Aubichol/blood-bank-backend/errors"
-	"gopkg.in/go-playground/validator.v9"
+	validator "gopkg.in/go-playground/validator.v9"
 )
 
 // Notice provides dto for notice request
@@ -22,8 +22,8 @@ type Notice struct {
 }
 
 //Validate validates notice request data
-func (c *Notice) Validate(validate *validator.Validate) error {
-	if err := validate.Struct(c); err != nil {
+func (n *Notice) Validate(validate *validator.Validate) error {
+	if err := validate.Struct(n); err != nil {
 		return fmt.Errorf(
 			"%s:%w",
 			err.Error(),
@@ -36,8 +36,8 @@ func (c *Notice) Validate(validate *validator.Validate) error {
 }
 
 //FromReader reads notice request from request body
-func (c *Notice) FromReader(reader io.Reader) error {
-	err := json.NewDecoder(reader).Decode(c)
+func (n *Notice) FromReader(reader io.Reader) error {
+	err := json.NewDecoder(reader).Decode(n)
 	if err != nil {
 		return fmt.Errorf("%s:%w", err.Error(), &errors.Invalid{
 			Base: errors.Base{"invalid notice data", false},
