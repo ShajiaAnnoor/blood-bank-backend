@@ -17,14 +17,14 @@ type Reader interface {
 
 //staticcontentReader implements Reader interface
 type staticcontentReader struct {
-	staticcontent staticcontent.StaticContent
+	staticcontent storestaticcontent.StaticContent
 }
 
 func (read *staticcontentReader) askStore(staticcontentID string) (
 	staticcontent *model.Status,
 	err error,
 ) {
-	staticcontent, err = read.staticcontentes.FindByID(staticcontentID)
+	staticcontent, err = read.staticcontent.FindByID(staticcontentID)
 	return
 }
 
@@ -72,25 +72,8 @@ func (read *staticcontentReader) Read(staticcontentReq *dto.ReadReq) (*dto.ReadR
 
 	var resp dto.ReadResp
 	resp = read.prepareResponse(staticcontent)
-	giverID := staticcontent.UserID
 	//If the same person who has given the staticcontent asks for
 	//the staticcontent, we should give them.
-	if read.isSameUser(giverID, staticcontentReq.UserID) {
-		return &resp, nil
-	}
-
-	currentRequest, err := read.checkFriendShip(
-		giverID,
-		staticcontentReq.UserID,
-	)
-	if err != nil {
-		logrus.Error("Could not find friendship error : ", err)
-		return nil, read.giveError()
-	}
-
-	if currentRequest.Status != "accepted" {
-		return nil, err
-	}
 
 	return &resp, nil
 }
@@ -98,14 +81,12 @@ func (read *staticcontentReader) Read(staticcontentReq *dto.ReadReq) (*dto.ReadR
 //NewReaderParams lists params for the NewReader
 type NewReaderParams struct {
 	dig.In
-	Status  storestaticcontent.Status
-	Friends friendrequest.FriendRequests
+	StaticContent storestaticcontent.StaticContent
 }
 
 //NewReader provides Reader
 func NewReader(params NewReaderParams) Reader {
 	return &staticcontentReader{
-		staticcontentes: params.Status,
-		friends:         params.Friends,
+		staticcontent: params.StaticContent,
 	}
 }
