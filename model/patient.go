@@ -7,7 +7,7 @@ type Patient struct {
 	ID        string
 	UserID    string
 	StatusID  string
-	Comment   string
+	Patient   string
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
