@@ -8,6 +8,7 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/api/middleware"
 	"gitlab.com/Aubichol/blood-bank-backend/api/routeutils"
 	"gitlab.com/Aubichol/blood-bank-backend/apipattern"
+	"gitlab.com/Aubichol/blood-bank-backend/staticcontent"
 	"gitlab.com/Aubichol/blood-bank-backend/staticcontent/dto"
 	"go.uber.org/dig"
 )
