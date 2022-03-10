@@ -7,7 +7,7 @@ import (
 	"io"
 
 	"gitlab.com/Aubichol/blood-bank-backend/errors"
-	"gopkg.in/go-playground/validator.v9"
+	validator "gopkg.in/go-playground/validator.v9"
 )
 
 // Register provides dto for user register
