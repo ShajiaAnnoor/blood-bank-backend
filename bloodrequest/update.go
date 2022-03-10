@@ -9,7 +9,7 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/errors"
 	"gitlab.com/Aubichol/blood-bank-backend/model"
 	storebloodrequest "gitlab.com/Aubichol/blood-bank-backend/store/bloodrequest"
-	"gopkg.in/go-playground/validator.v9"
+	validator "gopkg.in/go-playground/validator.v9"
 )
 
 //Updater provides an interface for updating bloodrequests
