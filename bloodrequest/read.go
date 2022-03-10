@@ -5,7 +5,7 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/bloodrequest/dto"
 	"gitlab.com/Aubichol/blood-bank-backend/errors"
 	"gitlab.com/Aubichol/blood-bank-backend/model"
-	storebloodrequest "gitlab.com/Aubichol/blood-bank-backend/store/BloodRequest"
+	storebloodrequest "gitlab.com/Aubichol/blood-bank-backend/store/bloodrequest"
 	"go.uber.org/dig"
 )
 
