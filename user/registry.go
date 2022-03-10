@@ -9,7 +9,7 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/model"
 	storeuser "gitlab.com/Aubichol/blood-bank-backend/store/user"
 	"gitlab.com/Aubichol/blood-bank-backend/user/dto"
-	"gopkg.in/go-playground/validator.v9"
+	validator "gopkg.in/go-playground/validator.v9"
 )
 
 // Registry provides Register method to register a user
