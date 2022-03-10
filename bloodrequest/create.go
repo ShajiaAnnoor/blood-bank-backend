@@ -7,8 +7,8 @@ import (
 	"github.com/sirupsen/logrus"
 	"gitlab.com/Aubichol/blood-bank-backend/bloodrequest/dto"
 	"gitlab.com/Aubichol/blood-bank-backend/errors"
-	"gitlab.com/Aubichol/blood-bank/model"
-	storebloodreq "gitlab.com/Aubichol/blood-bank/store/bloodrequest"
+	"gitlab.com/Aubichol/blood-bank-backend/model"
+	storebloodreq "gitlab.com/Aubichol/blood-bank-backend/store/bloodrequest"
 	"gopkg.in/go-playground/validator.v9"
 )
 
