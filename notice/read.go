@@ -16,7 +16,7 @@ type Reader interface {
 
 //noticeReader implements Reader interface
 type noticeReader struct {
-	notices storenotice.Notice
+	notices storenotice.Notices
 }
 
 func (read *noticeReader) askStore(noticeID string) (
@@ -75,7 +75,7 @@ func (read *noticeReader) Read(noticeReq *dto.ReadReq) (*dto.ReadResp, error) {
 //NewReaderParams lists params for the NewReader
 type NewReaderParams struct {
 	dig.In
-	Notice storenotice.Notice
+	Notice storenotice.Notices
 }
 
 //NewReader provides Reader
