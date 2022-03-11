@@ -6,7 +6,6 @@ import "time"
 type Patient struct {
 	ID        string
 	UserID    string
-	StatusID  string
 	Patient   string
 	CreatedAt time.Time
 	UpdatedAt time.Time
