@@ -30,8 +30,8 @@ func (c *create) toModel(userdonor *dto.Donor) (
 	donor = &model.Donor{}
 	donor.CreatedAt = time.Now().UTC()
 	donor.UpdatedAt = donor.CreatedAt
-	donor.Description = userdonor.Description
-	donor.Title = userdonor.Title
+	//	donor.Description = userdonor.Description
+	//	donor.Title = userdonor.Title
 	donor.UserID = userdonor.UserID
 	return
 }
