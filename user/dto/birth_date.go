@@ -1,6 +1,6 @@
 package dto
 
-import "gitlab.com/Aubichol/hrishi-backend/model"
+import "gitlab.com/Aubichol/blood-bank-backend/model"
 
 //BirthDate stores birth data data
 type BirthDate struct {
