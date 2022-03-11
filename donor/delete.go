@@ -26,8 +26,8 @@ type delete struct {
 func (u *delete) toModel(usernotice *dto.Delete) (notice *model.Notice) {
 	notice = &model.Notice{}
 	notice.CreatedAt = time.Now().UTC()
-	notice.DeletedAt = notice.CreatedAt
-	notice.Status = usernotice.Status
+	//	notice.DeletedAt = notice.CreatedAt
+	//	notice.Status = usernotice.Status
 	notice.UserID = usernotice.UserID
 	notice.ID = usernotice.StatusID
 	return
@@ -62,10 +62,10 @@ func (u *delete) giveResponse(
 	}).Debug("User deleted notice successfully")
 
 	return &dto.DeleteResponse{
-		Message:    "Notice deleted",
-		OK:         true,
-		ID:         id,
-		DeleteTime: modelNotice.DeletedAt.String(),
+		Message: "Notice deleted",
+		OK:      true,
+		ID:      id,
+		//		DeleteTime: modelNotice.DeletedAt.String(),
 	}
 }
 
