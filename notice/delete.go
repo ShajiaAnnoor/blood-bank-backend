@@ -19,17 +19,17 @@ type Deleter interface {
 
 // delete deletes notice
 type delete struct {
-	storeNotice storenotice.Notice
+	storeNotice storenotice.Notices
 	validate    *validator.Validate
 }
 
 func (u *delete) toModel(usernotice *dto.Delete) (notice *model.Notice) {
 	notice = &model.Notice{}
 	notice.CreatedAt = time.Now().UTC()
-	notice.DeletedAt = notice.CreatedAt
-	notice.Status = usernotice.Status
-	notice.UserID = usernotice.UserID
-	notice.ID = usernotice.StatusID
+	//	notice.DeletedAt = notice.CreatedAt
+	//	notice.Status = usernotice.Status
+	//	notice.UserID = usernotice.UserID
+	//	notice.ID = usernotice.StatusID
 	return
 }
 
@@ -62,10 +62,10 @@ func (u *delete) giveResponse(
 	}).Debug("User deleted notice successfully")
 
 	return &dto.DeleteResponse{
-		Message:    "Notice deleted",
-		OK:         true,
-		ID:         id,
-		DeleteTime: modelNotice.DeletedAt.String(),
+		Message: "Notice deleted",
+		OK:      true,
+		ID:      id,
+		//		DeleteTime: modelNotice.DeletedAt.String(),
 	}
 }
 
@@ -104,7 +104,7 @@ func (u *delete) Delete(delete *dto.Delete) (
 }
 
 //NewDelete returns new instance of NewCreate
-func NewDelete(store storenotice.Notice, validate *validator.Validate) Deleter {
+func NewDelete(store storenotice.Notices, validate *validator.Validate) Deleter {
 	return &delete{
 		store,
 		validate,
