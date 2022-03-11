@@ -20,7 +20,7 @@ type Creater interface {
 
 // create creates user notice
 type create struct {
-	storeNotice storenotice.Notice
+	storeNotice storenotice.Notices
 	validate    *validator.Validate
 }
 
@@ -30,8 +30,8 @@ func (c *create) toModel(usernotice *dto.Notice) (
 	notice = &model.Notice{}
 	notice.CreatedAt = time.Now().UTC()
 	notice.UpdatedAt = notice.CreatedAt
-	notice.Description = usernotice.Description
-	notice.Title = usernotice.Title
+	//	notice.Description = usernotice.Description
+	//	notice.Title = usernotice.Title
 	notice.UserID = usernotice.UserID
 	return
 }
@@ -109,7 +109,7 @@ func (c *create) Create(create *dto.Notice) (
 //CreateParams give parameters for NewCreate
 type CreateParams struct {
 	dig.In
-	StoreNotices storenotice.Notice
+	StoreNotices storenotice.Notices
 	Validate     *validator.Validate
 }
 
