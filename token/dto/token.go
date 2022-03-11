@@ -1,7 +1,6 @@
 package dto
 
 import (
-	"blood-bank-backend/errors"
 	"encoding/json"
 	"fmt"
 	"io"
