@@ -9,7 +9,7 @@ type ReadResp struct {
 }
 
 //FromModel converts the model data to response data
-func (r *ReadResp) FromModel(bloodreq *model.Bloodreq) {
+func (r *ReadResp) FromModel(bloodreq *model.BloodReq) {
 	r.Request = bloodreq.Request
 	r.Sender = bloodreq.UserID
 }

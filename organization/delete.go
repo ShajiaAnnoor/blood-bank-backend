@@ -19,11 +19,11 @@ type Deleter interface {
 
 // delete deletes organization
 type delete struct {
-	storeNotice storeorganization.Notice
-	validate    *validator.Validate
+	storeOrganization storeorganization.Organizations
+	validate          *validator.Validate
 }
 
-func (u *delete) toModel(userorganization *dto.Delete) (organization *model.Notice) {
+func (d *delete) toModel(userorganization *dto.Delete) (organization *model.Notice) {
 	organization = &model.Notice{}
 	organization.CreatedAt = time.Now().UTC()
 	organization.DeletedAt = organization.CreatedAt
@@ -33,23 +33,23 @@ func (u *delete) toModel(userorganization *dto.Delete) (organization *model.Noti
 	return
 }
 
-func (u *delete) validateData(delete *dto.Delete) (err error) {
+func (d *delete) validateData(delete *dto.Delete) (err error) {
 	err = delete.Validate(u.validate)
 	return
 }
 
-func (u *delete) convertData(delete *dto.Delete) (
+func (d *delete) convertData(delete *dto.Delete) (
 	modelNotice *model.Notice,
 ) {
-	modelNotice = u.toModel(delete)
+	modelNotice = d.toModel(delete)
 	return
 }
 
-func (u *delete) askStore(modelNotice *model.Notice) (
+func (d *delete) askStore(modelNotice *model.Notice) (
 	id string,
 	err error,
 ) {
-	id, err = u.storeNotice.Save(modelNotice)
+	id, err = d.storeOrganization.Save(modelNotice)
 	return
 }
 
@@ -69,7 +69,7 @@ func (u *delete) giveResponse(
 	}
 }
 
-func (u *delete) giveError() (err error) {
+func (d *delete) giveError() (err error) {
 	errResp := errors.Unknown{
 		Base: errors.Base{
 			OK:      false,
@@ -85,26 +85,26 @@ func (u *delete) giveError() (err error) {
 }
 
 //Delete implements Delete interface
-func (u *delete) Delete(delete *dto.Delete) (
+func (d *delete) Delete(delete *dto.Delete) (
 	*dto.DeleteResponse, error,
 ) {
-	if err := u.validateData(delete); err != nil {
+	if err := d.validateData(delete); err != nil {
 		return nil, err
 	}
 
-	modelNotice := u.convertData(delete)
-	id, err := u.askStore(modelNotice)
+	modelOrganization := d.convertData(delete)
+	id, err := d.askStore(modelOrganization)
 	if err == nil {
-		return u.giveResponse(modelNotice, id), nil
+		return d.giveResponse(modelOrganization, id), nil
 	}
 
 	logrus.Error("Could not delete organization ", err)
-	err = u.giveError()
+	err = d.giveError()
 	return nil, err
 }
 
-//NewDelete returns new instance of NewCreate
-func NewDelete(store storeorganization.Notice, validate *validator.Validate) Deleter {
+//NewDelete returns new instance of NewDelete
+func NewDelete(store storeorganization.Organizations, validate *validator.Validate) Deleter {
 	return &delete{
 		store,
 		validate,
