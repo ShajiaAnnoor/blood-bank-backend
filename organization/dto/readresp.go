@@ -8,6 +8,6 @@ type ReadResp struct {
 }
 
 //FromModel converts the model data to response data
-func (r *ReadResp) FromModel(org *model.Comment) {
+func (r *ReadResp) FromModel(org *model.Organization) {
 	r.Organization = org.Organization
 }
