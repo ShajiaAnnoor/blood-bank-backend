@@ -28,7 +28,7 @@ func (u *update) toModel(userdonor *dto.Update) (donor *model.Donor) {
 	donor.CreatedAt = time.Now().UTC()
 	donor.UpdatedAt = donor.CreatedAt
 	donor.UserID = userdonor.UserID
-	donor.ID = userdonor.StatusID
+	//	donor.ID = userdonor.StatusID
 	return
 }
 
