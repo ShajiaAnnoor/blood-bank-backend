@@ -56,7 +56,7 @@ func (sc *staticcontents) Save(modelStaticContent *model.StaticContent) (string,
 }
 
 //FindByID finds a static content by id
-func (s *staticcontents) FindByID(id string) (*model.StaticContent, error) {
+func (sc *staticcontents) FindByID(id string) (*model.StaticContent, error) {
 	objectID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return nil, fmt.Errorf("Invalid id %s : %w", id, err)
