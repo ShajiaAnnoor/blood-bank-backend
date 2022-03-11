@@ -14,7 +14,7 @@ import (
 
 // Creater provides create method for creating comment
 type Creater interface {
-	Create(create *dto.Bloodreq) (*dto.CreateResponse, error)
+	Create(create *dto.BloodRequest) (*dto.CreateResponse, error)
 }
 
 // create creates user blood requests
@@ -27,7 +27,7 @@ func (c *create) toModel(userbloodreq *dto.BloodReq) (bloodreq *model.BloodReque
 	bloodreq = &model.BloodRequest{}
 	bloodreq.CreatedAt = time.Now().UTC()
 	bloodreq.UpdatedAt = bloodreq.CreatedAt
-	bloodreq.Comment = userbloodreq.Request
+	//	bloodreq.Comment = userbloodreq.Request
 	bloodreq.UserID = userbloodreq.UserID
 	//	bloodreq.StatusID = userbloodreq.StatusID
 	return
@@ -60,7 +60,7 @@ func (c *create) printLog(id string) {
 }
 
 func (c *create) createResponse(
-	modelBloodReq *model.BloodReq,
+	modelBloodReq *model.BloodRequest,
 	id string,
 ) (resp *dto.CreateResponse) {
 	return &dto.CreateResponse{
@@ -108,7 +108,7 @@ func (c *create) logError(message string, err error) {
 //Create implements Creater interface
 func (c *create) Create(create *dto.BloodReq) (*dto.CreateResponse, error) {
 	if err := c.validateData(create); err != nil {
-		return c.resopnseError(err)
+		return c.responseError(err)
 	}
 
 	modelBloodReq := c.convertData(create)
@@ -126,7 +126,7 @@ func (c *create) Create(create *dto.BloodReq) (*dto.CreateResponse, error) {
 }
 
 //NewCreate returns new instance of Creater
-func NewCreate(store storeBloodRequest.BloodRequests, validate *validator.Validate) Creater {
+func NewCreate(store storebloodreq.BloodRequests, validate *validator.Validate) Creater {
 	return &create{
 		store,
 		validate,
