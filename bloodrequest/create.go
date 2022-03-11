@@ -23,13 +23,13 @@ type create struct {
 	validate          *validator.Validate
 }
 
-func (c *create) toModel(userbloodreq *dto.BloodReq) (bloodreq *model.BloodReq) {
-	bloodreq = &model.BloodReq{}
+func (c *create) toModel(userbloodreq *dto.BloodReq) (bloodreq *model.BloodRequest) {
+	bloodreq = &model.BloodRequest{}
 	bloodreq.CreatedAt = time.Now().UTC()
 	bloodreq.UpdatedAt = bloodreq.CreatedAt
-	bloodreq.Comment = userbloodreq.Comment
+	bloodreq.Comment = userbloodreq.Request
 	bloodreq.UserID = userbloodreq.UserID
-	bloodreq.StatusID = userbloodreq.StatusID
+	//	bloodreq.StatusID = userbloodreq.StatusID
 	return
 }
 
@@ -39,17 +39,17 @@ func (c *create) validateData(create *dto.BloodReq) (err error) {
 }
 
 func (c *create) convertData(create *dto.BloodReq) (
-	modelBloodReq *model.BloodReq,
+	modelBloodReq *model.BloodRequest,
 ) {
 	modelBloodReq = c.toModel(create)
 	return
 }
 
-func (c *create) askStore(modelBloodReq *model.BloodReq) (
+func (c *create) askStore(modelBloodReq *model.BloodRequest) (
 	id string,
 	err error,
 ) {
-	id, err = c.storeBloodReq.Save(modelBloodReq)
+	id, err = c.storeBloodRequest.Save(modelBloodReq)
 	return
 }
 
@@ -64,10 +64,10 @@ func (c *create) createResponse(
 	id string,
 ) (resp *dto.CreateResponse) {
 	return &dto.CreateResponse{
-		Message:      "blood request created",
-		OK:           true,
-		ID:           id,
-		BloodReqTime: modelBloodReq.CreatedAt.String(),
+		Message: "blood request created",
+		OK:      true,
+		ID:      id,
+		//		BloodReqTime: modelBloodReq.CreatedAt.String(),
 	}
 }
 
@@ -82,7 +82,7 @@ func (c *create) giveError(err error) error {
 	return err
 }
 
-func (c *create) resopnseError(err error) (
+func (c *create) responseError(err error) (
 	*dto.CreateResponse, error) {
 	return nil, err
 }
@@ -126,7 +126,7 @@ func (c *create) Create(create *dto.BloodReq) (*dto.CreateResponse, error) {
 }
 
 //NewCreate returns new instance of Creater
-func NewCreate(store storebloodrequest.BloodRequests, validate *validator.Validate) Creater {
+func NewCreate(store storeBloodRequest.BloodRequests, validate *validator.Validate) Creater {
 	return &create{
 		store,
 		validate,
