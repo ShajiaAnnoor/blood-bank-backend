@@ -1,4 +1,4 @@
-package blood-request
+package bloodrequest
 
 import "gitlab.com/Aubichol/blood-bank-backend/model"
 
