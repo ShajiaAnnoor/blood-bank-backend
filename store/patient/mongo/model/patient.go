@@ -18,8 +18,8 @@ type Patient struct {
 }
 
 //FromModel converts model data to db data for comments
-func (p *Patient) FromModel(modelComment *model.Patient) error {
-	p.Comment = modelPatient.Comment
+func (p *Patient) FromModel(modelPatient *model.Patient) error {
+	p.Comment = modelPatient.Patient
 	p.CreatedAt = modelPatient.CreatedAt
 	p.UpdatedAt = modelPatient.UpdatedAt
 
@@ -49,12 +49,12 @@ func (p *Patient) FromModel(modelComment *model.Patient) error {
 }
 
 //ModelPatient converts bson to model
-func (p *Patient) ModelComment() *model.Comment {
+func (p *Patient) ModelComment() *model.Patient {
 	patient := model.Patient{}
 	patient.ID = p.ID.Hex()
-	patientcomment.Comment = p.Comment
+	patient.Patient = p.Comment
 	patient.UserID = p.UserID.Hex()
-	patient.StatusID = p.StatusID.Hex()
+	//	patient.StatusID = p.StatusID.Hex()
 	patient.CreatedAt = p.CreatedAt
 	patient.UpdatedAt = p.UpdatedAt
 
