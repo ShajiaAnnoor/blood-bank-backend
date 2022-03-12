@@ -5,6 +5,7 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/errors"
 	"gitlab.com/Aubichol/blood-bank-backend/model"
 	"gitlab.com/Aubichol/blood-bank-backend/organization/dto"
+	"gitlab.com/Aubichol/blood-bank-backend/store/organization"
 	storeorganization "gitlab.com/Aubichol/blood-bank-backend/store/organization"
 	"go.uber.org/dig"
 )
@@ -16,7 +17,7 @@ type Reader interface {
 
 //organizationReader implements Reader interface
 type organizationReader struct {
-	organizationes organization.Organization
+	organizationes organization.Organizations
 }
 
 func (read *organizationReader) askStore(organizationID string) (
@@ -62,7 +63,7 @@ func (read *organizationReader) Read(organizationReq *dto.ReadReq) (*dto.ReadRes
 //NewReaderParams lists params for the NewReader
 type NewReaderParams struct {
 	dig.In
-	Organization storeorganization.Organization
+	Organization storeorganization.Organizations
 }
 
 //NewReader provides Reader
