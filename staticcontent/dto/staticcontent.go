@@ -17,8 +17,8 @@ type StaticContent struct {
 }
 
 //Validate validates staticcontent request data
-func (c *StaticContent) Validate(validate *validator.Validate) error {
-	if err := validate.Struct(c); err != nil {
+func (s *StaticContent) Validate(validate *validator.Validate) error {
+	if err := validate.Struct(s); err != nil {
 		return fmt.Errorf(
 			"%s:%w",
 			err.Error(),
