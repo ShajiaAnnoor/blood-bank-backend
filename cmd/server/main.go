@@ -6,7 +6,6 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/bootstrap/server"
 
 	"github.com/sirupsen/logrus"
-	"gitlab.com/Aubichol/blood-bank-backend/bootstrap/server"
 	"gitlab.com/Aubichol/blood-bank-backend/cfg"
 	"gitlab.com/Aubichol/blood-bank-backend/container"
 )
