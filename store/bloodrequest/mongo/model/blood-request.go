@@ -49,7 +49,7 @@ func (b *BloodRequest) FromModel(modelRequest *model.BloodRequest) error {
 }
 
 //ModelRequest converts bson to model
-func (b *BloodRequest) ModelRequest() *model.BloodRequest {
+func (b *BloodRequest) ModelBloodRequest() *model.BloodRequest {
 	bloodreq := model.BloodRequest{}
 	bloodreq.ID = b.ID.Hex()
 	bloodreq.Request = b.Request
