@@ -23,8 +23,8 @@ type delete struct {
 	validate          *validator.Validate
 }
 
-func (d *delete) toModel(userorganization *dto.Delete) (organization *model.Notice) {
-	organization = &model.Notice{}
+func (d *delete) toModel(userorganization *dto.Delete) (organization *model.Organization) {
+	organization = &model.Organization{}
 	organization.CreatedAt = time.Now().UTC()
 	//	organization.DeletedAt = organization.CreatedAt
 	//	organization.Status = userorganization.Status
@@ -39,9 +39,9 @@ func (d *delete) validateData(delete *dto.Delete) (err error) {
 }
 
 func (d *delete) convertData(delete *dto.Delete) (
-	modelNotice *model.Notice,
+	modelOrganization *model.Organization,
 ) {
-	modelNotice = d.toModel(delete)
+	modelOrganization = d.toModel(delete)
 	return
 }
 
@@ -54,11 +54,11 @@ func (d *delete) askStore(modelOrganization *model.Organization) (
 }
 
 func (u *delete) giveResponse(
-	modelNotice *model.Notice,
+	modelOrganization *model.Organization,
 	id string,
 ) *dto.DeleteResponse {
 	logrus.WithFields(logrus.Fields{
-		"id": modelNotice.UserID,
+		"id": modelOrganization.UserID,
 	}).Debug("User deleted organization successfully")
 
 	return &dto.DeleteResponse{
