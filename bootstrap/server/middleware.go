@@ -9,5 +9,5 @@ import (
 func Middleware(c container.Container) {
 	c.Register(middleware.NewAuthMiddleware)
 	c.Register(middleware.NewAuthMiddlewareURL) // don't know what it does
-	c.Register(middleware.MessageNotificationMiddleware)
+	//	c.Register(middleware.MessageNotificationMiddleware)
 }
