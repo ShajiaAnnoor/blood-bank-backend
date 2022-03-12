@@ -24,7 +24,7 @@ func (sc *StaticContent) FromModel(modelStaticContent *model.StaticContent) erro
 	sc.UpdatedAt = modelStaticContent.UpdatedAt
 
 	var err error
-	sc.StatusID, err = primitive.ObjectIDFromHex(modelStaticContent.StatusID)
+	sc.ID, err = primitive.ObjectIDFromHex(modelStaticContent.ID)
 
 	if err != nil {
 		return err
@@ -52,9 +52,9 @@ func (sc *StaticContent) FromModel(modelStaticContent *model.StaticContent) erro
 func (c *StaticContent) ModelStaticContent() *model.StaticContent {
 	sc := model.StaticContent{}
 	sc.ID = c.ID.Hex()
-	sc.StaticContent = c.StaticContent
+	//	sc.StaticContent = c.StaticContent
 	sc.UserID = c.UserID.Hex()
-	sc.StaticContentID = c.StatusID.Hex()
+	//	sc.StaticContentID = c.StatusID.Hex()
 	sc.CreatedAt = c.CreatedAt
 	sc.UpdatedAt = c.UpdatedAt
 
