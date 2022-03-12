@@ -21,10 +21,10 @@ type deleteHandler struct {
 func (ch *deleteHandler) decodeBody(
 	body io.ReadCloser,
 ) (
-	patient dto.Patient,
+	patient dto.Delete,
 	err error,
 ) {
-	patient = dto.Patient{}
+	patient = dto.Delete{}
 	err = patient.FromReader(body)
 
 	return
@@ -40,12 +40,12 @@ func (ch *deleteHandler) handleError(
 }
 
 func (dh *deleteHandler) askController(
-	patient *dto.Patient,
+	patient *dto.Delete,
 ) (
-	data *dto.CreateResponse,
+	data *dto.DeleteResponse,
 	err error,
 ) {
-	data, err = dh.delete.Update(patient)
+	data, err = dh.delete.Delete(patient)
 	return
 }
 
@@ -58,7 +58,7 @@ func (dh *deleteHandler) decodeContext(
 
 func (ch *deleteHandler) responseSuccess(
 	w http.ResponseWriter,
-	resp *dto.CreateResponse,
+	resp *dto.DeleteResponse,
 ) {
 	routeutils.ServeResponse(
 		w,
@@ -88,23 +88,23 @@ func (dh *deleteHandler) ServeHTTP(
 
 	if err != nil {
 		message := "Unable to delete patient error: "
-		ch.handleError(w, err, message)
+		dh.handleError(w, err, message)
 		return
 	}
 
-	ch.responseSuccess(w, data)
+	dh.responseSuccess(w, data)
 }
 
 //DeleteParams provide parameters for DeleteRoute
-type DeleteParams struct 
+type DeleteParams struct {
 	dig.In
-	Update     patient.Updater
+	Delete     patient.Deleter
 	Middleware *middleware.Auth
 }
 
 //DeleteRoute provides a route that lets users make comments
 func DeleteRoute(params DeleteParams) *routeutils.Route {
-	handler := deleteHandler{params.Update}
+	handler := deleteHandler{params.Delete}
 	return &routeutils.Route{
 		Method:  http.MethodPost,
 		Pattern: apipattern.PatientUpdate,
