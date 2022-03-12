@@ -16,7 +16,7 @@ type Reader interface {
 
 //donorReader implements Reader interface
 type donorReader struct {
-	donors storedonor.Donor
+	donors storedonor.Donors
 }
 
 func (read *donorReader) askStore(donorID string) (
@@ -62,7 +62,7 @@ func (read *donorReader) Read(donorReq *dto.ReadReq) (*dto.ReadResp, error) {
 //NewReaderParams lists params for the NewReader
 type NewReaderParams struct {
 	dig.In
-	Donor storedonor.Donor
+	Donor storedonor.Donors
 }
 
 //NewReader provides Reader
