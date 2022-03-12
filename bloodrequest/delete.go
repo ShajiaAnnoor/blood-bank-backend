@@ -19,17 +19,17 @@ type Deleter interface {
 
 // delete deletes bloodrequest
 type delete struct {
-	storeBloodRequest storebloodrequest.BloodRequest
+	storeBloodRequest storebloodrequest.BloodRequests
 	validate          *validator.Validate
 }
 
 func (u *delete) toModel(userbloodrequest *dto.Delete) (bloodrequest *model.BloodRequest) {
 	bloodrequest = &model.BloodRequest{}
 	bloodrequest.CreatedAt = time.Now().UTC()
-	bloodrequest.DeletedAt = bloodrequest.CreatedAt
-	bloodrequest.Status = userbloodrequest.Status
+	//	bloodrequest.DeletedAt = bloodrequest.CreatedAt
+	//	bloodrequest.Status = userbloodrequest.Status
 	bloodrequest.UserID = userbloodrequest.UserID
-	bloodrequest.ID = userbloodrequest.StatusID
+	//	bloodrequest.ID = userbloodrequest.StatusID
 	return
 }
 
@@ -62,10 +62,10 @@ func (u *delete) giveResponse(
 	}).Debug("User deleted bloodrequest successfully")
 
 	return &dto.DeleteResponse{
-		Message:    "BloodRequest deleted",
-		OK:         true,
-		ID:         id,
-		DeleteTime: modelBloodRequest.DeletedAt.String(),
+		Message: "BloodRequest deleted",
+		OK:      true,
+		ID:      id,
+		//		DeleteTime: modelBloodRequest.DeletedAt.String(),
 	}
 }
 
@@ -104,7 +104,7 @@ func (u *delete) Delete(delete *dto.Delete) (
 }
 
 //NewDelete returns new instance of NewCreate
-func NewDelete(store storebloodrequest.BloodRequest, validate *validator.Validate) Deleter {
+func NewDelete(store storebloodrequest.BloodRequests, validate *validator.Validate) Deleter {
 	return &delete{
 		store,
 		validate,
