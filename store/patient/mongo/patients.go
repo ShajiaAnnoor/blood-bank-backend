@@ -82,7 +82,7 @@ func (p *patients) FindByID(id string) (*model.Patient, error) {
 }
 
 //FindByStatusID finds a patient by patient id
-func (p *patients) FindByNoticeID(id string, skip int64, limit int64) ([]*model.Patient, error) {
+func (p *patients) FindByPatientID(id string, skip int64, limit int64) ([]*model.Patient, error) {
 	objectID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return nil, fmt.Errorf("Invalid id %s : %w", id, err)
@@ -117,7 +117,7 @@ func (p *patients) CountByPatientID(id string) (int64, error) {
 	}
 
 	filter := bson.M{"status_id": objectID}
-	cnt, err := c.c.CountDocuments(
+	cnt, err := p.c.CountDocuments(
 		context.Background(),
 		filter,
 		&options.CountOptions{},
