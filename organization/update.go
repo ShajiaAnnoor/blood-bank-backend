@@ -49,7 +49,7 @@ func (u *update) askStore(modelOrganization *model.Organization) (
 	id string,
 	err error,
 ) {
-	id, err = u.storeOrganization.Save(modelOrganization)
+	id, err = u.storeorganization.Save(modelOrganization)
 	return
 }
 
