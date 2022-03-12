@@ -23,7 +23,7 @@ type create struct {
 	validate          *validator.Validate
 }
 
-func (c *create) toModel(userbloodreq *dto.BloodReq) (bloodreq *model.BloodRequest) {
+func (c *create) toModel(userbloodreq *dto.BloodRequest) (bloodreq *model.BloodRequest) {
 	bloodreq = &model.BloodRequest{}
 	bloodreq.CreatedAt = time.Now().UTC()
 	bloodreq.UpdatedAt = bloodreq.CreatedAt
@@ -33,12 +33,12 @@ func (c *create) toModel(userbloodreq *dto.BloodReq) (bloodreq *model.BloodReque
 	return
 }
 
-func (c *create) validateData(create *dto.BloodReq) (err error) {
+func (c *create) validateData(create *dto.BloodRequest) (err error) {
 	err = create.Validate(c.validate)
 	return err
 }
 
-func (c *create) convertData(create *dto.BloodReq) (
+func (c *create) convertData(create *dto.BloodRequest) (
 	modelBloodReq *model.BloodRequest,
 ) {
 	modelBloodReq = c.toModel(create)
@@ -106,7 +106,7 @@ func (c *create) logError(message string, err error) {
 }
 
 //Create implements Creater interface
-func (c *create) Create(create *dto.BloodReq) (*dto.CreateResponse, error) {
+func (c *create) Create(create *dto.BloodRequest) (*dto.CreateResponse, error) {
 	if err := c.validateData(create); err != nil {
 		return c.responseError(err)
 	}
