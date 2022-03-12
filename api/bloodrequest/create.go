@@ -22,10 +22,10 @@ type createHandler struct {
 func (ch *createHandler) decodeBody(
 	body io.ReadCloser,
 ) (
-	bloodreqDat dto.BloodReq,
+	bloodreqDat dto.BloodRequest,
 	err error,
 ) {
-	bloodreqDat = dto.BloodReq{}
+	bloodreqDat = dto.BloodRequest{}
 	err = bloodreqDat.FromReader(body)
 
 	return
@@ -41,7 +41,7 @@ func (ch *createHandler) handleError(
 }
 
 func (ch *createHandler) askController(
-	bloodreq *dto.BloodReq,
+	bloodreq *dto.BloodRequest,
 ) (
 	data *dto.CreateResponse,
 	err error,
@@ -109,7 +109,7 @@ func CreateRoute(params CreateParams) *routeutils.Route {
 	handler := createHandler{params.Create}
 	return &routeutils.Route{
 		Method:  http.MethodPost,
-		Pattern: apipattern.BloodReqCreate,
+		Pattern: apipattern.BloodRequestCreate,
 		Handler: params.Middleware.Middleware(&handler),
 	}
 }
