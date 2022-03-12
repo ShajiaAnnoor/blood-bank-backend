@@ -19,7 +19,7 @@ type Deleter interface {
 
 // delete deletes notice
 type delete struct {
-	storeDonor storedonor.Donor
+	storeDonor storedonor.Donors
 	validate   *validator.Validate
 }
 
@@ -29,7 +29,7 @@ func (u *delete) toModel(usernotice *dto.Delete) (notice *model.Notice) {
 	//	notice.DeletedAt = notice.CreatedAt
 	//	notice.Status = usernotice.Status
 	notice.UserID = usernotice.UserID
-	notice.ID = usernotice.StatusID
+	//	notice.ID = usernotice.StatusID
 	return
 }
 
@@ -45,11 +45,11 @@ func (u *delete) convertData(delete *dto.Delete) (
 	return
 }
 
-func (u *delete) askStore(modelNotice *model.Notice) (
+func (u *delete) askStore(modelDonor *model.Donor) (
 	id string,
 	err error,
 ) {
-	id, err = u.storeDonor.Save(modelNotice)
+	id, err = u.storeDonor.Save(modelDonor)
 	return
 }
 
@@ -92,10 +92,10 @@ func (u *delete) Delete(delete *dto.Delete) (
 		return nil, err
 	}
 
-	modelNotice := u.convertData(delete)
-	id, err := u.askStore(modelNotice)
+	modelDonor := u.convertData(delete)
+	id, err := u.askStore(modelDonor)
 	if err == nil {
-		return u.giveResponse(modelNotice, id), nil
+		return u.giveResponse(modelDonor, id), nil
 	}
 
 	logrus.Error("Could not delete notice ", err)
@@ -104,7 +104,7 @@ func (u *delete) Delete(delete *dto.Delete) (
 }
 
 //NewDelete returns new instance of NewCreate
-func NewDelete(store storedonor.Donor, validate *validator.Validate) Deleter {
+func NewDelete(store storedonor.Donors, validate *validator.Validate) Deleter {
 	return &delete{
 		store,
 		validate,
