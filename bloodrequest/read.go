@@ -16,7 +16,7 @@ type Reader interface {
 
 //bloodrequestReader implements Reader interface
 type bloodrequestReader struct {
-	bloodrequestes bloodrequest.BloodRequest
+	bloodrequestes storebloodrequest.BloodRequests
 }
 
 func (read *bloodrequestReader) askStore(bloodrequestID string) (
@@ -47,7 +47,7 @@ func (read *bloodrequestReader) prepareResponse(
 
 func (read *bloodrequestReader) Read(bloodrequestReq *dto.ReadReq) (*dto.ReadResp, error) {
 	//TO-DO: some validation on the input data is required
-	bloodrequest, err := read.askStore(bloodrequestReq.BloodRequestID)
+	bloodrequest, err := read.askStore(bloodrequestReq.RequestID)
 	if err != nil {
 		logrus.Error("Could not find bloodrequest error : ", err)
 		return nil, read.giveError()
@@ -62,7 +62,7 @@ func (read *bloodrequestReader) Read(bloodrequestReq *dto.ReadReq) (*dto.ReadRes
 //NewReaderParams lists params for the NewReader
 type NewReaderParams struct {
 	dig.In
-	BloodRequest storebloodrequest.BloodRequest
+	BloodRequest storebloodrequest.BloodRequests
 }
 
 //NewReader provides Reader
