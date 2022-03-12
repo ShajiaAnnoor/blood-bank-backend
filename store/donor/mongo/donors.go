@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"gitlab.com/Aubichol/blood-bank-backend/model"
+	storedonor "gitlab.com/Aubichol/blood-bank-backend/store/donor"
 	mongoModel "gitlab.com/Aubichol/blood-bank-backend/store/donor/mongo/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -156,13 +157,13 @@ func (d *donors) Search(text string, skip, limit int64) ([]*model.Donor, error) 
 		&options.FindOptions{
 			Skip:  &skip,
 			Limit: &limit,
-		}
+		},
 	)
 	if err != nil {
 		return nil, err
 	}
 
-	return c.cursorToDonors(cursor)
+	return d.cursorToDonors(cursor)
 }
 
 //cursorToDonors decodes donors one by one from the search result
