@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"gitlab.com/Aubichol/blood-bank-backend/model"
+	storebloodrequests "gitlab.com/Aubichol/blood-bank-backend/store/bloodrequest"
 	mongoModel "gitlab.com/Aubichol/blood-bank-backend/store/bloodrequest/mongo/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -73,7 +74,7 @@ func (b *bloodrequests) FindByID(id string) (*model.BloodRequest, error) {
 		return nil, fmt.Errorf("Could not decode mongo model to model : %w", err)
 	}
 
-	return b.ModelBloodRequests(), nil
+	return bloodrequests.ModelBloodRequests(), nil
 }
 
 //FindByBloodRequestsID finds a blood requests id
@@ -158,7 +159,7 @@ func (b *bloodrequests) Search(text string, skip, limit int64) ([]*model.Comment
 }
 
 //cursorToBloodRequests decodes blood requests one by one from the search result
-func (c *bloodrequests) cursorToBloodRequests(cursor *mongo.Cursor) ([]*model.BloodRequests, error) {
+func (b *bloodrequests) cursorToBloodRequests(cursor *mongo.Cursor) ([]*model.BloodRequest, error) {
 	defer cursor.Close(context.Background())
 	modelBloodRequests := []*model.BloodRequest{}
 
