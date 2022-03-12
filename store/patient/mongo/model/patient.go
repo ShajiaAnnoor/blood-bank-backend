@@ -49,7 +49,7 @@ func (p *Patient) FromModel(modelPatient *model.Patient) error {
 }
 
 //ModelPatient converts bson to model
-func (p *Patient) ModelComment() *model.Patient {
+func (p *Patient) ModelPatient() *model.Patient {
 	patient := model.Patient{}
 	patient.ID = p.ID.Hex()
 	patient.Patient = p.Comment
