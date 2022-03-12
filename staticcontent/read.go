@@ -45,13 +45,6 @@ func (read *staticcontentReader) prepareResponse(
 	return
 }
 
-func (read *staticcontentReader) isSameUser(giverID, userID string) (
-	isSame bool,
-) {
-	isSame = giverID == userID
-	return
-}
-
 func (read *staticcontentReader) Read(staticcontentReq *dto.ReadReq) (*dto.ReadResp, error) {
 	//TO-DO: some validation on the input data is required
 	staticcontent, err := read.askStore(staticcontentReq.StaticContentID)
