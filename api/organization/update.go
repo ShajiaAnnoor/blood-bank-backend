@@ -85,7 +85,7 @@ func (uh *updateHandler) ServeHTTP(
 
 	if err != nil {
 		message := "Unable to update organization error: "
-		ch.handleError(w, err, message)
+		uh.handleError(w, err, message)
 		return
 	}
 
