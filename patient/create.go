@@ -20,7 +20,7 @@ type Creater interface {
 
 // create creates patient
 type create struct {
-	storePatient storepatient.Patient
+	storePatient storepatient.Patients
 	validate     *validator.Validate
 }
 
@@ -30,8 +30,8 @@ func (c *create) toModel(userpatient *dto.Patient) (
 	patient = &model.Patient{}
 	patient.CreatedAt = time.Now().UTC()
 	patient.UpdatedAt = patient.CreatedAt
-	patient.Description = userpatient.Description
-	patient.Title = userpatient.Title
+	//	patient.Description = userpatient.Description
+	//	patient.Title = userpatient.Title
 	patient.UserID = userpatient.UserID
 	return
 }
@@ -109,7 +109,7 @@ func (c *create) Create(create *dto.Patient) (
 //CreateParams give parameters for NewCreate
 type CreateParams struct {
 	dig.In
-	StorePatients storepatient.Patient
+	StorePatients storepatient.Patients
 	Validate      *validator.Validate
 }
 
