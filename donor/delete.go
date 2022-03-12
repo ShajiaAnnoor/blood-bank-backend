@@ -23,8 +23,8 @@ type delete struct {
 	validate   *validator.Validate
 }
 
-func (u *delete) toModel(usernotice *dto.Delete) (notice *model.Notice) {
-	notice = &model.Notice{}
+func (u *delete) toModel(usernotice *dto.Delete) (notice *model.Donor) {
+	notice = &model.Donor{}
 	notice.CreatedAt = time.Now().UTC()
 	//	notice.DeletedAt = notice.CreatedAt
 	//	notice.Status = usernotice.Status
@@ -39,9 +39,9 @@ func (u *delete) validateData(delete *dto.Delete) (err error) {
 }
 
 func (u *delete) convertData(delete *dto.Delete) (
-	modelNotice *model.Notice,
+	modelDonor *model.Donor,
 ) {
-	modelNotice = u.toModel(delete)
+	modelDonor = u.toModel(delete)
 	return
 }
 
@@ -54,7 +54,7 @@ func (u *delete) askStore(modelDonor *model.Donor) (
 }
 
 func (u *delete) giveResponse(
-	modelNotice *model.Notice,
+	modelNotice *model.Donor,
 	id string,
 ) *dto.DeleteResponse {
 	logrus.WithFields(logrus.Fields{
@@ -85,21 +85,21 @@ func (u *delete) giveError() (err error) {
 }
 
 //Delete implements Delete interface
-func (u *delete) Delete(delete *dto.Delete) (
+func (d *delete) Delete(delete *dto.Delete) (
 	*dto.DeleteResponse, error,
 ) {
-	if err := u.validateData(delete); err != nil {
+	if err := d.validateData(delete); err != nil {
 		return nil, err
 	}
 
-	modelDonor := u.convertData(delete)
-	id, err := u.askStore(modelDonor)
+	modelDonor := d.convertData(delete)
+	id, err := d.askStore(modelDonor)
 	if err == nil {
-		return u.giveResponse(modelDonor, id), nil
+		return d.giveResponse(modelDonor, id), nil
 	}
 
 	logrus.Error("Could not delete notice ", err)
-	err = u.giveError()
+	err = d.giveError()
 	return nil, err
 }
 
