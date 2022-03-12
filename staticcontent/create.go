@@ -27,7 +27,7 @@ type create struct {
 func (sc *create) toModel(userstaticcontent *dto.StaticContent) (
 	staticcontent *model.StaticContent,
 ) {
-	sc = &model.StaticContent{}
+	sc := &model.StaticContent{}
 	sc.CreatedAt = time.Now().UTC()
 	sc.UpdatedAt = staticcontent.CreatedAt
 	sc.Description = userstaticcontent.Description
