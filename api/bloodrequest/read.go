@@ -68,7 +68,7 @@ func (read *readHandler) handleRead(
 ) {
 
 	req := dto.ReadReq{}
-	req.BloodReqID = read.decodeURL(r)
+	req.BloodRequestID = read.decodeURL(r)
 
 	req.UserID = read.decodeContext(r)
 
@@ -109,7 +109,7 @@ func ReadRoute(params ReadRouteParams) *routeutils.Route {
 
 	return &routeutils.Route{
 		Method:  http.MethodGet,
-		Pattern: apipattern.BloodreqRead,
+		Pattern: apipattern.BloodRequestRead,
 		Handler: params.Middleware.Middleware(&handler),
 	}
 }
