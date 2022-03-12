@@ -18,19 +18,19 @@ type bloodrequests struct {
 	c *mongo.Collection
 }
 
-func (b *bloodrequests) convertData(modelBloodRequests *model.BloodRequests) (
-	mongoBloodRequests mongoModel.BloodRequests,
+func (b *bloodrequests) convertData(modelBloodRequests *model.BloodRequest) (
+	mongoBloodRequests mongoModel.BloodRequest,
 	err error,
 ) {
-	err = mongoBloodRequests.FromModel(modelBloodRequest)
+	err = mongoBloodRequests.FromModel(modelBloodRequests)
 	return
 }
 
 // Save saves bloodrequests from model to database
 func (b *bloodrequests) Save(modelBloodRequests *model.BloodRequest) (string, error) {
-	mongoBloodRequests := mongoModel.BloodRequests{}
+	mongoBloodRequests := mongoModel.BloodRequest{}
 	var err error
-	mongoBloodRequest, err = c.convertData(modelBloodRequest)
+	mongoBloodRequest, err := b.convertData(modelBloodRequests)
 	if err != nil {
 		return "", fmt.Errorf("Could not convert model bloodrequests to mongo bloodrequest: %w", err)
 	}
@@ -56,7 +56,7 @@ func (b *bloodrequests) Save(modelBloodRequests *model.BloodRequest) (string, er
 }
 
 //FindByID finds a blood request by id
-func (b *bloodrequests) FindByID(id string) (*model.BloodRequests, error) {
+func (b *bloodrequests) FindByID(id string) (*model.BloodRequest, error) {
 	objectID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return nil, fmt.Errorf("Invalid id %s : %w", id, err)
@@ -73,7 +73,7 @@ func (b *bloodrequests) FindByID(id string) (*model.BloodRequests, error) {
 		return nil, fmt.Errorf("Could not decode mongo model to model : %w", err)
 	}
 
-	return bloodrequests.ModelBloodRequests(), nil
+	return b.ModelBloodRequests(), nil
 }
 
 //FindByBloodRequestsID finds a blood requests id
@@ -118,7 +118,7 @@ func (b *bloodrequests) CountByBloodRequestsID(id string) (int64, error) {
 }
 
 //FindByIDs returns all the blood requests from multiple blood requests
-func (b *bloodrequests) FindByIDs(ids ...string) ([]*model.Comment, error) {
+func (b *bloodrequests) FindByIDs(ids ...string) ([]*model.BloodRequest, error) {
 	objectIDs := []primitive.ObjectID{}
 	for _, id := range ids {
 		objectID, err := primitive.ObjectIDFromHex(id)
@@ -160,15 +160,15 @@ func (b *bloodrequests) Search(text string, skip, limit int64) ([]*model.Comment
 //cursorToBloodRequests decodes blood requests one by one from the search result
 func (c *bloodrequests) cursorToBloodRequests(cursor *mongo.Cursor) ([]*model.BloodRequests, error) {
 	defer cursor.Close(context.Background())
-	modelBloodRequests := []*model.BloodRequests{}
+	modelBloodRequests := []*model.BloodRequest{}
 
 	for cursor.Next(context.Background()) {
-		bloodreq := mongoModel.BloodRequests{}
+		bloodreq := mongoModel.BloodRequest{}
 		if err := cursor.Decode(&bloodreq); err != nil {
 			return nil, fmt.Errorf("Could not decode data from mongo %w", err)
 		}
 
-		modelBloodRequests = append(modelBloodRequests, bloodrequest.ModelBloodRequest())
+		modelBloodRequests = append(modelBloodRequests, bloodreq.ModelBloodRequest())
 	}
 
 	return modelBloodRequests, nil
