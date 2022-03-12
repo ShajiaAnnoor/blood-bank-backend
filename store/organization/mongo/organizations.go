@@ -5,7 +5,9 @@ import (
 	"fmt"
 
 	"gitlab.com/Aubichol/blood-bank-backend/model"
+	storeOrganization "gitlab.com/Aubichol/blood-bank-backend/store/organization"
 	mongoModel "gitlab.com/Aubichol/blood-bank-backend/store/organization/mongo/model"
+
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -18,8 +20,8 @@ type organizations struct {
 	c *mongo.Collection
 }
 
-func (o *organizations) convertData(modelDonor *model.Donor) (
-	mongoDonor mongoModel.Donor,
+func (o *organizations) convertData(modelDonor *model.Organization) (
+	mongoDonor mongoModel.Organization,
 	err error,
 ) {
 	err = mongoDonor.FromModel(modelDonor)
@@ -27,10 +29,10 @@ func (o *organizations) convertData(modelDonor *model.Donor) (
 }
 
 // Save saves organizations from model to database
-func (o *organizations) Save(modelDonor *model.Organization) (string, error) {
+func (o *organizations) Save(modelOrganization *model.Organization) (string, error) {
 	mongoOrganization := mongoModel.Organization{}
 	var err error
-	mongoOrganization, err = c.convertData(modelOrganization)
+	mongoOrganization, err = o.convertData(modelOrganization)
 	if err != nil {
 		return "", fmt.Errorf("Could not convert model donor to mongo donor: %w", err)
 	}
@@ -39,8 +41,8 @@ func (o *organizations) Save(modelDonor *model.Organization) (string, error) {
 		mongoOrganization.ID = primitive.NewObjectID()
 	}
 
-	filter := bson.M{"_id": mongoDonor.ID}
-	update := bson.M{"$set": mongoDonor}
+	filter := bson.M{"_id": mongoOrganization.ID}
+	update := bson.M{"$set": mongoOrganization}
 	upsert := true
 
 	_, err = o.c.UpdateOne(
@@ -77,7 +79,7 @@ func (d *organizations) FindByID(id string) (*model.Organization, error) {
 		return nil, fmt.Errorf("Could not decode mongo model to model : %w", err)
 	}
 
-	return organization.ModelDonor(), nil
+	return organization.ModelOrganization(), nil
 }
 
 //FindByDonorID finds a donor by donor id
@@ -150,7 +152,7 @@ func (o *organizations) FindByIDs(ids ...string) ([]*model.Organization, error) 
 //Search search for users given the text, skip and limit
 func (o *organizations) Search(text string, skip, limit int64) ([]*model.Organization, error) {
 	filter := bson.M{"$text": bson.M{"$search": text}}
-	cursor, err := d.c.Find(
+	cursor, err := o.c.Find(
 		context.Background(),
 		filter,
 		&options.FindOptions{
@@ -162,17 +164,17 @@ func (o *organizations) Search(text string, skip, limit int64) ([]*model.Organiz
 		return nil, err
 	}
 
-	return c.cursorToOrganizations(cursor)
+	return o.cursorToOrganizations(cursor)
 }
 
 //cursorToDonors decodes organizations one by one from the search result
 func (d *organizations) cursorToOrganizations(cursor *mongo.Cursor) ([]*model.Organization, error) {
 	defer cursor.Close(context.Background())
-	modelOrganizations := []*model.Donor{}
+	modelOrganizations := []*model.Organization{}
 
 	for cursor.Next(context.Background()) {
-		donor := mongoModel.Organization{}
-		if err := cursor.Decode(&donor); err != nil {
+		organization := mongoModel.Organization{}
+		if err := cursor.Decode(&organization); err != nil {
 			return nil, fmt.Errorf("Could not decode data from mongo %w", err)
 		}
 
@@ -189,6 +191,6 @@ type OrganizationsParams struct {
 }
 
 //Store provides store for organizations
-func Store(params OrganizationsParams) storeorganization.Organizations {
-	return &Organizations{params.Collection}
+func Store(params OrganizationsParams) storeOrganization.Organizations {
+	return &organizations{params.Collection}
 }
