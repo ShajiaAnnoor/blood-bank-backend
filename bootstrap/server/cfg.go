@@ -1,6 +1,7 @@
 package server
 
 import (
+	"gitlab.com/Aubichol/blood-bank-backend/cfg"
 	"gitlab.com/Aubichol/blood-bank-backend/container"
 )
 
