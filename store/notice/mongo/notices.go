@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"gitlab.com/Aubichol/blood-bank-backend/model"
+	storenotice "gitlab.com/Aubichol/blood-bank-backend/store/notice"
 	mongoModel "gitlab.com/Aubichol/blood-bank-backend/store/notice/mongo/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -30,7 +31,7 @@ func (n *notices) convertData(modelNotice *model.Notice) (
 func (n *notices) Save(modelNotice *model.Notice) (string, error) {
 	mongoNotice := mongoModel.Notice{}
 	var err error
-	mongoNotice, err = c.convertData(modelNotice)
+	mongoNotice, err = n.convertData(modelNotice)
 	if err != nil {
 		return "", fmt.Errorf("Could not convert model notice to mongo notice: %w", err)
 	}
