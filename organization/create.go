@@ -20,7 +20,7 @@ type Creater interface {
 
 // create creates user organization
 type create struct {
-	storeOrganization storeorganization.Organization
+	storeOrganization storeorganization.Organizations
 	validate          *validator.Validate
 }
 
@@ -30,8 +30,8 @@ func (c *create) toModel(userorganization *dto.Organization) (
 	organization = &model.Organization{}
 	organization.CreatedAt = time.Now().UTC()
 	organization.UpdatedAt = organization.CreatedAt
-	organization.Description = userorganization.Description
-	organization.Title = userorganization.Title
+	//	organization.Description = userorganization.Description
+	//	organization.Title = userorganization.Title
 	organization.UserID = userorganization.UserID
 	return
 }
@@ -66,10 +66,10 @@ func (c *create) giveResponse(modelOrganization *model.Organization, id string) 
 	}).Debug("User created organization successfully")
 
 	return &dto.CreateResponse{
-		Message:          "organization created",
-		OK:               true,
-		OrganizationTime: modelOrganization.CreatedAt.String(),
-		ID:               id,
+		Message: "organization created",
+		OK:      true,
+		//		OrganizationTime: modelOrganization.CreatedAt.String(),
+		ID: id,
 	}, nil
 }
 
@@ -109,7 +109,7 @@ func (c *create) Create(create *dto.Organization) (
 //CreateParams give parameters for NewCreate
 type CreateParams struct {
 	dig.In
-	StoreOrganizationes storeorganization.Organization
+	StoreOrganizationes storeorganization.Organizations
 	Validate            *validator.Validate
 }
 
