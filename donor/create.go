@@ -20,7 +20,7 @@ type Creater interface {
 
 // create creates donor
 type create struct {
-	storeDonor storedonor.Donor
+	storeDonor storedonor.Donors
 	validate   *validator.Validate
 }
 
@@ -109,7 +109,7 @@ func (c *create) Create(create *dto.Donor) (
 //CreateParams give parameters for NewCreate
 type CreateParams struct {
 	dig.In
-	StoreDonors storedonor.Donor
+	StoreDonors storedonor.Donors
 	Validate    *validator.Validate
 }
 
