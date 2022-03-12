@@ -19,7 +19,7 @@ type Updater interface {
 
 // update updates bloodrequest
 type update struct {
-	storeBloodRequest storebloodrequest.BloodRequest
+	storeBloodRequest storebloodrequest.BloodRequests
 	validate          *validator.Validate
 }
 
@@ -28,7 +28,7 @@ func (u *update) toModel(userbloodrequest *dto.Update) (bloodrequest *model.Bloo
 	bloodrequest.CreatedAt = time.Now().UTC()
 	bloodrequest.UpdatedAt = bloodrequest.CreatedAt
 	bloodrequest.UserID = userbloodrequest.UserID
-	bloodrequest.ID = userbloodrequest.StatusID
+	//	bloodrequest.ID = userbloodrequest.StatusID
 	return
 }
 
@@ -44,7 +44,7 @@ func (u *update) convertData(update *dto.Update) (
 	return
 }
 
-func (u *update) askStore(modelStatus *model.BloodRequest) (
+func (u *update) askStore(modelBloodRequest *model.BloodRequest) (
 	id string,
 	err error,
 ) {
@@ -103,7 +103,7 @@ func (u *update) Update(update *dto.Update) (
 }
 
 //NewUpdate returns new instance of NewCreate
-func NewUpdate(store storebloodrequest.BloodRequest, validate *validator.Validate) Updater {
+func NewUpdate(store storebloodrequest.BloodRequests, validate *validator.Validate) Updater {
 	return &update{
 		store,
 		validate,
