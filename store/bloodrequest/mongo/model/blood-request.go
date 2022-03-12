@@ -8,7 +8,7 @@ import (
 )
 
 //BloodReq holds db data type for blood requests
-type BloodReq struct {
+type BloodRequest struct {
 	ID        primitive.ObjectID `bson:"_id,omitempty"`
 	Request   string             `bson:"request"`
 	UserID    primitive.ObjectID `bson:"user_id"`
@@ -18,13 +18,13 @@ type BloodReq struct {
 }
 
 //FromModel converts model data to db data for blood requests
-func (b *BloodReq) FromModel(modelRequest *model.BloodReq) error {
+func (b *BloodRequest) FromModel(modelRequest *model.BloodRequest) error {
 	b.Request = modelRequest.Request
 	b.CreatedAt = modelRequest.CreatedAt
 	b.UpdatedAt = modelRequest.UpdatedAt
 
 	var err error
-	b.RequestID, err = primitive.ObjectIDFromHex(modelRequest.RequestID)
+	b.RequestID, err = primitive.ObjectIDFromHex(modelRequest.ID)
 
 	if err != nil {
 		return err
@@ -49,12 +49,12 @@ func (b *BloodReq) FromModel(modelRequest *model.BloodReq) error {
 }
 
 //ModelRequest converts bson to model
-func (b *BloodReq) ModelRequest() *model.Request {
-	bloodreq := model.Request{}
+func (b *BloodRequest) ModelRequest() *model.BloodRequest {
+	bloodreq := model.BloodRequest{}
 	bloodreq.ID = b.ID.Hex()
 	bloodreq.Request = b.Request
 	bloodreq.UserID = b.UserID.Hex()
-	bloodreq.RequestID = b.RequestID.Hex()
+	bloodreq.ID = b.RequestID.Hex()
 	bloodreq.CreatedAt = b.CreatedAt
 	bloodreq.UpdatedAt = b.UpdatedAt
 
