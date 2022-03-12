@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"gitlab.com/Aubichol/blood-bank-backend/model"
+	storestaticcontent "gitlab.com/Aubichol/blood-bank-backend/store/staticcontent"
 	mongoModel "gitlab.com/Aubichol/blood-bank-backend/store/staticcontent/mongo/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -30,7 +31,7 @@ func (sc *staticcontents) convertData(modelStaticContent *model.StaticContent) (
 func (sc *staticcontents) Save(modelStaticContent *model.StaticContent) (string, error) {
 	mongoStaticContent := mongoModel.StaticContent{}
 	var err error
-	mongoStaticContent, err = s.convertData(modelStaticContent)
+	mongoStaticContent, err = sc.convertData(modelStaticContent)
 	if err != nil {
 		return "", fmt.Errorf("Could not convert model static contents to mongo static contents: %w", err)
 	}
@@ -77,7 +78,7 @@ func (sc *staticcontents) FindByID(id string) (*model.StaticContent, error) {
 		return nil, fmt.Errorf("Could not decode mongo model to model : %w", err)
 	}
 
-	return staticcontents.ModelStaticContent(), nil
+	return staticcontent.ModelStaticContent(), nil
 }
 
 //FindByStatusID finds a static content by id
@@ -162,7 +163,7 @@ func (sc *staticcontents) FindByIDs(ids ...string) ([]*model.StaticContent, erro
 //Search search for users given the text, skip and limit
 func (sc *staticcontents) Search(text string, skip, limit int64) ([]*model.StaticContent, error) {
 	filter := bson.M{"$text": bson.M{"$search": text}}
-	cursor, err := s.c.Find(
+	cursor, err := sc.c.Find(
 		context.Background(),
 		filter,
 		&options.FindOptions{
