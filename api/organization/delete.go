@@ -45,7 +45,7 @@ func (dh *deleteHandler) askController(
 	data *dto.CreateResponse,
 	err error,
 ) {
-	data, err = dh.delete.Update(organization)
+	data, err = dh.delete.Delete(organization)
 	return
 }
 
@@ -98,13 +98,13 @@ func (dh *deleteHandler) ServeHTTP(
 //CreateParams provide parameters for DeleteRoute
 type DeleteParams struct {
 	dig.In
-	Update     organization.Updater
+	Delete     organization.Updater
 	Middleware *middleware.Auth
 }
 
 //CreateRoute provides a route that lets users make organizations
 func DeleteRoute(params DeleteParams) *routeutils.Route {
-	handler := deleteHandler{params.Update}
+	handler := deleteHandler{params.Delete}
 	return &routeutils.Route{
 		Method:  http.MethodPost,
 		Pattern: apipattern.OrganizationDelete,
