@@ -24,7 +24,7 @@ func (p *Patient) FromModel(modelPatient *model.Patient) error {
 	p.UpdatedAt = modelPatient.UpdatedAt
 
 	var err error
-	p.StatusID, err = primitive.ObjectIDFromHex(modelPatient.PatientID)
+	p.ID, err = primitive.ObjectIDFromHex(modelPatient.ID)
 
 	if err != nil {
 		return err
