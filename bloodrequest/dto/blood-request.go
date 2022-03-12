@@ -10,7 +10,7 @@ import (
 )
 
 // BloodReq provides dto for blood request
-type BloodReq struct {
+type BloodRequest struct {
 	ID         string `json:"blood_request_id"`
 	Request    string `json:"request"`
 	BloodGroup string `json:"blood_group"`
@@ -18,7 +18,7 @@ type BloodReq struct {
 }
 
 //Validate validates blood request data
-func (b *BloodReq) Validate(validate *validator.Validate) error {
+func (b *BloodRequest) Validate(validate *validator.Validate) error {
 	if err := validate.Struct(b); err != nil {
 		return fmt.Errorf(
 			"%s:%w",
@@ -32,7 +32,7 @@ func (b *BloodReq) Validate(validate *validator.Validate) error {
 }
 
 //FromReader reads blood request from request body
-func (b *BloodReq) FromReader(reader io.Reader) error {
+func (b *BloodRequest) FromReader(reader io.Reader) error {
 	err := json.NewDecoder(reader).Decode(b)
 	if err != nil {
 		return fmt.Errorf("%s:%w", err.Error(), &errors.Invalid{
