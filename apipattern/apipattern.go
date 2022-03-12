@@ -1,16 +1,16 @@
 package apipattern
 
 //BloodReqCreate holds the api string for creating a blood request
-const BloodReqCreate string = "/api/v1/bloodrequest/create"
+const BloodRequestCreate string = "/api/v1/bloodrequest/create"
 
 //BloodReqUpdate holds the api string for updating a blood request
-const BloodReqUpdate string = "/api/v1/bloodrequest/update"
+const BloodRequestUpdate string = "/api/v1/bloodrequest/update"
 
 //BloodReqGet holds the api string for getting a blood request
-const BloodReqGet string = "/api/v1/bloodrequest/get"
+const BloodRequestRead string = "/api/v1/bloodrequest/get"
 
 //BloodReqGet holds the api string for getting a blood request
-const BloodReqDelete string = "/api/v1/bloodrequest/delete"
+const BloodRequestDelete string = "/api/v1/bloodrequest/delete"
 
 //DonorCreate holds the api string for creating a donor
 const DonorCreate string = "/api/v1/donor/create"
