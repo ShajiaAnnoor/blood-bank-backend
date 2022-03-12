@@ -84,7 +84,7 @@ func (ch *createHandler) ServeHTTP(
 
 	staticcontent.UserID = ch.decodeContext(r)
 
-	data, err := ch.askController((staticcontent)
+	data, err := ch.askController(&staticcontent)
 
 	if err != nil {
 		message := "Unable to create static content error: "
