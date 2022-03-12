@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"gitlab.com/Aubichol/blood-bank-backend/model"
+	storepatient "gitlab.com/Aubichol/blood-bank-backend/store/patient"
 	mongoModel "gitlab.com/Aubichol/blood-bank-backend/store/patient/mongo/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -18,7 +19,7 @@ type patients struct {
 	c *mongo.Collection
 }
 
-func (p *patients) convertData(modelNotice *model.Patient) (
+func (p *patients) convertData(modelPatient *model.Patient) (
 	mongoPatient mongoModel.Patient,
 	err error,
 ) {
@@ -28,7 +29,7 @@ func (p *patients) convertData(modelNotice *model.Patient) (
 
 // Save saves patients from model to database
 func (p *patients) Save(modelPatient *model.Patient) (string, error) {
-	mongoNotice := mongoModel.Patient{}
+	mongoPatient := mongoModel.Patient{}
 	var err error
 	mongoPatient, err = p.convertData(modelPatient)
 	if err != nil {
@@ -39,8 +40,8 @@ func (p *patients) Save(modelPatient *model.Patient) (string, error) {
 		mongoPatient.ID = primitive.NewObjectID()
 	}
 
-	filter := bson.M{"_id": mongoNotice.ID}
-	update := bson.M{"$set": mongoNotice}
+	filter := bson.M{"_id": mongoPatient.ID}
+	update := bson.M{"$set": mongoPatient}
 	upsert := true
 
 	_, err = p.c.UpdateOne(
