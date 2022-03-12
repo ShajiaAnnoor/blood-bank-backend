@@ -9,7 +9,7 @@ type ReadResp struct {
 }
 
 //FromModel converts the model data to response data
-func (r *ReadResp) FromModel(staticcontent *model.Notice) {
-	r.Notice = staticcontent.Notice
+func (r *ReadResp) FromModel(staticcontent *model.StaticContent) {
+	//	r.Notice = staticcontent.Notice
 	r.Sender = staticcontent.UserID
 }
