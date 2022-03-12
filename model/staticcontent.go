@@ -2,7 +2,7 @@ package model
 
 import "time"
 
-// Patient defines comment model
+// Patient defines static content model
 type StaticContent struct {
 	ID            string
 	UserID        string
