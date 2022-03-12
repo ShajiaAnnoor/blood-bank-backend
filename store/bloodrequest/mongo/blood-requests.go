@@ -74,7 +74,7 @@ func (b *bloodrequests) FindByID(id string) (*model.BloodRequest, error) {
 		return nil, fmt.Errorf("Could not decode mongo model to model : %w", err)
 	}
 
-	return bloodrequests.ModelBloodRequests(), nil
+	return bloodrequests.ModelBloodRequest(), nil
 }
 
 //FindByBloodRequestsID finds a blood requests id
@@ -145,7 +145,7 @@ func (b *bloodrequests) FindByIDs(ids ...string) ([]*model.BloodRequest, error) 
 }
 
 //Search search for blood requests given the text, skip and limit
-func (b *bloodrequests) Search(text string, skip, limit int64) ([]*model.Comment, error) {
+func (b *bloodrequests) Search(text string, skip, limit int64) ([]*model.BloodRequest, error) {
 	filter := bson.M{"$text": bson.M{"$search": text}}
 	cursor, err := b.c.Find(context.Background(), filter, &options.FindOptions{
 		Skip:  &skip,
