@@ -19,7 +19,7 @@ type Deleter interface {
 
 // delete deletes patient
 type delete struct {
-	storePatient storepatient.Patient
+	storePatient storepatient.Patients
 	validate     *validator.Validate
 }
 
@@ -27,10 +27,10 @@ type delete struct {
 func (u *delete) toModel(userpatient *dto.Delete) (patient *model.Patient) {
 	patient = &model.Patient{}
 	patient.CreatedAt = time.Now().UTC()
-	patient.DeletedAt = patient.CreatedAt
-	patient.Status = userpatient.Status
+	//	patient.DeletedAt = patient.CreatedAt
+	//	patient.Status = userpatient.Status
 	patient.UserID = userpatient.UserID
-	patient.ID = userpatient.StatusID
+	//	patient.ID = userpatient.StatusID
 	return
 }
 
@@ -63,10 +63,10 @@ func (d *delete) giveResponse(
 	}).Debug("User deleted patient successfully")
 
 	return &dto.DeleteResponse{
-		Message:    "Patient deleted",
-		OK:         true,
-		ID:         id,
-		DeleteTime: modelPatient.DeletedAt.String(),
+		Message: "Patient deleted",
+		OK:      true,
+		ID:      id,
+		//		DeleteTime: modelPatient.DeletedAt.String(),
 	}
 }
 
@@ -105,7 +105,7 @@ func (d *delete) Delete(del *dto.Delete) (
 }
 
 //NewDelete returns new instance of NewCreate
-func NewDelete(store storepatient.Patient, validate *validator.Validate) Deleter {
+func NewDelete(store storepatient.Patients, validate *validator.Validate) Deleter {
 	return &delete{
 		store,
 		validate,
