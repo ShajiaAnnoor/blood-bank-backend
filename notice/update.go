@@ -19,7 +19,7 @@ type Updater interface {
 
 // update updates user notice
 type update struct {
-	storeNotice storenotice.Notice
+	storeNotice storenotice.Notices
 	validate    *validator.Validate
 }
 
@@ -27,9 +27,9 @@ func (u *update) toModel(usernotice *dto.Update) (notice *model.Notice) {
 	notice = &model.Notice{}
 	notice.CreatedAt = time.Now().UTC()
 	notice.UpdatedAt = notice.CreatedAt
-	notice.Status = usernotice.Status
+	//	notice.Status = usernotice.Status
 	notice.UserID = usernotice.UserID
-	notice.ID = usernotice.StatusID
+	//	notice.ID = usernotice.StatusID
 	return
 }
 
@@ -104,7 +104,7 @@ func (u *update) Update(upd *dto.Update) (
 }
 
 //NewUpdate returns new instance of NewUpdate
-func NewUpdate(store storenotice.Notice, validate *validator.Validate) Updater {
+func NewUpdate(store storenotice.Notices, validate *validator.Validate) Updater {
 	return &update{
 		store,
 		validate,
