@@ -21,16 +21,16 @@ type deleteHandler struct {
 func (dh *deleteHandler) decodeBody(
 	body io.ReadCloser,
 ) (
-	organization dto.Organization,
+	organization dto.Delete,
 	err error,
 ) {
-	organization = dto.Organization{}
+	organization = dto.Delete{}
 	err = organization.FromReader(body)
 
 	return
 }
 
-func (ch *deleteHandler) handleError(
+func (dh *deleteHandler) handleError(
 	w http.ResponseWriter,
 	err error,
 	message string,
@@ -40,9 +40,9 @@ func (ch *deleteHandler) handleError(
 }
 
 func (dh *deleteHandler) askController(
-	organization *dto.Organization,
+	organization *dto.Delete,
 ) (
-	data *dto.CreateResponse,
+	data *dto.DeleteResponse,
 	err error,
 ) {
 	data, err = dh.delete.Delete(organization)
@@ -58,7 +58,7 @@ func (ch *deleteHandler) decodeContext(
 
 func (ch *deleteHandler) responseSuccess(
 	w http.ResponseWriter,
-	resp *dto.CreateResponse,
+	resp *dto.DeleteResponse,
 ) {
 	routeutils.ServeResponse(
 		w,
@@ -84,7 +84,7 @@ func (dh *deleteHandler) ServeHTTP(
 
 	organization.UserID = dh.decodeContext(r)
 
-	data, err := dh.askController(organization)
+	data, err := dh.askController(&organization)
 
 	if err != nil {
 		message := "Unable to create organization error: "
@@ -98,7 +98,7 @@ func (dh *deleteHandler) ServeHTTP(
 //CreateParams provide parameters for DeleteRoute
 type DeleteParams struct {
 	dig.In
-	Delete     organization.Updater
+	Delete     organization.Deleter
 	Middleware *middleware.Auth
 }
 
