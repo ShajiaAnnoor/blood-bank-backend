@@ -4,7 +4,6 @@ import (
 	"github.com/sirupsen/logrus"
 	"gitlab.com/Aubichol/blood-bank-backend/errors"
 	"gitlab.com/Aubichol/blood-bank-backend/model"
-	"gitlab.com/Aubichol/blood-bank-backend/pkg/tag"
 	"gitlab.com/Aubichol/blood-bank-backend/staticcontent/dto"
 	storestaticcontent "gitlab.com/Aubichol/blood-bank-backend/store/staticcontent"
 	"go.uber.org/dig"
@@ -17,11 +16,11 @@ type Reader interface {
 
 //staticcontentReader implements Reader interface
 type staticcontentReader struct {
-	staticcontent storestaticcontent.StaticContent
+	staticcontent storestaticcontent.StaticContents
 }
 
 func (read *staticcontentReader) askStore(staticcontentID string) (
-	staticcontent *model.Status,
+	staticcontent *model.StaticContent,
 	err error,
 ) {
 	staticcontent, err = read.staticcontent.FindByID(staticcontentID)
@@ -38,7 +37,7 @@ func (read *staticcontentReader) giveError() (err error) {
 }
 
 func (read *staticcontentReader) prepareResponse(
-	staticcontent *model.Status,
+	staticcontent *model.StaticContent,
 ) (
 	resp dto.ReadResp,
 ) {
@@ -53,18 +52,9 @@ func (read *staticcontentReader) isSameUser(giverID, userID string) (
 	return
 }
 
-func (read *staticcontentReader) checkFriendShip(giverID, userID string) (
-	currentRequest *model.FriendRequest,
-	err error,
-) {
-	uniqueTag := tag.Unique(giverID, userID)
-	currentRequest, err = read.friends.FindByUniqueTag(uniqueTag)
-	return
-}
-
 func (read *staticcontentReader) Read(staticcontentReq *dto.ReadReq) (*dto.ReadResp, error) {
 	//TO-DO: some validation on the input data is required
-	staticcontent, err := read.askStore(staticcontentReq.StatusID)
+	staticcontent, err := read.askStore(staticcontentReq.StaticContentID)
 	if err != nil {
 		logrus.Error("Could not find staticcontent error : ", err)
 		return nil, read.giveError()
@@ -81,7 +71,7 @@ func (read *staticcontentReader) Read(staticcontentReq *dto.ReadReq) (*dto.ReadR
 //NewReaderParams lists params for the NewReader
 type NewReaderParams struct {
 	dig.In
-	StaticContent storestaticcontent.StaticContent
+	StaticContent storestaticcontent.StaticContents
 }
 
 //NewReader provides Reader

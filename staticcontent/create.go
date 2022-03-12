@@ -20,11 +20,11 @@ type Creater interface {
 
 // create creates user staticcontent
 type create struct {
-	storeStaticContent storestaticcontent.StaticContent
+	storeStaticContent storestaticcontent.StaticContents
 	validate           *validator.Validate
 }
 
-func (c *create) toModel(userstaticcontent *dto.StaticContent) (
+func (sc *create) toModel(userstaticcontent *dto.StaticContent) (
 	staticcontent *model.StaticContent,
 ) {
 	sc = &model.StaticContent{}
@@ -66,10 +66,10 @@ func (c *create) giveResponse(modelStaticContent *model.StaticContent, id string
 	}).Debug("User created staticcontent successfully")
 
 	return &dto.CreateResponse{
-		Message:           "staticcontent created",
-		OK:                true,
-		StaticContentTime: modelStaticContent.CreatedAt.String(),
-		ID:                id,
+		Message: "staticcontent created",
+		OK:      true,
+		//		StaticContentTime: modelStaticContent.CreatedAt.String(),
+		ID: id,
 	}, nil
 }
 
@@ -109,7 +109,7 @@ func (c *create) Create(create *dto.StaticContent) (
 //CreateParams give parameters for NewCreate
 type CreateParams struct {
 	dig.In
-	StoreStaticContentes storestaticcontent.StaticContent
+	StoreStaticContentes storestaticcontent.StaticContents
 	Validate             *validator.Validate
 }
 

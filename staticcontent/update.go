@@ -19,7 +19,7 @@ type Updater interface {
 
 // update updates user staticcontent
 type update struct {
-	storeStaticContent storestaticcontent.StaticContent
+	storeStaticContent storestaticcontent.StaticContents
 	validate           *validator.Validate
 }
 
@@ -27,9 +27,9 @@ func (u *update) toModel(userstaticcontent *dto.Update) (sc *model.StaticContent
 	sc = &model.StaticContent{}
 	sc.CreatedAt = time.Now().UTC()
 	sc.UpdatedAt = sc.CreatedAt
-	sc.Status = userstaticcontent.Status
+	//	sc.Status = userstaticcontent.Status
 	sc.UserID = userstaticcontent.UserID
-	sc.ID = userstaticcontent.StatusID
+	//	sc.ID = userstaticcontent.StatusID
 	return
 }
 
@@ -45,7 +45,7 @@ func (u *update) convertData(update *dto.Update) (
 	return
 }
 
-func (u *update) askStore(modelStatus *model.Status) (
+func (u *update) askStore(modelStatus *model.StaticContent) (
 	id string,
 	err error,
 ) {
@@ -54,7 +54,7 @@ func (u *update) askStore(modelStatus *model.Status) (
 }
 
 func (u *update) giveResponse(
-	modelStatus *model.Status,
+	modelStatus *model.StaticContent,
 	id string,
 ) *dto.UpdateResponse {
 	logrus.WithFields(logrus.Fields{
@@ -104,7 +104,7 @@ func (u *update) Update(update *dto.Update) (
 }
 
 //NewUpdate returns new instance of NewCreate
-func NewUpdate(store storestaticcontent.StaticContent, validate *validator.Validate) Updater {
+func NewUpdate(store storestaticcontent.StaticContents, validate *validator.Validate) Updater {
 	return &update{
 		store,
 		validate,

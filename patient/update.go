@@ -19,7 +19,7 @@ type Updater interface {
 
 // update updates user
 type update struct {
-	storePatient storepatient.Patient
+	storePatient storepatient.Patients
 	validate     *validator.Validate
 }
 
@@ -104,7 +104,7 @@ func (u *update) Update(update *dto.Update) (
 }
 
 //NewUpdate returns new instance of NewCreate
-func NewUpdate(store storepatient.Patient, validate *validator.Validate) Updater {
+func NewUpdate(store storepatient.Patients, validate *validator.Validate) Updater {
 	return &update{
 		store,
 		validate,

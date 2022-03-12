@@ -19,17 +19,17 @@ type Deleter interface {
 
 // delete deletes staticcontent
 type delete struct {
-	storeStaticcontent storestaticcontent.Staticcontent
+	storeStaticcontent storestaticcontent.StaticContents
 	validate           *validator.Validate
 }
 
-func (u *delete) toModel(userstaticcontent *dto.Delete) (staticcontent *model.Staticcontent) {
-	staticcontent = &model.Staticcontent{}
+func (u *delete) toModel(userstaticcontent *dto.Delete) (staticcontent *model.StaticContent) {
+	staticcontent = &model.StaticContent{}
 	staticcontent.CreatedAt = time.Now().UTC()
-	staticcontent.DeletedAt = staticcontent.CreatedAt
-	staticcontent.Status = userstaticcontent.Status
+	//	staticcontent.DeletedAt = staticcontent.CreatedAt
+	//	staticcontent.Status = userstaticcontent.Status
 	staticcontent.UserID = userstaticcontent.UserID
-	staticcontent.ID = userstaticcontent.StatusID
+	//	staticcontent.ID = userstaticcontent.StatusID
 	return
 }
 
@@ -39,13 +39,13 @@ func (u *delete) validateData(delete *dto.Delete) (err error) {
 }
 
 func (u *delete) convertData(delete *dto.Delete) (
-	modelStaticcontent *model.Staticcontent,
+	modelStaticcontent *model.StaticContent,
 ) {
 	modelStaticcontent = u.toModel(delete)
 	return
 }
 
-func (u *delete) askStore(modelStaticcontent *model.Staticcontent) (
+func (u *delete) askStore(modelStaticcontent *model.StaticContent) (
 	id string,
 	err error,
 ) {
@@ -54,7 +54,7 @@ func (u *delete) askStore(modelStaticcontent *model.Staticcontent) (
 }
 
 func (u *delete) giveResponse(
-	modelStaticcontent *model.Staticcontent,
+	modelStaticcontent *model.StaticContent,
 	id string,
 ) *dto.DeleteResponse {
 	logrus.WithFields(logrus.Fields{
@@ -62,10 +62,10 @@ func (u *delete) giveResponse(
 	}).Debug("User deleted staticcontent successfully")
 
 	return &dto.DeleteResponse{
-		Message:    "Staticcontent deleted",
-		OK:         true,
-		ID:         id,
-		DeleteTime: modelStaticcontent.DeletedAt.String(),
+		Message: "Staticcontent deleted",
+		OK:      true,
+		ID:      id,
+		//		DeleteTime: modelStaticcontent.DeletedAt.String(),
 	}
 }
 
@@ -104,7 +104,7 @@ func (u *delete) Delete(delete *dto.Delete) (
 }
 
 //NewDelete returns new instance of NewDelete
-func NewDelete(store storestaticcontent.Staticcontent, validate *validator.Validate) Deleter {
+func NewDelete(store storestaticcontent.StaticContents, validate *validator.Validate) Deleter {
 	return &delete{
 		store,
 		validate,

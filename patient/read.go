@@ -16,7 +16,7 @@ type Reader interface {
 
 //patientReader implements Reader interface
 type patientReader struct {
-	patients storepatient.Patient
+	patients storepatient.Patients
 }
 
 func (read *patientReader) askStore(patientID string) (
@@ -62,7 +62,7 @@ func (read *patientReader) Read(patientReq *dto.ReadReq) (*dto.ReadResp, error) 
 //NewReaderParams lists params for the NewReader
 type NewReaderParams struct {
 	dig.In
-	Patient storepatient.Patient
+	Patient storepatient.Patients
 }
 
 //NewReader provides Reader
