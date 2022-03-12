@@ -19,7 +19,7 @@ type Updater interface {
 
 // update updates donor
 type update struct {
-	storeDonor storedonor.Donor
+	storeDonor storedonor.Donors
 	validate   *validator.Validate
 }
 
@@ -103,7 +103,7 @@ func (u *update) Update(update *dto.Update) (
 }
 
 //NewUpdate returns new instance of NewCreate
-func NewUpdate(store storedonor.Donor, validate *validator.Validate) Updater {
+func NewUpdate(store storedonor.Donors, validate *validator.Validate) Updater {
 	return &update{
 		store,
 		validate,
