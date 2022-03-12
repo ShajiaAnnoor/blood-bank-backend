@@ -117,9 +117,9 @@ func (n *notices) CountByNoticeID(id string) (int64, error) {
 
 	filter := bson.M{"notice_id": objectID}
 	cnt, err := n.c.CountDocuments(
-		context.Background(), 
-		filter, 
-		&options.CountOptions{}
+		context.Background(),
+		filter,
+		&options.CountOptions{},
 	)
 
 	if err != nil {

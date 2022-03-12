@@ -24,7 +24,7 @@ func (n *Notice) FromModel(modelNotice *model.Notice) error {
 	n.UpdatedAt = modelNotice.UpdatedAt
 
 	var err error
-	n.StatusID, err = primitive.ObjectIDFromHex(modelNotice.StatusID)
+	n.ID, err = primitive.ObjectIDFromHex(modelNotice.ID)
 
 	if err != nil {
 		return err
@@ -54,7 +54,7 @@ func (n *Notice) ModelNotice() *model.Notice {
 	notice.ID = n.ID.Hex()
 	notice.Notice = n.Notice
 	notice.UserID = n.UserID.Hex()
-	notice.StatusID = n.StatusID.Hex()
+	//	notice.StatusID = n.StatusID.Hex()
 	notice.CreatedAt = n.CreatedAt
 	notice.UpdatedAt = n.UpdatedAt
 

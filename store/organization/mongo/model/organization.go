@@ -24,7 +24,7 @@ func (o *Organization) FromModel(modelOrganization *model.Organization) error {
 	o.UpdatedAt = modelOrganization.UpdatedAt
 
 	var err error
-	o.StatusID, err = primitive.ObjectIDFromHex(modelOrganization.StatusID)
+	o.ID, err = primitive.ObjectIDFromHex(modelOrganization.ID)
 
 	if err != nil {
 		return err
@@ -52,9 +52,9 @@ func (o *Organization) FromModel(modelOrganization *model.Organization) error {
 func (o *Organization) ModelOrganization() *model.Organization {
 	organization := model.Organization{}
 	organization.ID = o.ID.Hex()
-	organization.Comment = o.Organization
+	//	organization.Comment = o.Organization
 	organization.UserID = o.UserID.Hex()
-	organization.StatusID = o.StatusID.Hex()
+	//	organization.StatusID = o.StatusID.Hex()
 	organization.CreatedAt = o.CreatedAt
 	organization.UpdatedAt = o.UpdatedAt
 

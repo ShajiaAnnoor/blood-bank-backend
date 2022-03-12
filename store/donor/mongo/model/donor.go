@@ -18,12 +18,12 @@ type Donor struct {
 
 //FromModel converts model data to db data for donors
 func (d *Donor) FromModel(modelDonor *model.Donor) error {
-	d.Donor = modelDonor.Donor
+	//	d.Donor = modelDonor.Donor
 	d.CreatedAt = modelDonor.CreatedAt
 	d.UpdatedAt = modelDonor.UpdatedAt
 
 	var err error
-	d.StatusID, err = primitive.ObjectIDFromHex(modelDonor.StatusID)
+	d.ID, err = primitive.ObjectIDFromHex(modelDonor.ID)
 
 	if err != nil {
 		return err
@@ -51,9 +51,9 @@ func (d *Donor) FromModel(modelDonor *model.Donor) error {
 func (d *Donor) ModelDonor() *model.Donor {
 	donor := model.Donor{}
 	donor.ID = d.ID.Hex()
-	donor.Comment = d.Comment
+	//	donor.Comment = d.Comment
 	donor.UserID = d.UserID.Hex()
-	donor.StatusID = d.StatusID.Hex()
+	donor.ID = d.ID.Hex()
 	donor.CreatedAt = d.CreatedAt
 	donor.UpdatedAt = d.UpdatedAt
 

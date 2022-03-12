@@ -156,7 +156,7 @@ func (o *organizations) Search(text string, skip, limit int64) ([]*model.Organiz
 		&options.FindOptions{
 			Skip:  &skip,
 			Limit: &limit,
-		}
+		},
 	)
 	if err != nil {
 		return nil, err
@@ -166,9 +166,9 @@ func (o *organizations) Search(text string, skip, limit int64) ([]*model.Organiz
 }
 
 //cursorToDonors decodes organizations one by one from the search result
-func (d *donors) cursorToOrganizations(cursor *mongo.Cursor) ([]*model.Organization, error) {
+func (d *organizations) cursorToOrganizations(cursor *mongo.Cursor) ([]*model.Organization, error) {
 	defer cursor.Close(context.Background())
-	modelDonors := []*model.Donor{}
+	modelOrganizations := []*model.Donor{}
 
 	for cursor.Next(context.Background()) {
 		donor := mongoModel.Organization{}
@@ -176,7 +176,7 @@ func (d *donors) cursorToOrganizations(cursor *mongo.Cursor) ([]*model.Organizat
 			return nil, fmt.Errorf("Could not decode data from mongo %w", err)
 		}
 
-		modelDonors = append(modelOrganizations, donor.ModelOrganization())
+		modelOrganizations = append(modelOrganizations, organization.ModelOrganization())
 	}
 
 	return modelOrganizations, nil
@@ -189,6 +189,6 @@ type OrganizationsParams struct {
 }
 
 //Store provides store for organizations
-func Store(params OrganizationsParams) storedonor.Organizations {
+func Store(params OrganizationsParams) storeorganization.Organizations {
 	return &Organizations{params.Collection}
 }
