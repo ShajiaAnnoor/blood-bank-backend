@@ -24,7 +24,7 @@ func (ch *createHandler) decodeBody(
 	donor dto.Donor,
 	err error,
 ) {
-	donorDat = dto.Donor{}
+	donorDat := dto.Donor{}
 	err = donorDat.FromReader(body)
 
 	return
