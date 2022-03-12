@@ -21,10 +21,10 @@ type deleteHandler struct {
 func (ch *deleteHandler) decodeBody(
 	body io.ReadCloser,
 ) (
-	staticcontent dto.StaticContent,
+	staticcontent dto.Delete,
 	err error,
 ) {
-	staticcontent = dto.StaticContent{}
+	staticcontent = dto.Delete{}
 	err = staticcontent.FromReader(body)
 
 	return
@@ -39,17 +39,17 @@ func (ch *deleteHandler) handleError(
 	routeutils.ServeError(w, err)
 }
 
-func (ch *deleteHandler) askController(
-	staticcontent *dto.StaticContent,
+func (dh *deleteHandler) askController(
+	staticcontent *dto.Delete,
 ) (
-	data *dto.CreateResponse,
+	data *dto.DeleteResponse,
 	err error,
 ) {
-	data, err = ch.delete.Delete(staticcontent)
+	data, err = dh.delete.Delete(staticcontent)
 	return
 }
 
-func (ch *deleteHandler) decodeContext(
+func (dh *deleteHandler) decodeContext(
 	r *http.Request,
 ) (userID string) {
 	userID = r.Context().Value("userID").(string)
@@ -58,7 +58,7 @@ func (ch *deleteHandler) decodeContext(
 
 func (ch *deleteHandler) responseSuccess(
 	w http.ResponseWriter,
-	resp *dto.UpdateResponse,
+	resp *dto.DeleteResponse,
 ) {
 	routeutils.ServeResponse(
 		w,
