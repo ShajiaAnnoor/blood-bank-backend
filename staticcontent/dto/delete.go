@@ -30,8 +30,8 @@ type Delete struct {
 }
 
 //Validate validates comment update data
-func (c *Delete) Validate(validate *validator.Validate) error {
-	if err := validate.Struct(c); err != nil {
+func (d *Delete) Validate(validate *validator.Validate) error {
+	if err := validate.Struct(d); err != nil {
 		return fmt.Errorf(
 			"%s:%w",
 			err.Error(),
@@ -44,8 +44,8 @@ func (c *Delete) Validate(validate *validator.Validate) error {
 }
 
 //FromReader decodes organization update data from request
-func (c *Delete) FromReader(reader io.Reader) error {
-	err := json.NewDecoder(reader).Decode(c)
+func (d *Delete) FromReader(reader io.Reader) error {
+	err := json.NewDecoder(reader).Decode(d)
 	if err != nil {
 		return fmt.Errorf(
 			"%s:%w",
