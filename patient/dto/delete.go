@@ -18,8 +18,8 @@ type DeleteResponse struct {
 }
 
 // String provides string repsentation
-func (c *DeleteResponse) String() string {
-	return fmt.Sprintf("message:%s, ok:%v", c.Message, c.OK)
+func (dr *DeleteResponse) String() string {
+	return fmt.Sprintf("message:%s, ok:%v", dr.Message, dr.OK)
 }
 
 // Update provides dto for user status update
@@ -30,8 +30,8 @@ type Delete struct {
 }
 
 //Validate validates comment update data
-func (c *Delete) Validate(validate *validator.Validate) error {
-	if err := validate.Struct(c); err != nil {
+func (d *Delete) Validate(validate *validator.Validate) error {
+	if err := validate.Struct(d); err != nil {
 		return fmt.Errorf(
 			"%s:%w",
 			err.Error(),
@@ -44,14 +44,14 @@ func (c *Delete) Validate(validate *validator.Validate) error {
 }
 
 //FromReader decodes organization update data from request
-func (c *Delete) FromReader(reader io.Reader) error {
-	err := json.NewDecoder(reader).Decode(c)
+func (d *Delete) FromReader(reader io.Reader) error {
+	err := json.NewDecoder(reader).Decode(d)
 	if err != nil {
 		return fmt.Errorf(
 			"%s:%w",
 			err.Error(),
 			&errors.Invalid{
-				Base: errors.Base{"invalid comment update data", false},
+				Base: errors.Base{"invalid patient delete data", false},
 			},
 		)
 	}
