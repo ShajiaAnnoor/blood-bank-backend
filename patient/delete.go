@@ -24,7 +24,7 @@ type delete struct {
 }
 
 //to-do
-func (u *delete) toModel(userpatient *dto.Delete) (patient *model.Patient) {
+func (d *delete) toModel(userpatient *dto.Delete) (patient *model.Patient) {
 	patient = &model.Patient{}
 	patient.CreatedAt = time.Now().UTC()
 	//	patient.DeletedAt = patient.CreatedAt
@@ -34,15 +34,15 @@ func (u *delete) toModel(userpatient *dto.Delete) (patient *model.Patient) {
 	return
 }
 
-func (u *delete) validateData(delete *dto.Delete) (err error) {
-	err = delete.Validate(u.validate)
+func (d *delete) validateData(delete *dto.Delete) (err error) {
+	err = delete.Validate(d.validate)
 	return
 }
 
-func (u *delete) convertData(delete *dto.Delete) (
+func (d *delete) convertData(delete *dto.Delete) (
 	modelPatient *model.Patient,
 ) {
-	modelPatient = u.toModel(delete)
+	modelPatient = d.toModel(delete)
 	return
 }
 
