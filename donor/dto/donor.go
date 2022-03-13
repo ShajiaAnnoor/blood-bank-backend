@@ -23,8 +23,8 @@ type Donor struct {
 }
 
 //Validate validates donor request data
-func (c *Donor) Validate(validate *validator.Validate) error {
-	if err := validate.Struct(c); err != nil {
+func (d *Donor) Validate(validate *validator.Validate) error {
+	if err := validate.Struct(d); err != nil {
 		return fmt.Errorf(
 			"%s:%w",
 			err.Error(),
