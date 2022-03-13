@@ -21,8 +21,8 @@ type Organization struct {
 }
 
 //Validate validates organization request data
-func (c *Organization) Validate(validate *validator.Validate) error {
-	if err := validate.Struct(c); err != nil {
+func (o *Organization) Validate(validate *validator.Validate) error {
+	if err := validate.Struct(o); err != nil {
 		return fmt.Errorf(
 			"%s:%w",
 			err.Error(),
