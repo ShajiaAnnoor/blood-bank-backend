@@ -2,7 +2,7 @@ package model
 
 import "time"
 
-// Patient defines comment model
+// Donor defines donor model
 type Donor struct {
 	ID        string
 	UserID    string
