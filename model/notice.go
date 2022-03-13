@@ -2,7 +2,7 @@ package model
 
 import "time"
 
-// Patient defines comment model
+// Notice defines notice model
 type Notice struct {
 	ID        string
 	UserID    string
