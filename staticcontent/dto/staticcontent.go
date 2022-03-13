@@ -17,8 +17,8 @@ type StaticContent struct {
 }
 
 //Validate validates staticcontent request data
-func (s *StaticContent) Validate(validate *validator.Validate) error {
-	if err := validate.Struct(s); err != nil {
+func (sc *StaticContent) Validate(validate *validator.Validate) error {
+	if err := validate.Struct(sc); err != nil {
 		return fmt.Errorf(
 			"%s:%w",
 			err.Error(),
@@ -31,8 +31,8 @@ func (s *StaticContent) Validate(validate *validator.Validate) error {
 }
 
 //FromReader reads staticcontent request from request body
-func (c *StaticContent) FromReader(reader io.Reader) error {
-	err := json.NewDecoder(reader).Decode(c)
+func (sc *StaticContent) FromReader(reader io.Reader) error {
+	err := json.NewDecoder(reader).Decode(sc)
 	if err != nil {
 		return fmt.Errorf("%s:%w", err.Error(), &errors.Invalid{
 			Base: errors.Base{"invalid staticcontent data", false},
