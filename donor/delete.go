@@ -23,7 +23,7 @@ type delete struct {
 	validate   *validator.Validate
 }
 
-func (u *delete) toModel(usernotice *dto.Delete) (notice *model.Donor) {
+func (d *delete) toModel(usernotice *dto.Delete) (notice *model.Donor) {
 	notice = &model.Donor{}
 	notice.CreatedAt = time.Now().UTC()
 	//	notice.DeletedAt = notice.CreatedAt
@@ -33,27 +33,27 @@ func (u *delete) toModel(usernotice *dto.Delete) (notice *model.Donor) {
 	return
 }
 
-func (u *delete) validateData(delete *dto.Delete) (err error) {
-	err = delete.Validate(u.validate)
+func (d *delete) validateData(delete *dto.Delete) (err error) {
+	err = delete.Validate(d.validate)
 	return
 }
 
-func (u *delete) convertData(delete *dto.Delete) (
+func (d *delete) convertData(delete *dto.Delete) (
 	modelDonor *model.Donor,
 ) {
-	modelDonor = u.toModel(delete)
+	modelDonor = d.toModel(delete)
 	return
 }
 
-func (u *delete) askStore(modelDonor *model.Donor) (
+func (d *delete) askStore(modelDonor *model.Donor) (
 	id string,
 	err error,
 ) {
-	id, err = u.storeDonor.Save(modelDonor)
+	id, err = d.storeDonor.Save(modelDonor)
 	return
 }
 
-func (u *delete) giveResponse(
+func (d *delete) giveResponse(
 	modelNotice *model.Donor,
 	id string,
 ) *dto.DeleteResponse {
@@ -69,7 +69,7 @@ func (u *delete) giveResponse(
 	}
 }
 
-func (u *delete) giveError() (err error) {
+func (d *delete) giveError() (err error) {
 	errResp := errors.Unknown{
 		Base: errors.Base{
 			OK:      false,
