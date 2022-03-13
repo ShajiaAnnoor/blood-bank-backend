@@ -19,9 +19,5 @@ func Store(c container.Container) {
 	c.Register(donor.Store)
 	c.Register(staticcontent.Store)
 	c.Register(notice.Store)
-	//	c.Register(picture.Store)
-	//	c.Register(status.Store)
-	//	c.Register(token.Store)
-	//	c.Register(comment.Store)
 	c.Register(user.Store)
 }
