@@ -14,7 +14,7 @@ type authHandler struct {
 	clientStore     ClientStore
 }
 
-func (a *authHandler) validate(data *RequestDTO) error {
+func (ah *authHandler) validate(data *RequestDTO) error {
 	if _, ok := data.Values[token]; !ok {
 		return errors.New("empty token")
 	}
@@ -22,14 +22,14 @@ func (a *authHandler) validate(data *RequestDTO) error {
 	return nil
 }
 
-func (a *authHandler) Handle(c Client, data *RequestDTO) {
-	if err := a.validate(data); err != nil {
+func (ah *authHandler) Handle(c Client, data *RequestDTO) {
+	if err := ah.validate(data); err != nil {
 		logrus.Error("validate: ", err)
 		c.Kick()
 		return
 	}
 
-	session, err := a.sessionVerifier.VerifySession(data.Values[token])
+	session, err := ah.sessionVerifier.VerifySession(data.Values[token])
 	if err != nil {
 		logrus.Error("verify session: ", err)
 		c.Kick()
@@ -42,7 +42,7 @@ func (a *authHandler) Handle(c Client, data *RequestDTO) {
 	}
 
 	c.SetID(session.UserID)
-	a.clientStore.Add(c)
+	ah.clientStore.Add(c)
 }
 
 func NewAuthHandler(
