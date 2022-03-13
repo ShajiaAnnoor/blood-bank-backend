@@ -1,15 +1,15 @@
 package apipattern
 
-//BloodReqCreate holds the api string for creating a blood request
+//BloodRequestCreate holds the api string for creating a blood request
 const BloodRequestCreate string = "/api/v1/bloodrequest/create"
 
-//BloodReqUpdate holds the api string for updating a blood request
+//BloodRequestUpdate holds the api string for updating a blood request
 const BloodRequestUpdate string = "/api/v1/bloodrequest/update"
 
-//BloodReqGet holds the api string for getting a blood request
+//BloodRequestRead holds the api string for getting a blood request
 const BloodRequestRead string = "/api/v1/bloodrequest/get"
 
-//BloodReqGet holds the api string for getting a blood request
+//BloodRequestDelete holds the api string for deleting a blood request
 const BloodRequestDelete string = "/api/v1/bloodrequest/delete"
 
 //DonorCreate holds the api string for creating a donor
@@ -21,7 +21,7 @@ const DonorRead string = "/api/v1/donor/get/{id}"
 //DonorUpdate holds the api string for updating comment
 const DonorUpdate string = "/api/v1/donor/update"
 
-//BloodReqDelete holds the api string for getting a blood request
+//DonorDelete holds the api string for getting a blood request
 const DonorDelete string = "/api/v1/donor/delete"
 
 //NoticeCreate holds the api string for creating a notice
