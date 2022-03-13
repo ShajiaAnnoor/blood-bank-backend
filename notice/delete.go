@@ -23,7 +23,7 @@ type delete struct {
 	validate    *validator.Validate
 }
 
-func (u *delete) toModel(usernotice *dto.Delete) (notice *model.Notice) {
+func (d *delete) toModel(usernotice *dto.Delete) (notice *model.Notice) {
 	notice = &model.Notice{}
 	notice.CreatedAt = time.Now().UTC()
 	//	notice.DeletedAt = notice.CreatedAt
@@ -33,27 +33,27 @@ func (u *delete) toModel(usernotice *dto.Delete) (notice *model.Notice) {
 	return
 }
 
-func (u *delete) validateData(delete *dto.Delete) (err error) {
-	err = delete.Validate(u.validate)
+func (d *delete) validateData(delete *dto.Delete) (err error) {
+	err = delete.Validate(d.validate)
 	return
 }
 
-func (u *delete) convertData(delete *dto.Delete) (
+func (d *delete) convertData(delete *dto.Delete) (
 	modelNotice *model.Notice,
 ) {
-	modelNotice = u.toModel(delete)
+	modelNotice = d.toModel(delete)
 	return
 }
 
-func (u *delete) askStore(modelNotice *model.Notice) (
+func (d *delete) askStore(modelNotice *model.Notice) (
 	id string,
 	err error,
 ) {
-	id, err = u.storeNotice.Save(modelNotice)
+	id, err = d.storeNotice.Save(modelNotice)
 	return
 }
 
-func (u *delete) giveResponse(
+func (d *delete) giveResponse(
 	modelNotice *model.Notice,
 	id string,
 ) *dto.DeleteResponse {
@@ -69,7 +69,7 @@ func (u *delete) giveResponse(
 	}
 }
 
-func (u *delete) giveError() (err error) {
+func (d *delete) giveError() (err error) {
 	errResp := errors.Unknown{
 		Base: errors.Base{
 			OK:      false,
@@ -85,21 +85,21 @@ func (u *delete) giveError() (err error) {
 }
 
 //Delete implements Delete interface
-func (u *delete) Delete(delete *dto.Delete) (
+func (d *delete) Delete(delete *dto.Delete) (
 	*dto.DeleteResponse, error,
 ) {
-	if err := u.validateData(delete); err != nil {
+	if err := d.validateData(delete); err != nil {
 		return nil, err
 	}
 
-	modelNotice := u.convertData(delete)
-	id, err := u.askStore(modelNotice)
+	modelNotice := d.convertData(delete)
+	id, err := d.askStore(modelNotice)
 	if err == nil {
-		return u.giveResponse(modelNotice, id), nil
+		return d.giveResponse(modelNotice, id), nil
 	}
 
 	logrus.Error("Could not delete notice ", err)
-	err = u.giveError()
+	err = d.giveError()
 	return nil, err
 }
 
