@@ -9,7 +9,7 @@ import (
 	"gopkg.in/go-playground/validator.v9"
 )
 
-// Update provides dto for user status update
+// Update provides dto for notice update
 type Update struct {
 	Notice   string `json:"notice"`
 	UserID   string `json:"user_id"`
