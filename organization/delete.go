@@ -53,7 +53,7 @@ func (d *delete) askStore(modelOrganization *model.Organization) (
 	return
 }
 
-func (u *delete) giveResponse(
+func (d *delete) giveResponse(
 	modelOrganization *model.Organization,
 	id string,
 ) *dto.DeleteResponse {
