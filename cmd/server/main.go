@@ -41,7 +41,7 @@ func main() {
 	server.Donor(c)
 	server.Notice(c)
 	server.StaticContent(c)
-
+	server.User(c)
 	server.WS(c)
 	server.Event(c)
 
