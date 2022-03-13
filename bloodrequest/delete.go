@@ -23,7 +23,7 @@ type delete struct {
 	validate          *validator.Validate
 }
 
-func (u *delete) toModel(userbloodrequest *dto.Delete) (bloodrequest *model.BloodRequest) {
+func (d *delete) toModel(userbloodrequest *dto.Delete) (bloodrequest *model.BloodRequest) {
 	bloodrequest = &model.BloodRequest{}
 	bloodrequest.CreatedAt = time.Now().UTC()
 	//	bloodrequest.DeletedAt = bloodrequest.CreatedAt
@@ -33,27 +33,27 @@ func (u *delete) toModel(userbloodrequest *dto.Delete) (bloodrequest *model.Bloo
 	return
 }
 
-func (u *delete) validateData(delete *dto.Delete) (err error) {
-	err = delete.Validate(u.validate)
+func (d *delete) validateData(delete *dto.Delete) (err error) {
+	err = delete.Validate(d.validate)
 	return
 }
 
-func (u *delete) convertData(delete *dto.Delete) (
+func (d *delete) convertData(delete *dto.Delete) (
 	modelBloodRequest *model.BloodRequest,
 ) {
-	modelBloodRequest = u.toModel(delete)
+	modelBloodRequest = d.toModel(delete)
 	return
 }
 
-func (u *delete) askStore(modelBloodRequest *model.BloodRequest) (
+func (d *delete) askStore(modelBloodRequest *model.BloodRequest) (
 	id string,
 	err error,
 ) {
-	id, err = u.storeBloodRequest.Save(modelBloodRequest)
+	id, err = d.storeBloodRequest.Save(modelBloodRequest)
 	return
 }
 
-func (u *delete) giveResponse(
+func (d *delete) giveResponse(
 	modelBloodRequest *model.BloodRequest,
 	id string,
 ) *dto.DeleteResponse {
@@ -69,7 +69,7 @@ func (u *delete) giveResponse(
 	}
 }
 
-func (u *delete) giveError() (err error) {
+func (d *delete) giveError() (err error) {
 	errResp := errors.Unknown{
 		Base: errors.Base{
 			OK:      false,
@@ -85,21 +85,21 @@ func (u *delete) giveError() (err error) {
 }
 
 //Delete implements Delete interface
-func (u *delete) Delete(delete *dto.Delete) (
+func (d *delete) Delete(delete *dto.Delete) (
 	*dto.DeleteResponse, error,
 ) {
-	if err := u.validateData(delete); err != nil {
+	if err := d.validateData(delete); err != nil {
 		return nil, err
 	}
 
-	modelBloodRequest := u.convertData(delete)
-	id, err := u.askStore(modelBloodRequest)
+	modelBloodRequest := d.convertData(delete)
+	id, err := d.askStore(modelBloodRequest)
 	if err == nil {
-		return u.giveResponse(modelBloodRequest, id), nil
+		return d.giveResponse(modelBloodRequest, id), nil
 	}
 
 	logrus.Error("Could not delete bloodrequest ", err)
-	err = u.giveError()
+	err = d.giveError()
 	return nil, err
 }
 
