@@ -17,8 +17,8 @@ type Update struct {
 }
 
 //Validate validates staticcontent update data
-func (c *Update) Validate(validate *validator.Validate) error {
-	if err := validate.Struct(c); err != nil {
+func (u *Update) Validate(validate *validator.Validate) error {
+	if err := validate.Struct(u); err != nil {
 		return fmt.Errorf(
 			"%s:%w",
 			err.Error(),
@@ -31,8 +31,8 @@ func (c *Update) Validate(validate *validator.Validate) error {
 }
 
 //FromReader decodes staticcontent update data from request
-func (c *Update) FromReader(reader io.Reader) error {
-	err := json.NewDecoder(reader).Decode(c)
+func (u *Update) FromReader(reader io.Reader) error {
+	err := json.NewDecoder(reader).Decode(u)
 	if err != nil {
 		return fmt.Errorf(
 			"%s:%w",
