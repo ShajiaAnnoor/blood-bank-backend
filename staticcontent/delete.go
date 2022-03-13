@@ -23,7 +23,7 @@ type delete struct {
 	validate           *validator.Validate
 }
 
-func (u *delete) toModel(userstaticcontent *dto.Delete) (staticcontent *model.StaticContent) {
+func (d *delete) toModel(userstaticcontent *dto.Delete) (staticcontent *model.StaticContent) {
 	staticcontent = &model.StaticContent{}
 	staticcontent.CreatedAt = time.Now().UTC()
 	//	staticcontent.DeletedAt = staticcontent.CreatedAt
@@ -33,27 +33,27 @@ func (u *delete) toModel(userstaticcontent *dto.Delete) (staticcontent *model.St
 	return
 }
 
-func (u *delete) validateData(delete *dto.Delete) (err error) {
-	err = delete.Validate(u.validate)
+func (d *delete) validateData(delete *dto.Delete) (err error) {
+	err = delete.Validate(d.validate)
 	return
 }
 
-func (u *delete) convertData(delete *dto.Delete) (
+func (d *delete) convertData(delete *dto.Delete) (
 	modelStaticcontent *model.StaticContent,
 ) {
-	modelStaticcontent = u.toModel(delete)
+	modelStaticcontent = d.toModel(delete)
 	return
 }
 
-func (u *delete) askStore(modelStaticcontent *model.StaticContent) (
+func (d *delete) askStore(modelStaticcontent *model.StaticContent) (
 	id string,
 	err error,
 ) {
-	id, err = u.storeStaticcontent.Save(modelStaticcontent)
+	id, err = d.storeStaticcontent.Save(modelStaticcontent)
 	return
 }
 
-func (u *delete) giveResponse(
+func (d *delete) giveResponse(
 	modelStaticcontent *model.StaticContent,
 	id string,
 ) *dto.DeleteResponse {
@@ -69,7 +69,7 @@ func (u *delete) giveResponse(
 	}
 }
 
-func (u *delete) giveError() (err error) {
+func (d *delete) giveError() (err error) {
 	errResp := errors.Unknown{
 		Base: errors.Base{
 			OK:      false,
@@ -85,21 +85,21 @@ func (u *delete) giveError() (err error) {
 }
 
 //Delete implements Delete interface
-func (u *delete) Delete(delete *dto.Delete) (
+func (d *delete) Delete(delete *dto.Delete) (
 	*dto.DeleteResponse, error,
 ) {
-	if err := u.validateData(delete); err != nil {
+	if err := d.validateData(delete); err != nil {
 		return nil, err
 	}
 
-	modelStaticcontent := u.convertData(delete)
-	id, err := u.askStore(modelStaticcontent)
+	modelStaticcontent := d.convertData(delete)
+	id, err := d.askStore(modelStaticcontent)
 	if err == nil {
-		return u.giveResponse(modelStaticcontent, id), nil
+		return d.giveResponse(modelStaticcontent, id), nil
 	}
 
 	logrus.Error("Could not delete staticcontent ", err)
-	err = u.giveError()
+	err = d.giveError()
 	return nil, err
 }
 
