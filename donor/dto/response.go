@@ -35,6 +35,6 @@ type UpdateResponse struct {
 }
 
 // String provides string repsentation
-func (c *UpdateResponse) String() string {
-	return fmt.Sprintf("message:%s, ok:%v", c.Message, c.OK)
+func (ur *UpdateResponse) String() string {
+	return fmt.Sprintf("message:%s, ok:%v", ur.Message, ur.OK)
 }
