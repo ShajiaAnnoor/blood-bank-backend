@@ -43,12 +43,12 @@ type MeUpdate struct {
 }
 
 //ToModel converts json data to model data
-func (m *MeUpdate) ToModel(user *model.User) {
-	user.FirstName = m.FirstName
-	user.LastName = m.LastName
-	user.Gender = m.Gender
-	m.BirthDate.ToModel(&user.BirthDate)
-	user.Profile = m.Profile
+func (mu *MeUpdate) ToModel(user *model.User) {
+	user.FirstName = mu.FirstName
+	user.LastName = mu.LastName
+	user.Gender = mu.Gender
+	mu.BirthDate.ToModel(&user.BirthDate)
+	user.Profile = mu.Profile
 }
 
 //FromReader decodes request data to json type data
