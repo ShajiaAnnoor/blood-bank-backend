@@ -9,7 +9,7 @@ import (
 	validator "gopkg.in/go-playground/validator.v9"
 )
 
-// CreateResponse provides create response
+// DeleteResponse provides create response
 type DeleteResponse struct {
 	Message     string `json:"message"`
 	OK          bool   `json:"ok"`
@@ -22,16 +22,16 @@ func (c *DeleteResponse) String() string {
 	return fmt.Sprintf("message:%s, ok:%v", c.Message, c.OK)
 }
 
-// Update provides dto for user status update
+// Delete provides dto for notice delete
 type Delete struct {
 	Comment   string `json:"comment"`
 	UserID    string `json:"user_id"`
 	CommentID string `json:"comment_id"`
 }
 
-//Validate validates comment update data
-func (c *Delete) Validate(validate *validator.Validate) error {
-	if err := validate.Struct(c); err != nil {
+//Validate validates notice delete data
+func (d *Delete) Validate(validate *validator.Validate) error {
+	if err := validate.Struct(d); err != nil {
 		return fmt.Errorf(
 			"%s:%w",
 			err.Error(),
@@ -43,9 +43,9 @@ func (c *Delete) Validate(validate *validator.Validate) error {
 	return nil
 }
 
-//FromReader decodes comment update data from request
-func (c *Delete) FromReader(reader io.Reader) error {
-	err := json.NewDecoder(reader).Decode(c)
+//FromReader decodes notice delete data from request
+func (d *Delete) FromReader(reader io.Reader) error {
+	err := json.NewDecoder(reader).Decode(d)
 	if err != nil {
 		return fmt.Errorf(
 			"%s:%w",
