@@ -11,9 +11,14 @@ import (
 
 // Update provides dto for user status update
 type Update struct {
-	Organization   string `json:"organization"`
-	UserID         string `json:"user_id"`
-	OrganizationID string `json:"organization_id"`
+	Organization string `json:"organization"`
+	UserID       string `json:"user_id"`
+	ID           string `json:"organization_id"`
+	Name         string `json:"name"`
+	Phone        string `json:"phone_number"`
+	District     string `json:"district"`
+	Description  string `json:"description"`
+	Address      string `json:"address"`
 }
 
 //Validate validates organization update data
