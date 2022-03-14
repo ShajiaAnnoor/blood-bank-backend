@@ -11,9 +11,15 @@ import (
 
 // Update provides dto for notice update
 type Update struct {
-	Notice   string `json:"notice"`
-	UserID   string `json:"user_id"`
-	NoticeID string `json:"notice_id"`
+	Notice      string `json:"notice"`
+	ID          string `json:"notice_id"`
+	PatientName string `json:"patient_name"`
+	BloodGroup  string `json:"notice_group"`
+	Description string `json:"description"`
+	District    string `json:"district"`
+	Address     string `json:"address"`
+	Title       string `json:"title"`
+	UserID      string `json:"user_id"`
 }
 
 //Validate validates notice update data
