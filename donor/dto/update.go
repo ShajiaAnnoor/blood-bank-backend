@@ -11,9 +11,14 @@ import (
 
 // Update provides dto for user status update
 type Update struct {
-	Donor   string `json:"donor"`
-	UserID  string `json:"user_id"`
-	DonorID string `json:"donor_id"`
+	Name         string `json:"name"`
+	Phone        string `json:"phone_number"`
+	District     string `json:"district"`
+	BloodGroup   string `json:"blood_group"`
+	Address      string `json:"address"`
+	Availability bool   `json:"availability"`
+	TimesDonated int    `json:"times_donated"`
+	UserID       string `json:"user_id"`
 }
 
 //Validate validates donor update data
