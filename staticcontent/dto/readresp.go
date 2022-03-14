@@ -6,6 +6,8 @@ import "gitlab.com/Aubichol/blood-bank-backend/model"
 type ReadResp struct {
 	Notice string `json:"staticcontent"`
 	Sender string `json:"sender"`
+	Text   string `json:"name"`
+	UserID string `json:"user_id"`
 }
 
 //FromModel converts the model data to response data
