@@ -29,7 +29,7 @@ func (u *update) toModel(userorganization *dto.Update) (organization *model.Orga
 	organization.UpdatedAt = organization.CreatedAt
 	organization.Organization = userorganization.Organization
 	organization.UserID = userorganization.UserID
-	organization.ID = userorganization.OrganizationID
+	organization.ID = userorganization.ID
 	return
 }
 
