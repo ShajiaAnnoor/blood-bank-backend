@@ -24,9 +24,8 @@ func (dr *DeleteResponse) String() string {
 
 // Update provides dto for user status update
 type Delete struct {
-	Comment   string `json:"comment"`
 	UserID    string `json:"user_id"`
-	CommentID string `json:"comment_id"`
+	PatientID string `json:"patient_id"`
 }
 
 //Validate validates comment update data
