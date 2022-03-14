@@ -29,7 +29,7 @@ func (u *update) toModel(userpatient *dto.Update) (patient *model.Patient) {
 	patient.UpdatedAt = patient.CreatedAt
 	patient.Patient = userpatient.Patient
 	patient.UserID = userpatient.UserID
-	patient.ID = userpatient.PatientID
+	patient.ID = userpatient.ID
 	return
 }
 
