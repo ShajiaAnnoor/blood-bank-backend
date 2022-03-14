@@ -24,9 +24,8 @@ func (c *DeleteResponse) String() string {
 
 // Delete provides dto for notice delete
 type Delete struct {
-	Comment   string `json:"comment"`
-	UserID    string `json:"user_id"`
-	CommentID string `json:"comment_id"`
+	UserID   string `json:"user_id"`
+	NoticeID string `json:"notice_id"`
 }
 
 //Validate validates notice delete data
