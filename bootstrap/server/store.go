@@ -2,8 +2,10 @@ package server
 
 import (
 	"gitlab.com/Aubichol/blood-bank-backend/container"
+	bloodrequest "gitlab.com/Aubichol/blood-bank-backend/store/bloodrequest/mongo"
 	donor "gitlab.com/Aubichol/blood-bank-backend/store/donor/mongo"
 	notice "gitlab.com/Aubichol/blood-bank-backend/store/notice/mongo"
+	organization "gitlab.com/Aubichol/blood-bank-backend/store/organization/mongo"
 	patient "gitlab.com/Aubichol/blood-bank-backend/store/patient/mongo"
 	staticcontent "gitlab.com/Aubichol/blood-bank-backend/store/staticcontent/mongo"
 
@@ -20,4 +22,6 @@ func Store(c container.Container) {
 	c.Register(staticcontent.Store)
 	c.Register(notice.Store)
 	c.Register(user.Store)
+	c.Register(bloodrequest.Store)
+	c.Register(organization.Store)
 }
