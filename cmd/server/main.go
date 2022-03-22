@@ -28,6 +28,7 @@ func main() {
 	server.Redis(c)
 
 	server.Store(c)
+	server.Route(c)
 	server.Cache(c)
 
 	server.Middleware(c)
