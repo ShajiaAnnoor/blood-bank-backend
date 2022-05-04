@@ -8,13 +8,13 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/api/middleware"
 	"gitlab.com/Aubichol/blood-bank-backend/api/routeutils"
 	"gitlab.com/Aubichol/blood-bank-backend/apipattern"
-	bloodreq "gitlab.com/Aubichol/blood-bank-backend/bloodrequest"
+	"gitlab.com/Aubichol/blood-bank-backend/bloodrequest"
 	"gitlab.com/Aubichol/blood-bank-backend/bloodrequest/dto"
 	"go.uber.org/dig"
 )
 
 type readHandler struct {
-	reader bloodreq.Reader
+	reader bloodrequest.Reader
 }
 
 func (read *readHandler) decodeURL(
@@ -96,7 +96,7 @@ func (read *readHandler) ServeHTTP(
 //ReadRouteParams lists all the parameters for ReadRoute
 type ReadRouteParams struct {
 	dig.In
-	Reader     bloodreq.Reader
+	Reader     bloodrequest.Reader
 	Middleware *middleware.Auth
 }
 
