@@ -55,7 +55,11 @@ func (read *readHandler) responseSuccess(
 	resp *dto.ReadResp,
 ) {
 	// Serve a response to the client
-	routeutils.ServeResponse(w, http.StatusOK, resp)
+	routeutils.ServeResponse(
+		w,
+		http.StatusOK,
+		resp,
+	)
 }
 
 func (read *readHandler) handleRead(
