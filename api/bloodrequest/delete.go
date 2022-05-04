@@ -18,7 +18,7 @@ type deleteHandler struct {
 	delete bloodrequest.Updater
 }
 
-func (ch *deleteHandler) decodeBody(
+func (dh *deleteHandler) decodeBody(
 	body io.ReadCloser,
 ) (
 	bloodrequest dto.Update,
@@ -28,7 +28,7 @@ func (ch *deleteHandler) decodeBody(
 	return
 }
 
-func (ch *deleteHandler) handleError(
+func (dh *deleteHandler) handleError(
 	w http.ResponseWriter,
 	err error,
 	message string,
@@ -37,7 +37,7 @@ func (ch *deleteHandler) handleError(
 	routeutils.ServeError(w, err)
 }
 
-func (ch *deleteHandler) decodeContext(
+func (dh *deleteHandler) decodeContext(
 	r *http.Request,
 ) (userID string) {
 	userID = r.Context().Value("userID").(string)
