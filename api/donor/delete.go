@@ -13,7 +13,7 @@ import (
 	"go.uber.org/dig"
 )
 
-//deleteHandler holds comment update handler
+//deleteHandler holds donor update handler
 type deleteHandler struct {
 	delete donor.Updater
 }
