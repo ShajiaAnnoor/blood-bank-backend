@@ -55,7 +55,11 @@ func (read *readHandler) responseSuccess(
 	resp *dto.ReadResp,
 ) {
 	// Serve a response to the client
-	routeutils.ServeResponse(w, http.StatusOK, resp)
+	routeutils.ServeResponse(
+		w,
+		http.StatusOK,
+		resp,
+	)
 }
 
 func (read *readHandler) handleRead(
@@ -67,7 +71,7 @@ func (read *readHandler) handleRead(
 	req.PatientID = read.decodeURL(r)
 
 	req.UserID = read.decodeContext(r)
-	// Read comment from database using comment id and user id
+	// Read patient from database using patient id and user id
 	resp, err := read.askController(&req)
 
 	if err != nil {
