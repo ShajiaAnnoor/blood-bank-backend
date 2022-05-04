@@ -10,7 +10,11 @@ func NewOptionRoute() *Route {
 		Method:  http.MethodOptions,
 		Pattern: "/api/v1/*",
 		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			ServeResponse(w, http.StatusOK, map[string]interface{}{"message": "ok"})
+			ServeResponse(
+				w,
+				http.StatusOK,
+				map[string]interface{}{"message": "ok"},
+			)
 		}),
 	}
 }
