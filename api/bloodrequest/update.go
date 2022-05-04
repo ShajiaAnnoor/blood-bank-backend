@@ -8,17 +8,17 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/api/middleware"
 	"gitlab.com/Aubichol/blood-bank-backend/api/routeutils"
 	"gitlab.com/Aubichol/blood-bank-backend/apipattern"
-	bloodreq "gitlab.com/Aubichol/blood-bank-backend/bloodrequest"
+	"gitlab.com/Aubichol/blood-bank-backend/bloodrequest"
 	"gitlab.com/Aubichol/blood-bank-backend/bloodrequest/dto"
 	"go.uber.org/dig"
 )
 
 //updateHandler holds blood request update handler
 type updateHandler struct {
-	update bloodreq.Updater
+	update bloodrequest.Updater
 }
 
-func (ch *updateHandler) decodeBody(
+func (uh *updateHandler) decodeBody(
 	body io.ReadCloser,
 ) (
 	bloodreqAtt dto.Update,
@@ -28,7 +28,7 @@ func (ch *updateHandler) decodeBody(
 	return
 }
 
-func (ch *updateHandler) handleError(
+func (uh *updateHandler) handleError(
 	w http.ResponseWriter,
 	err error,
 	message string,
@@ -37,22 +37,22 @@ func (ch *updateHandler) handleError(
 	routeutils.ServeError(w, err)
 }
 
-func (ch *updateHandler) decodeContext(
+func (uh *updateHandler) decodeContext(
 	r *http.Request,
 ) (userID string) {
 	userID = r.Context().Value("userID").(string)
 	return
 }
 
-func (ch *updateHandler) askController(update *dto.Update) (
+func (uh *updateHandler) askController(update *dto.Update) (
 	resp *dto.UpdateResponse,
 	err error,
 ) {
-	resp, err = ch.update.Update(update)
+	resp, err = uh.update.Update(update)
 	return
 }
 
-func (ch *updateHandler) responseSuccess(
+func (uh *updateHandler) responseSuccess(
 	w http.ResponseWriter,
 	resp *dto.UpdateResponse,
 ) {
@@ -95,7 +95,7 @@ func (ch *updateHandler) ServeHTTP(
 //UpdateParams provide parameters for blood request update handler
 type UpdateParams struct {
 	dig.In
-	Update     bloodreq.Updater
+	Update     bloodrequest.Updater
 	Middleware *middleware.Auth
 }
 
