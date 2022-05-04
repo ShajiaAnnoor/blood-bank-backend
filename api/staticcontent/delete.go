@@ -18,7 +18,7 @@ type deleteHandler struct {
 	delete staticcontent.Deleter
 }
 
-func (ch *deleteHandler) decodeBody(
+func (dh *deleteHandler) decodeBody(
 	body io.ReadCloser,
 ) (
 	staticcontent dto.Delete,
@@ -30,7 +30,7 @@ func (ch *deleteHandler) decodeBody(
 	return
 }
 
-func (ch *deleteHandler) handleError(
+func (dh *deleteHandler) handleError(
 	w http.ResponseWriter,
 	err error,
 	message string,
@@ -56,7 +56,7 @@ func (dh *deleteHandler) decodeContext(
 	return
 }
 
-func (ch *deleteHandler) responseSuccess(
+func (dh *deleteHandler) responseSuccess(
 	w http.ResponseWriter,
 	resp *dto.DeleteResponse,
 ) {
@@ -68,31 +68,31 @@ func (ch *deleteHandler) responseSuccess(
 }
 
 //ServeHTTP implements http.Handler interface
-func (ch *deleteHandler) ServeHTTP(
+func (dh *deleteHandler) ServeHTTP(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
 	defer r.Body.Close()
 
-	staticcontent, err := ch.decodeBody(r.Body)
+	staticcontent, err := dh.decodeBody(r.Body)
 
 	if err != nil {
 		message := "Unable to decode error: "
-		ch.handleError(w, err, message)
+		dh.handleError(w, err, message)
 		return
 	}
 
-	staticcontent.UserID = ch.decodeContext(r)
+	staticcontent.UserID = dh.decodeContext(r)
 
-	data, err := ch.askController(&staticcontent)
+	data, err := dh.askController(&staticcontent)
 
 	if err != nil {
 		message := "Unable to update staticcontent error: "
-		ch.handleError(w, err, message)
+		dh.handleError(w, err, message)
 		return
 	}
 
-	ch.responseSuccess(w, data)
+	dh.responseSuccess(w, data)
 }
 
 //DeleteParams provide parameters for DeleteRoute
