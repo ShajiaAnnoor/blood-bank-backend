@@ -18,7 +18,7 @@ type deleteHandler struct {
 	delete patient.Deleter
 }
 
-func (ch *deleteHandler) decodeBody(
+func (dh *deleteHandler) decodeBody(
 	body io.ReadCloser,
 ) (
 	patient dto.Delete,
@@ -30,7 +30,7 @@ func (ch *deleteHandler) decodeBody(
 	return
 }
 
-func (ch *deleteHandler) handleError(
+func (dh *deleteHandler) handleError(
 	w http.ResponseWriter,
 	err error,
 	message string,
@@ -56,7 +56,7 @@ func (dh *deleteHandler) decodeContext(
 	return
 }
 
-func (ch *deleteHandler) responseSuccess(
+func (dh *deleteHandler) responseSuccess(
 	w http.ResponseWriter,
 	resp *dto.DeleteResponse,
 ) {
