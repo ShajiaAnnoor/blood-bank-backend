@@ -28,7 +28,7 @@ func (uh *updateHandler) decodeBody(
 	return
 }
 
-func (ch *updateHandler) handleError(
+func (uh *updateHandler) handleError(
 	w http.ResponseWriter,
 	err error,
 	message string,
