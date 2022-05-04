@@ -9,7 +9,6 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/api/routeutils"
 	"gitlab.com/Aubichol/blood-bank-backend/apipattern"
 	"gitlab.com/Aubichol/blood-bank-backend/bloodrequest"
-	bloodreq "gitlab.com/Aubichol/blood-bank-backend/bloodrequest"
 	"gitlab.com/Aubichol/blood-bank-backend/bloodrequest/dto"
 	"go.uber.org/dig"
 )
@@ -100,7 +99,7 @@ func (ch *createHandler) ServeHTTP(
 //CreateParams provide parameters for CreateRoute
 type CreateParams struct {
 	dig.In
-	Create     bloodreq.Creater
+	Create     bloodrequest.Creater
 	Middleware *middleware.Auth
 }
 
