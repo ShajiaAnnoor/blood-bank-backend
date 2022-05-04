@@ -49,14 +49,14 @@ func (dh *deleteHandler) askController(
 	return
 }
 
-func (ch *deleteHandler) decodeContext(
+func (dh *deleteHandler) decodeContext(
 	r *http.Request,
 ) (userID string) {
 	userID = r.Context().Value("userID").(string)
 	return
 }
 
-func (ch *deleteHandler) responseSuccess(
+func (dh *deleteHandler) responseSuccess(
 	w http.ResponseWriter,
 	resp *dto.DeleteResponse,
 ) {
