@@ -26,10 +26,14 @@ func (a *Auth) Middleware(h http.Handler) http.Handler {
 		}
 
 		if session == nil {
-			routeutils.ServeResponse(w, http.StatusForbidden, map[string]interface{}{
-				"message": "Invalid token",
-				"ok":      false,
-			})
+			routeutils.ServeResponse(
+				w,
+				http.StatusForbidden,
+				map[string]interface{}{
+					"message": "Invalid token",
+					"ok":      false,
+				},
+			)
 			return
 		}
 
