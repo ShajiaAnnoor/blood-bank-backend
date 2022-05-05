@@ -7,7 +7,7 @@ const BloodRequestCreate string = "/api/v1/bloodrequest/create"
 const BloodRequestUpdate string = "/api/v1/bloodrequest/update"
 
 //BloodRequestRead holds the api string for getting a blood request
-const BloodRequestRead string = "/api/v1/bloodrequest/get"
+const BloodRequestRead string = "/api/v1/bloodrequest/get/{id}"
 
 //BloodRequestDelete holds the api string for deleting a blood request
 const BloodRequestDelete string = "/api/v1/bloodrequest/delete"
