@@ -7,6 +7,7 @@ import (
 	"gitlab.com/Aubichol/blood-bank-backend/api/organization"
 	"gitlab.com/Aubichol/blood-bank-backend/api/patient"
 	"gitlab.com/Aubichol/blood-bank-backend/api/staticcontent"
+	"gitlab.com/Aubichol/blood-bank-backend/api/user"
 
 	"gitlab.com/Aubichol/blood-bank-backend/api/wsroute"
 	"gitlab.com/Aubichol/blood-bank-backend/container"
@@ -43,6 +44,10 @@ func Route(c container.Container) {
 	c.RegisterGroup(staticcontent.ReadRoute, "route")
 	c.RegisterGroup(staticcontent.UpdateRoute, "route")
 	c.RegisterGroup(staticcontent.DeleteRoute, "route")
+
+	c.RegisterGroup(user.RegistrationRoute, "route")
+	c.RegisterGroup(user.LoginRoute, "route")
+	c.RegisterGroup(user.SearchRoute, "route")
 
 	c.RegisterGroup(wsroute.WSRoute, "ws_route")
 }
