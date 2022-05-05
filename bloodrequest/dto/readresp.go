@@ -12,5 +12,7 @@ type ReadResp struct {
 //FromModel converts the model data to response data
 func (r *ReadResp) FromModel(bloodreq *model.BloodRequest) {
 	r.Request = bloodreq.Request
+	r.BloodGroup = bloodreq.BloodGroup
+	r.UserID = bloodreq.ID
 	//	r.Sender = bloodreq.UserID
 }
