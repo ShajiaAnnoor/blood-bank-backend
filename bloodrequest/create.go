@@ -29,6 +29,8 @@ func (c *create) toModel(userbloodreq *dto.BloodRequest) (bloodreq *model.BloodR
 	bloodreq.UpdatedAt = bloodreq.CreatedAt
 	//	bloodreq.Comment = userbloodreq.Request
 	bloodreq.UserID = userbloodreq.UserID
+	bloodreq.Request = userbloodreq.Request
+	bloodreq.BloodGroup = userbloodreq.BloodGroup
 	//	bloodreq.StatusID = userbloodreq.StatusID
 	return
 }
