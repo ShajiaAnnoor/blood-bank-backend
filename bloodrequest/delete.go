@@ -25,11 +25,11 @@ type delete struct {
 
 func (d *delete) toModel(userbloodrequest *dto.Delete) (bloodrequest *model.BloodRequest) {
 	bloodrequest = &model.BloodRequest{}
-	bloodrequest.CreatedAt = time.Now().UTC()
-	//	bloodrequest.DeletedAt = bloodrequest.CreatedAt
-	//	bloodrequest.Status = userbloodrequest.Status
-	bloodrequest.UserID = userbloodrequest.UserID
-	//	bloodrequest.ID = userbloodrequest.StatusID
+	bloodrequest.UpdatedAt = time.Now().UTC()
+	bloodrequest.IsDeleted = true
+	//	bloodrequest.DeletedAt = userbloodrequest.DeletedAt
+	//	bloodrequest.UserID = userbloodrequest.UserID
+	bloodrequest.ID = userbloodrequest.ID
 	return
 }
 
