@@ -39,7 +39,7 @@ func MongoCollections(c container.Container) {
 	registerCollectionProvider(c, "donors")
 	registerCollectionProvider(c, "bloodrequests")
 	registerCollectionProvider(c, "staticcontents")
-	registerCollectionProvider(c, "user")
+	registerCollectionProvider(c, "users")
 }
 
 func registerCollectionProvider(c container.Container, collectionName string) {
