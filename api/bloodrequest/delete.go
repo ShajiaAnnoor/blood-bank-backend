@@ -15,7 +15,7 @@ import (
 
 //deleteHandler holds comment update handler
 type deleteHandler struct {
-	delete bloodrequest.Updater
+	delete bloodrequest.Deleter
 }
 
 func (dh *deleteHandler) decodeBody(
@@ -48,7 +48,7 @@ func (dh *deleteHandler) askController(update *dto.Update) (
 	resp *dto.UpdateResponse,
 	err error,
 ) {
-	resp, err = dh.delete.Update(update)
+	resp, err = dh.delete.Delete(update)
 	return
 }
 
