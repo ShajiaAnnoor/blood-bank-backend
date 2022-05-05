@@ -30,7 +30,6 @@ func (u *update) toModel(userbloodrequest *dto.Update) (bloodrequest *model.Bloo
 	bloodrequest.UserID = userbloodrequest.UserID
 	bloodrequest.ID = userbloodrequest.ID
 	bloodrequest.BloodGroup = userbloodrequest.BloodGroup
-	//	bloodrequest.ID = userbloodrequest.StatusID
 	return
 }
 
