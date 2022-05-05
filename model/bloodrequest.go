@@ -9,6 +9,8 @@ type BloodRequest struct {
 	Patient    string
 	Request    string
 	BloodGroup string
+	IsDeleted  bool
 	CreatedAt  time.Time
 	UpdatedAt  time.Time
+	DeletedAt  time.Time
 }
