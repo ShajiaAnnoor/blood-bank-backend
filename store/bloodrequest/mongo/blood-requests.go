@@ -29,15 +29,15 @@ func (b *bloodrequests) convertData(modelBloodRequests *model.BloodRequest) (
 
 // Save saves bloodrequests from model to database
 func (b *bloodrequests) Save(modelBloodRequests *model.BloodRequest) (string, error) {
-	mongoBloodRequests := mongoModel.BloodRequest{}
+	mongoBloodRequest := mongoModel.BloodRequest{}
 	var err error
-	mongoBloodRequest, err := b.convertData(modelBloodRequests)
+	mongoBloodRequest, err = b.convertData(modelBloodRequests)
 	if err != nil {
 		return "", fmt.Errorf("Could not convert model bloodrequests to mongo bloodrequest: %w", err)
 	}
 
 	if modelBloodRequests.ID == "" {
-		mongoBloodRequests.ID = primitive.NewObjectID()
+		mongoBloodRequest.ID = primitive.NewObjectID()
 	}
 
 	filter := bson.M{"_id": mongoBloodRequest.ID}
