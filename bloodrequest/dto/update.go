@@ -11,6 +11,7 @@ import (
 
 // Update provides dto for blood request update
 type Update struct {
+	ID         string `json:"blood_request_id"`
 	Request    string `json:"request"`
 	BloodGroup string `json:"blood_group"`
 	UserID     string `json:"user_id"`
