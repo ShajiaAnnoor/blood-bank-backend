@@ -16,6 +16,7 @@ type BloodRequest struct {
 	BloodGroup string    `bson:"blood_group"`
 	CreatedAt  time.Time `bson:"created_at"`
 	UpdatedAt  time.Time `bson:"updated_at"`
+	IsDeleted  bool      `bson:"is_deleted"`
 }
 
 //FromModel converts model data to db data for blood requests
@@ -24,6 +25,7 @@ func (b *BloodRequest) FromModel(modelRequest *model.BloodRequest) error {
 	b.CreatedAt = modelRequest.CreatedAt
 	b.UpdatedAt = modelRequest.UpdatedAt
 	b.BloodGroup = modelRequest.BloodGroup
+	b.IsDeleted = modelRequest.IsDeleted
 
 	var err error
 
