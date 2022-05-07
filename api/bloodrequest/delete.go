@@ -21,7 +21,7 @@ type deleteHandler struct {
 func (dh *deleteHandler) decodeBody(
 	body io.ReadCloser,
 ) (
-	bloodrequest dto.Update,
+	bloodrequest dto.Delete,
 	err error,
 ) {
 	err = bloodrequest.FromReader(body)
@@ -44,8 +44,8 @@ func (dh *deleteHandler) decodeContext(
 	return
 }
 
-func (dh *deleteHandler) askController(update *dto.Update) (
-	resp *dto.UpdateResponse,
+func (dh *deleteHandler) askController(update *dto.Delete) (
+	resp *dto.DeleteResponse,
 	err error,
 ) {
 	resp, err = dh.delete.Delete(update)
@@ -54,7 +54,7 @@ func (dh *deleteHandler) askController(update *dto.Update) (
 
 func (dh *deleteHandler) responseSuccess(
 	w http.ResponseWriter,
-	resp *dto.UpdateResponse,
+	resp *dto.DeleteResponse,
 ) {
 	routeutils.ServeResponse(
 		w,
@@ -70,7 +70,7 @@ func (dh *deleteHandler) ServeHTTP(
 ) {
 	defer r.Body.Close()
 
-	bloodrequest := dto.Update{}
+	bloodrequest := dto.Delete{}
 	bloodrequest, err := dh.decodeBody(r.Body)
 
 	if err != nil {
@@ -95,7 +95,7 @@ func (dh *deleteHandler) ServeHTTP(
 //DeleteParams provide parameters for bloodrequest delete handler
 type DeleteParams struct {
 	dig.In
-	Delete     bloodrequest.Updater
+	Delete     bloodrequest.Deleter
 	Middleware *middleware.Auth
 }
 
@@ -104,7 +104,7 @@ func DeleteRoute(params DeleteParams) *routeutils.Route {
 	handler := deleteHandler{params.Delete}
 	return &routeutils.Route{
 		Method:  http.MethodPost,
-		Pattern: apipattern.BloodRequestUpdate,
+		Pattern: apipattern.BloodRequestDelete,
 		Handler: params.Middleware.Middleware(&handler),
 	}
 }
