@@ -28,7 +28,7 @@ func (d *delete) toModel(userbloodrequest *dto.Delete) (bloodrequest *model.Bloo
 	bloodrequest.UpdatedAt = time.Now().UTC()
 	bloodrequest.IsDeleted = true
 	//	bloodrequest.DeletedAt = userbloodrequest.DeletedAt
-	//	bloodrequest.UserID = userbloodrequest.UserID
+	bloodrequest.UserID = userbloodrequest.UserID
 	bloodrequest.ID = userbloodrequest.ID
 	return
 }
