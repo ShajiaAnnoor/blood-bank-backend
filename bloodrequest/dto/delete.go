@@ -23,10 +23,11 @@ func (d *DeleteResponse) String() string {
 }
 
 // Delete provides dto for blood request delete
+
 type Delete struct {
-	UserID         string `json:"user_id"`
-	BloodRequestID string `json:"blood_request_id"`
-	IsDeleted      bool   `json:"is_deleted"`
+	UserID    string `json:"user_id"`
+	ID        string `json:"blood_request_id"`
+	IsDeleted bool   `json:"is_deleted"`
 }
 
 //Validate validates blood request delete data
