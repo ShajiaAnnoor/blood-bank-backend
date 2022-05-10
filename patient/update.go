@@ -27,7 +27,7 @@ func (u *update) toModel(userpatient *dto.Update) (patient *model.Patient) {
 	patient = &model.Patient{}
 	patient.CreatedAt = time.Now().UTC()
 	patient.UpdatedAt = patient.CreatedAt
-	patient.Patient = userpatient.Patient
+	//	patient.Patient = userpatient.Patient
 	patient.UserID = userpatient.UserID
 	patient.ID = userpatient.ID
 	return
