@@ -30,8 +30,11 @@ func (c *create) toModel(userpatient *dto.Patient) (
 	patient = &model.Patient{}
 	patient.CreatedAt = time.Now().UTC()
 	patient.UpdatedAt = patient.CreatedAt
-	//	patient.Description = userpatient.Description
-	//	patient.Title = userpatient.Title
+	patient.Name = userpatient.Name
+	patient.BloodGroup = userpatient.BloodGroup
+	patient.District = userpatient.District
+	patient.Phone = userpatient.Phone
+	patient.Address = userpatient.Address
 	patient.UserID = userpatient.UserID
 	return
 }
