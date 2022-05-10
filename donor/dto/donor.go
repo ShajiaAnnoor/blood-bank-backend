@@ -20,6 +20,7 @@ type Donor struct {
 	Availability bool   `json:"availability"`
 	TimesDonated int    `json:"times_donated"`
 	UserID       string `json:"user_id"`
+	IsDeleted    bool   `json:"is_deleted"`
 }
 
 //Validate validates donor request data
