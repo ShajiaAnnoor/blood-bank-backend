@@ -26,6 +26,7 @@ func (dr *DeleteResponse) String() string {
 type Delete struct {
 	UserID  string `json:"user_id"`
 	DonorID string `json:"donor_id"`
+	//	IsDeleted bool   `json:"is_deleted"`
 }
 
 //Validate validates comment update data
