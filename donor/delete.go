@@ -23,12 +23,14 @@ type delete struct {
 	validate   *validator.Validate
 }
 
-func (d *delete) toModel(usernotice *dto.Delete) (notice *model.Donor) {
-	notice = &model.Donor{}
-	notice.CreatedAt = time.Now().UTC()
+func (d *delete) toModel(userdonor *dto.Delete) (donor *model.Donor) {
+	donor = &model.Donor{}
+	donor.UpdatedAt = time.Now().UTC()
+	donor.IsDeleted = true
 	//	notice.DeletedAt = notice.CreatedAt
 	//	notice.Status = usernotice.Status
-	notice.UserID = usernotice.UserID
+	donor.UserID = userdonor.UserID
+	donor.ID = userdonor.DonorID
 	//	notice.ID = usernotice.StatusID
 	return
 }
