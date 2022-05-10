@@ -10,16 +10,16 @@ import (
 //Donor holds db data type for donors
 type Donor struct {
 	ID           primitive.ObjectID `bson:"_id,omitempty"`
-	Name         string             `bson:"name"`
-	Phone        string             `bson:"phone_number"`
-	District     string             `bson:"district"`
-	Address      string             `bson:"address"`
-	Availability bool               `bson:"availability"`
-	TimesDonated int                `bson:"times_donated"`
-	BloodGroup   string             `bson:"blood_group"`
-	UserID       primitive.ObjectID `bson:"user_id"`
-	CreatedAt    time.Time          `bson:"created_at"`
-	UpdatedAt    time.Time          `bson:"updated_at"`
+	Name         string             `bson:"name,omitempty"`
+	Phone        string             `bson:"phone_number,omitempty"`
+	District     string             `bson:"district,omitempty"`
+	Address      string             `bson:"address,omitempty"`
+	Availability bool               `bson:"availability,omitempty"`
+	TimesDonated int                `bson:"times_donated,omitempty"`
+	BloodGroup   string             `bson:"blood_group,omitempty"`
+	UserID       primitive.ObjectID `bson:"user_id,omitempty"`
+	CreatedAt    time.Time          `bson:"created_at,omitempty"`
+	UpdatedAt    time.Time          `bson:"updated_at,omitempty"`
 }
 
 //FromModel converts model data to db data for donors
@@ -60,11 +60,16 @@ func (d *Donor) FromModel(modelDonor *model.Donor) error {
 func (d *Donor) ModelDonor() *model.Donor {
 	donor := model.Donor{}
 	donor.ID = d.ID.Hex()
-	//	donor.Comment = d.Comment
 	donor.UserID = d.UserID.Hex()
-	donor.ID = d.ID.Hex()
 	donor.CreatedAt = d.CreatedAt
 	donor.UpdatedAt = d.UpdatedAt
+	donor.Address = d.Address
+	donor.Availability = d.Availability
+	donor.BloodGroup = d.BloodGroup
+	donor.District = d.District
+	donor.Name = d.Name
+	donor.Phone = d.Phone
+	donor.TimesDonated = d.TimesDonated
 
 	return &donor
 }
