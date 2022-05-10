@@ -11,9 +11,9 @@ import (
 
 // Notice provides dto for notice request
 type Notice struct {
-	ID          string `json:"notice_request_id"`
+	//	ID          string `json:"notice_request_id"`
 	PatientName string `json:"patient_name"`
-	BloodGroup  string `json:"notice_group"`
+	BloodGroup  string `json:"blood_group"`
 	Description string `json:"description"`
 	District    string `json:"district"`
 	Address     string `json:"address"`
