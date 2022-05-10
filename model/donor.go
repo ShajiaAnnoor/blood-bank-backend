@@ -14,6 +14,7 @@ type Donor struct {
 	Availability bool
 	TimesDonated int
 	Name         string
+	IsDeleted    bool
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
 }
