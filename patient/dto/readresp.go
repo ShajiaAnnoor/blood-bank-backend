@@ -16,6 +16,6 @@ type ReadResp struct {
 
 //FromModel converts the model data to response data
 func (r *ReadResp) FromModel(patient *model.Patient) {
-	r.Patient = patient.Patient
+	//	r.Patient = patient.Patient
 	r.Sender = patient.UserID
 }
