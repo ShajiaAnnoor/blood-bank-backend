@@ -2,7 +2,6 @@ package donor
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/sirupsen/logrus"
 	"gitlab.com/Aubichol/blood-bank-backend/donor/dto"
@@ -25,9 +24,20 @@ type update struct {
 
 func (u *update) toModel(userdonor *dto.Update) (donor *model.Donor) {
 	donor = &model.Donor{}
-	donor.CreatedAt = time.Now().UTC()
+	//	donor.CreatedAt = time.Now().UTC()
 	donor.UpdatedAt = donor.CreatedAt
 	donor.UserID = userdonor.UserID
+	donor.ID = userdonor.ID
+	donor.Address = userdonor.Address
+	donor.Availability = userdonor.Availability
+	donor.BloodGroup = userdonor.BloodGroup
+	donor.District = userdonor.District
+	donor.Address = userdonor.Address
+	donor.Availability = userdonor.Availability
+	donor.BloodGroup = userdonor.BloodGroup
+	donor.District = userdonor.District
+	donor.Name = userdonor.Name
+	donor.Phone = userdonor.Phone
 	//	donor.ID = userdonor.StatusID
 	return
 }
