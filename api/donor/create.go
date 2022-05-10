@@ -24,8 +24,8 @@ func (ch *createHandler) decodeBody(
 	donor dto.Donor,
 	err error,
 ) {
-	donorDat := dto.Donor{}
-	err = donorDat.FromReader(body)
+	//donorDat := dto.Donor{}
+	err = donor.FromReader(body)
 
 	return
 }
@@ -83,7 +83,6 @@ func (ch *createHandler) ServeHTTP(
 	}
 
 	donorDat.UserID = ch.decodeContext(r)
-
 	data, err := ch.askController(&donorDat)
 
 	if err != nil {
