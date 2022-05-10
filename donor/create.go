@@ -30,8 +30,14 @@ func (c *create) toModel(userdonor *dto.Donor) (
 	donor = &model.Donor{}
 	donor.CreatedAt = time.Now().UTC()
 	donor.UpdatedAt = donor.CreatedAt
-	//	donor.Description = userdonor.Description
-	//	donor.Title = userdonor.Title
+	donor.Address = userdonor.Address
+	donor.Availability = userdonor.Availability
+	donor.BloodGroup = userdonor.BloodGroup
+	donor.District = userdonor.District
+	donor.ID = userdonor.ID
+	donor.Name = userdonor.Name
+	donor.TimesDonated = userdonor.TimesDonated
+	donor.Phone = userdonor.Phone
 	donor.UserID = userdonor.UserID
 	return
 }
@@ -96,7 +102,8 @@ func (c *create) Create(create *dto.Donor) (
 	}
 
 	modelDonor := c.convertData(create)
-
+	fmt.Println(modelDonor)
+	fmt.Println("District is", modelDonor.District)
 	id, err := c.askStore(modelDonor)
 	if err == nil {
 		return c.giveResponse(modelDonor, id)
