@@ -32,6 +32,7 @@ func (p *patients) Save(modelPatient *model.Patient) (string, error) {
 	mongoPatient := mongoModel.Patient{}
 	var err error
 	mongoPatient, err = p.convertData(modelPatient)
+
 	if err != nil {
 		return "", fmt.Errorf("Could not convert model patient to mongo patient: %w", err)
 	}
