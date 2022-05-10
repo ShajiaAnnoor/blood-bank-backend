@@ -20,6 +20,7 @@ type Donor struct {
 	UserID       primitive.ObjectID `bson:"user_id,omitempty"`
 	CreatedAt    time.Time          `bson:"created_at,omitempty"`
 	UpdatedAt    time.Time          `bson:"updated_at,omitempty"`
+	IsDeleted    bool               `bson:"is_deleted,omitempty"`
 }
 
 //FromModel converts model data to db data for donors
@@ -34,6 +35,7 @@ func (d *Donor) FromModel(modelDonor *model.Donor) error {
 	d.Availability = modelDonor.Availability
 	d.TimesDonated = modelDonor.TimesDonated
 	d.BloodGroup = modelDonor.BloodGroup
+	d.IsDeleted = modelDonor.IsDeleted
 
 	var err error
 
