@@ -4,9 +4,16 @@ import "time"
 
 // Donor defines donor model
 type Donor struct {
-	ID        string
-	UserID    string
-	Patient   string
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	ID           string
+	UserID       string
+	Patient      string
+	Phone        string
+	District     string
+	BloodGroup   string
+	Address      string
+	Availability bool
+	TimesDonated int
+	Name         string
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
 }
