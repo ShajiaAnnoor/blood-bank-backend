@@ -20,7 +20,7 @@ type readHandler struct {
 func (read *readHandler) decodeURL(
 	r *http.Request,
 ) (patientID string) {
-	// Get user id from url
+	// Get patient id from url
 	patientID = chi.URLParam(r, "id")
 	return
 }
