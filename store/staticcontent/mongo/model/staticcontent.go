@@ -10,41 +10,35 @@ import (
 //StaticContent holds db data type for static contents
 type StaticContent struct {
 	ID        primitive.ObjectID `bson:"_id,omitempty"`
-	Comment   string             `bson:"comment"`
-	UserID    primitive.ObjectID `bson:"user_id"`
-	StatusID  primitive.ObjectID `bson:"status_id"`
-	CreatedAt time.Time          `bson:"created_at"`
-	UpdatedAt time.Time          `bson:"updated_at"`
+	Text      string             `bson:"text,omitempty"`
+	UserID    primitive.ObjectID `bson:"user_id,omitempty"`
+	CreatedAt time.Time          `bson:"created_at,omitempty"`
+	UpdatedAt time.Time          `bson:"updated_at,omitempty"`
 }
 
 //FromModel converts model data to db data for comments
 func (sc *StaticContent) FromModel(modelStaticContent *model.StaticContent) error {
-	sc.Comment = modelStaticContent.StaticContent
 	sc.CreatedAt = modelStaticContent.CreatedAt
 	sc.UpdatedAt = modelStaticContent.UpdatedAt
+	sc.Text = modelStaticContent.Text
 
 	var err error
-	sc.ID, err = primitive.ObjectIDFromHex(modelStaticContent.ID)
+	if modelStaticContent.ID != "" {
+		sc.ID, err = primitive.ObjectIDFromHex(modelStaticContent.ID)
+	}
 
 	if err != nil {
 		return err
 	}
 
-	sc.UserID, err = primitive.ObjectIDFromHex(modelStaticContent.UserID)
+	if modelStaticContent.UserID != "" {
+		sc.UserID, err = primitive.ObjectIDFromHex(modelStaticContent.UserID)
+	}
+
 	if err != nil {
 		return err
 	}
 
-	if modelStaticContent.ID == "" {
-		return nil
-	}
-
-	id, err := primitive.ObjectIDFromHex(modelStaticContent.ID)
-	if err != nil {
-		return err
-	}
-
-	sc.ID = id
 	return nil
 }
 
@@ -52,9 +46,8 @@ func (sc *StaticContent) FromModel(modelStaticContent *model.StaticContent) erro
 func (c *StaticContent) ModelStaticContent() *model.StaticContent {
 	sc := model.StaticContent{}
 	sc.ID = c.ID.Hex()
-	//	sc.StaticContent = c.StaticContent
+	sc.Text = c.Text
 	sc.UserID = c.UserID.Hex()
-	//	sc.StaticContentID = c.StatusID.Hex()
 	sc.CreatedAt = c.CreatedAt
 	sc.UpdatedAt = c.UpdatedAt
 
