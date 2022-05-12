@@ -27,14 +27,11 @@ type create struct {
 func (sc *create) toModel(userstaticcontent *dto.StaticContent) (
 	staticcontent *model.StaticContent,
 ) {
-	s := &model.StaticContent{}
-	s.CreatedAt = time.Now().UTC()
-	s.UpdatedAt = staticcontent.CreatedAt
-	s.Text = staticcontent.Text
-	s.UserID = staticcontent.UserID
-	//sc.Description = userstaticcontent.Description
-	//sc.Title = userstaticcontent.Title
-	//sc.UserID = userstaticcontent.UserID
+	staticcontent = &model.StaticContent{}
+	staticcontent.CreatedAt = time.Now().UTC()
+	staticcontent.UpdatedAt = staticcontent.CreatedAt
+	staticcontent.Text = userstaticcontent.Text
+	staticcontent.UserID = userstaticcontent.UserID
 	return
 }
 
