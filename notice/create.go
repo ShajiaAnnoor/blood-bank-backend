@@ -30,8 +30,11 @@ func (c *create) toModel(usernotice *dto.Notice) (
 	notice = &model.Notice{}
 	notice.CreatedAt = time.Now().UTC()
 	notice.UpdatedAt = notice.CreatedAt
-	//	notice.Description = usernotice.Description
-	//	notice.Title = usernotice.Title
+	notice.BloodGroup = usernotice.BloodGroup
+	notice.District = usernotice.District
+	notice.Address = usernotice.Address
+	notice.Description = usernotice.Description
+	notice.Title = usernotice.Title
 	notice.UserID = usernotice.UserID
 	return
 }
