@@ -30,6 +30,8 @@ func (sc *create) toModel(userstaticcontent *dto.StaticContent) (
 	s := &model.StaticContent{}
 	s.CreatedAt = time.Now().UTC()
 	s.UpdatedAt = staticcontent.CreatedAt
+	s.Text = staticcontent.Text
+	s.UserID = staticcontent.UserID
 	//sc.Description = userstaticcontent.Description
 	//sc.Title = userstaticcontent.Title
 	//sc.UserID = userstaticcontent.UserID
