@@ -69,6 +69,12 @@ func (n *Notice) ModelNotice() *model.Notice {
 	notice.UserID = n.UserID.Hex()
 	notice.CreatedAt = n.CreatedAt
 	notice.UpdatedAt = n.UpdatedAt
+	notice.Address = n.Address
+	notice.BloodGroup = n.BloodGroup
+	notice.Description = n.Description
+	notice.District = n.District
+	notice.PatientName = n.PatientName
+	notice.Title = n.Title
 
 	return &notice
 }
