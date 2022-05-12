@@ -10,14 +10,14 @@ import (
 //Patient holds db data type for patients
 type Patient struct {
 	ID         primitive.ObjectID `bson:"_id,omitempty"`
-	Name       string             `bson:"name"`
-	BloodGroup string             `bson:"blood_group"`
-	District   string             `bson:"district"`
-	Phone      string             `bson:"phone_number"`
-	Address    string             `bson:"address"`
+	Name       string             `bson:"name,omitempty"`
+	BloodGroup string             `bson:"blood_group,omitempty"`
+	District   string             `bson:"district,omitempty"`
+	Phone      string             `bson:"phone_number,omitempty"`
+	Address    string             `bson:"address,omitempty"`
 	UserID     primitive.ObjectID `bson:"user_id,omitempty"`
-	CreatedAt  time.Time          `bson:"created_at"`
-	UpdatedAt  time.Time          `bson:"updated_at"`
+	CreatedAt  time.Time          `bson:"created_at,omitempty"`
+	UpdatedAt  time.Time          `bson:"updated_at,omitempty"`
 }
 
 //FromModel converts model data to db data for comments
