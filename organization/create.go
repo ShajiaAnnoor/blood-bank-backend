@@ -30,8 +30,11 @@ func (c *create) toModel(userorganization *dto.Organization) (
 	organization = &model.Organization{}
 	organization.CreatedAt = time.Now().UTC()
 	organization.UpdatedAt = organization.CreatedAt
-	//	organization.Description = userorganization.Description
-	//	organization.Title = userorganization.Title
+	organization.Description = userorganization.Description
+	organization.Name = userorganization.Name
+	organization.Phone = userorganization.Phone
+	organization.District = userorganization.District
+	organization.Address = userorganization.Address
 	organization.UserID = userorganization.UserID
 	return
 }
