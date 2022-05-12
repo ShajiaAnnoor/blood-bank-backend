@@ -27,7 +27,11 @@ func (u *update) toModel(userorganization *dto.Update) (organization *model.Orga
 	organization = &model.Organization{}
 	organization.CreatedAt = time.Now().UTC()
 	organization.UpdatedAt = organization.CreatedAt
-	organization.Organization = userorganization.Organization
+	organization.Description = userorganization.Description
+	organization.Name = userorganization.Name
+	organization.Phone = userorganization.Phone
+	organization.District = userorganization.District
+	organization.Address = userorganization.Address
 	organization.UserID = userorganization.UserID
 	organization.ID = userorganization.ID
 	return
