@@ -11,11 +11,14 @@ import (
 type Notice struct {
 	ID          primitive.ObjectID `bson:"_id,omitempty"`
 	BloodGroup  string             `bson:"blood_group,omitempty"`
-	Description string             `bson:"description"`
-	Title       string             `bson:"title"`
-	UserID      primitive.ObjectID `bson:"user_id"`
-	CreatedAt   time.Time          `bson:"created_at"`
-	UpdatedAt   time.Time          `bson:"updated_at"`
+	Description string             `bson:"description,omitempty"`
+	Title       string             `bson:"title,omitempty"`
+	Address     string             `bson:"address"`
+	PatientName string             `bson:"patient_name"`
+	District    string             `bson:"district"`
+	UserID      primitive.ObjectID `bson:"user_id,omitempty"`
+	CreatedAt   time.Time          `bson:"created_at,omitempty"`
+	UpdatedAt   time.Time          `bson:"updated_at,omitempty"`
 }
 
 //FromModel converts model data to db data for notices
@@ -25,6 +28,8 @@ func (n *Notice) FromModel(modelNotice *model.Notice) error {
 	n.BloodGroup = modelNotice.BloodGroup
 	n.Description = modelNotice.Description
 	n.Title = modelNotice.Title
+	n.Address = modelNotice.Address
+	n.District = modelNotice.District
 
 	var err error
 
