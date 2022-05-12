@@ -12,7 +12,7 @@ import (
 // StaticContent provides dto for staticcontent request
 type StaticContent struct {
 	ID     string `json:"staticcontent_request_id"`
-	Text   string `json:"name"`
+	Text   string `json:"text"`
 	UserID string `json:"user_id"`
 }
 
