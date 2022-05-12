@@ -4,14 +4,14 @@ import "gitlab.com/Aubichol/blood-bank-backend/model"
 
 //ReadResp holds the response data for reading notice
 type ReadResp struct {
-	Notice string `json:"staticcontent"`
-	Sender string `json:"sender"`
-	Text   string `json:"name"`
+	ID     string `json:"id"`
+	Text   string `json:"text"`
 	UserID string `json:"user_id"`
 }
 
 //FromModel converts the model data to response data
 func (r *ReadResp) FromModel(staticcontent *model.StaticContent) {
-	//	r.Notice = staticcontent.Notice
-	r.Sender = staticcontent.UserID
+	r.UserID = staticcontent.UserID
+	r.Text = staticcontent.Text
+	r.ID = staticcontent.ID
 }
