@@ -1,6 +1,8 @@
 package notice
 
 import (
+	"fmt"
+
 	"github.com/sirupsen/logrus"
 	"gitlab.com/Aubichol/blood-bank-backend/errors"
 	"gitlab.com/Aubichol/blood-bank-backend/model"
@@ -45,13 +47,6 @@ func (read *noticeReader) prepareResponse(
 	return
 }
 
-func (read *noticeReader) isSameUser(giverID, userID string) (
-	isSame bool,
-) {
-	isSame = giverID == userID
-	return
-}
-
 func (read *noticeReader) Read(noticeReq *dto.ReadReq) (*dto.ReadResp, error) {
 	//TO-DO: some validation on the input data is required
 	notice, err := read.askStore(noticeReq.NoticeID)
@@ -59,15 +54,8 @@ func (read *noticeReader) Read(noticeReq *dto.ReadReq) (*dto.ReadResp, error) {
 		logrus.Error("Could not find notice error : ", err)
 		return nil, read.giveError()
 	}
-
-	var resp dto.ReadResp
-	resp = read.prepareResponse(notice)
-	giverID := notice.UserID
-	//If the same person who has given the notice asks for
-	//the notice, we should give them.
-	if read.isSameUser(giverID, noticeReq.UserID) {
-		return &resp, nil
-	}
+	fmt.Println("description is", notice.Description)
+	var resp dto.ReadResp = read.prepareResponse(notice)
 
 	return &resp, nil
 }
