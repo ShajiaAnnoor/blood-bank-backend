@@ -34,9 +34,8 @@ func (o *organizations) Save(modelOrganization *model.Organization) (string, err
 	var err error
 	mongoOrganization, err = o.convertData(modelOrganization)
 	if err != nil {
-		return "", fmt.Errorf("Could not convert model donor to mongo donor: %w", err)
+		return "", fmt.Errorf("Could not convert model organization to mongo organization: %w", err)
 	}
-
 	if modelOrganization.ID == "" {
 		mongoOrganization.ID = primitive.NewObjectID()
 	}
@@ -44,7 +43,6 @@ func (o *organizations) Save(modelOrganization *model.Organization) (string, err
 	filter := bson.M{"_id": mongoOrganization.ID}
 	update := bson.M{"$set": mongoOrganization}
 	upsert := true
-
 	_, err = o.c.UpdateOne(
 		context.Background(),
 		filter,
