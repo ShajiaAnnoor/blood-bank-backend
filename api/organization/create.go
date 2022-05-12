@@ -95,7 +95,7 @@ func (ch *createHandler) ServeHTTP(
 	ch.responseSuccess(w, data)
 }
 
-//CreateParams provide parameters for NewCommentRoute
+//CreateParams provide parameters for organization's CreateRoute
 type CreateParams struct {
 	dig.In
 	Create     organization.Creater
