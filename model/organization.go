@@ -6,8 +6,12 @@ import "time"
 type Organization struct {
 	ID           string
 	UserID       string
-	Patient      string
 	Organization string
+	Name         string
+	Phone        string
+	District     string
+	Description  string
+	Address      string
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
 }
