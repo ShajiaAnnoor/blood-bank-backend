@@ -54,8 +54,8 @@ func (o *Organization) FromModel(modelOrganization *model.Organization) error {
 //ModelOrganization converts bson to model
 func (o *Organization) ModelOrganization() *model.Organization {
 	organization := model.Organization{}
-	//	organization.ID = o.ID.Hex()
-	//	organization.UserID = o.UserID.Hex()
+	organization.ID = o.ID.Hex()
+	organization.UserID = o.UserID.Hex()
 	organization.CreatedAt = o.CreatedAt
 	organization.UpdatedAt = o.UpdatedAt
 	organization.Name = o.Name
