@@ -4,10 +4,13 @@ import "time"
 
 // Notice defines notice model
 type Notice struct {
-	ID        string
-	UserID    string
-	Patient   string
-	Notice    string
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	ID          string
+	BloodGroup  string
+	District    string
+	Address     string
+	UserID      string
+	Description string
+	Title       string
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
 }
