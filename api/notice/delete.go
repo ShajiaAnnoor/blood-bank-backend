@@ -15,13 +15,13 @@ import (
 
 //deleteHandler holds notice update handler
 type deleteHandler struct {
-	update notice.Updater
+	delete notice.Deleter
 }
 
 func (dh *deleteHandler) decodeBody(
 	body io.ReadCloser,
 ) (
-	notice dto.Update,
+	notice dto.Delete,
 	err error,
 ) {
 	err = notice.FromReader(body)
@@ -44,17 +44,17 @@ func (dh *deleteHandler) decodeContext(
 	return
 }
 
-func (dh *deleteHandler) askController(update *dto.Update) (
-	resp *dto.UpdateResponse,
+func (dh *deleteHandler) askController(update *dto.Delete) (
+	resp *dto.DeleteResponse,
 	err error,
 ) {
-	resp, err = dh.update.Update(update)
+	resp, err = dh.delete.Delete(update)
 	return
 }
 
 func (dh *deleteHandler) responseSuccess(
 	w http.ResponseWriter,
-	resp *dto.UpdateResponse,
+	resp *dto.DeleteResponse,
 ) {
 	routeutils.ServeResponse(
 		w,
@@ -70,7 +70,7 @@ func (dh *deleteHandler) ServeHTTP(
 ) {
 	defer r.Body.Close()
 
-	noticeDat := dto.Update{}
+	noticeDat := dto.Delete{}
 	noticeDat, err := dh.decodeBody(r.Body)
 
 	if err != nil {
@@ -95,7 +95,7 @@ func (dh *deleteHandler) ServeHTTP(
 //DeleteParams provide parameters for notice delete handler
 type DeleteParams struct {
 	dig.In
-	Delete     notice.Updater
+	Delete     notice.Deleter
 	Middleware *middleware.Auth
 }
 
@@ -104,7 +104,7 @@ func DeleteRoute(params DeleteParams) *routeutils.Route {
 	handler := deleteHandler{params.Delete}
 	return &routeutils.Route{
 		Method:  http.MethodPost,
-		Pattern: apipattern.NoticeUpdate,
+		Pattern: apipattern.NoticeDelete,
 		Handler: params.Middleware.Middleware(&handler),
 	}
 }
