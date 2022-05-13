@@ -12,6 +12,7 @@ type Organization struct {
 	District     string
 	Description  string
 	Address      string
+	IsDeleted    bool
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
 }
