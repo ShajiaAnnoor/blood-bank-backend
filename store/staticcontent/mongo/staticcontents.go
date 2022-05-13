@@ -32,6 +32,7 @@ func (sc *staticcontents) Save(modelStaticContent *model.StaticContent) (string,
 	mongoStaticContent := mongoModel.StaticContent{}
 	var err error
 	mongoStaticContent, err = sc.convertData(modelStaticContent)
+
 	if err != nil {
 		return "", fmt.Errorf("Could not convert model static contents to mongo static contents: %w", err)
 	}
