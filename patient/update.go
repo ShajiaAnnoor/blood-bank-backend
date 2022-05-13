@@ -25,9 +25,8 @@ type update struct {
 
 func (u *update) toModel(userpatient *dto.Update) (patient *model.Patient) {
 	patient = &model.Patient{}
-	patient.CreatedAt = time.Now().UTC()
-	patient.UpdatedAt = patient.CreatedAt
-	//	patient.Patient = userpatient.Patient
+
+	patient.UpdatedAt = time.Now().UTC()
 	patient.Name = userpatient.Name
 	patient.BloodGroup = userpatient.BloodGroup
 	patient.District = userpatient.District
