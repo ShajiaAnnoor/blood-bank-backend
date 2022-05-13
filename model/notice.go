@@ -12,6 +12,7 @@ type Notice struct {
 	UserID      string
 	Description string
 	Title       string
+	IsDeleted   bool
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 }
