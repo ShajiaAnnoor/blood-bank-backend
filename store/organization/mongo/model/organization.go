@@ -16,6 +16,7 @@ type Organization struct {
 	Address     string             `bson:"address,omitempty"`
 	District    string             `bson:"district,omitempty"`
 	UserID      primitive.ObjectID `bson:"user_id,omitempty"`
+	IsDeleted   bool               `bson:"is_deleted,omitempty"`
 	CreatedAt   time.Time          `bson:"created_at,omitempty"`
 	UpdatedAt   time.Time          `bson:"updated_at,omitempty"`
 }
@@ -29,6 +30,7 @@ func (o *Organization) FromModel(modelOrganization *model.Organization) error {
 	o.Description = modelOrganization.Description
 	o.Phone = modelOrganization.Phone
 	o.District = modelOrganization.District
+	o.IsDeleted = modelOrganization.IsDeleted
 
 	var err error
 
