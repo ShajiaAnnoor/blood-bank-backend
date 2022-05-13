@@ -11,7 +11,6 @@ import (
 
 // Update provides dto for user status update
 type Update struct {
-	Patient    string `json:"patient"`
 	ID         string `json:"patient_id"`
 	Name       string `json:"name"`
 	BloodGroup string `json:"blood_group"`
