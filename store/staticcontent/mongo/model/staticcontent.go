@@ -11,6 +11,7 @@ import (
 type StaticContent struct {
 	ID        primitive.ObjectID `bson:"_id,omitempty"`
 	Text      string             `bson:"text,omitempty"`
+	IsDeleted bool               `bson:"is_deleted"`
 	UserID    primitive.ObjectID `bson:"user_id,omitempty"`
 	CreatedAt time.Time          `bson:"created_at,omitempty"`
 	UpdatedAt time.Time          `bson:"updated_at,omitempty"`
@@ -21,6 +22,7 @@ func (sc *StaticContent) FromModel(modelStaticContent *model.StaticContent) erro
 	sc.CreatedAt = modelStaticContent.CreatedAt
 	sc.UpdatedAt = modelStaticContent.UpdatedAt
 	sc.Text = modelStaticContent.Text
+	sc.IsDeleted = modelStaticContent.IsDeleted
 
 	var err error
 	if modelStaticContent.ID != "" {
