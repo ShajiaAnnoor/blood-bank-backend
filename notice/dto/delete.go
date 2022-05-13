@@ -13,8 +13,8 @@ import (
 type DeleteResponse struct {
 	Message     string `json:"message"`
 	OK          bool   `json:"ok"`
-	ID          string `json:"blood_request_id"`
-	RequestTime string `json:"request_time"`
+	ID          string `json:"notice_id"`
+	DeletedTime string `json:"deleted_time"`
 }
 
 // String provides string repsentation
