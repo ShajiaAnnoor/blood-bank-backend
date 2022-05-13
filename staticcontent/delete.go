@@ -25,11 +25,10 @@ type delete struct {
 
 func (d *delete) toModel(userstaticcontent *dto.Delete) (staticcontent *model.StaticContent) {
 	staticcontent = &model.StaticContent{}
-	staticcontent.CreatedAt = time.Now().UTC()
-	//	staticcontent.DeletedAt = staticcontent.CreatedAt
-	//	staticcontent.Status = userstaticcontent.Status
+	staticcontent.UpdatedAt = time.Now().UTC()
 	staticcontent.UserID = userstaticcontent.UserID
-	//	staticcontent.ID = userstaticcontent.StatusID
+	staticcontent.ID = userstaticcontent.StaticContentID
+	staticcontent.IsDeleted = true
 	return
 }
 
