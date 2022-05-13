@@ -11,7 +11,7 @@ import (
 
 // Update provides dto for user status update
 type Update struct {
-	StaticContent   string `json:"staticcontent"`
+	StaticContent   string `json:"text"`
 	UserID          string `json:"user_id"`
 	StaticContentID string `json:"staticcontent_id"`
 }
