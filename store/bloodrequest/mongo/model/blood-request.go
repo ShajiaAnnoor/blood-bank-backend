@@ -1,6 +1,7 @@
 package model
 
 import (
+	"fmt"
 	"time"
 
 	"gitlab.com/Aubichol/blood-bank-backend/model"
@@ -9,14 +10,13 @@ import (
 
 //BloodReq holds db data type for blood requests
 type BloodRequest struct {
-	ID      primitive.ObjectID `bson:"_id,omitempty"`
-	Request string             `bson:"request"`
-	UserID  primitive.ObjectID `bson:"user_id"`
-	//	RequestID  primitive.ObjectID `bson:"request_id"`
-	BloodGroup string    `bson:"blood_group"`
-	CreatedAt  time.Time `bson:"created_at"`
-	UpdatedAt  time.Time `bson:"updated_at"`
-	IsDeleted  bool      `bson:"is_deleted"`
+	ID         primitive.ObjectID `bson:"_id,omitempty"`
+	Request    string             `bson:"request"`
+	UserID     primitive.ObjectID `bson:"user_id"`
+	BloodGroup string             `bson:"blood_group"`
+	CreatedAt  time.Time          `bson:"created_at"`
+	UpdatedAt  time.Time          `bson:"updated_at"`
+	IsDeleted  bool               `bson:"is_deleted"`
 }
 
 //FromModel converts model data to db data for blood requests
@@ -43,23 +43,14 @@ func (b *BloodRequest) FromModel(modelRequest *model.BloodRequest) error {
 		return err
 	}
 
-	if modelRequest.ID == "" {
-		return nil
-	}
-
-	id, err := primitive.ObjectIDFromHex(modelRequest.ID)
-
-	if err != nil {
-		return err
-	}
-
-	b.ID = id
+	fmt.Println("id is", modelRequest.ID)
 	return nil
 }
 
 //ModelRequest converts bson to model
 func (b *BloodRequest) ModelBloodRequest() *model.BloodRequest {
 	bloodreq := model.BloodRequest{}
+
 	bloodreq.ID = b.ID.Hex()
 	bloodreq.Request = b.Request
 	bloodreq.UserID = b.UserID.Hex()
