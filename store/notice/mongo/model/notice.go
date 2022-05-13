@@ -13,9 +13,10 @@ type Notice struct {
 	BloodGroup  string             `bson:"blood_group,omitempty"`
 	Description string             `bson:"description,omitempty"`
 	Title       string             `bson:"title,omitempty"`
-	Address     string             `bson:"address"`
-	PatientName string             `bson:"patient_name"`
-	District    string             `bson:"district"`
+	Address     string             `bson:"address,omitempty"`
+	PatientName string             `bson:"patient_name,omitempty"`
+	District    string             `bson:"district,omitempty"`
+	IsDeleted   bool               `bson:"is_deleted"`
 	UserID      primitive.ObjectID `bson:"user_id,omitempty"`
 	CreatedAt   time.Time          `bson:"created_at,omitempty"`
 	UpdatedAt   time.Time          `bson:"updated_at,omitempty"`
@@ -31,6 +32,7 @@ func (n *Notice) FromModel(modelNotice *model.Notice) error {
 	n.Address = modelNotice.Address
 	n.District = modelNotice.District
 	n.PatientName = modelNotice.PatientName
+	n.IsDeleted = modelNotice.IsDeleted
 
 	var err error
 
