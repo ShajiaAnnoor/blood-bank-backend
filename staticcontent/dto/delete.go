@@ -11,10 +11,10 @@ import (
 
 // DeleteResponse provides create response
 type DeleteResponse struct {
-	Message     string `json:"message"`
-	OK          bool   `json:"ok"`
-	ID          string `json:"blood_request_id"`
-	RequestTime string `json:"request_time"`
+	Message    string `json:"message"`
+	OK         bool   `json:"ok"`
+	ID         string `json:"static_content_id"`
+	DeleteTime string `json:"delete_time"`
 }
 
 // String provides string repsentation
@@ -35,7 +35,7 @@ func (d *Delete) Validate(validate *validator.Validate) error {
 			"%s:%w",
 			err.Error(),
 			&errors.Invalid{
-				errors.Base{"invalid comment update data", false},
+				errors.Base{"invalid static content update data", false},
 			},
 		)
 	}
