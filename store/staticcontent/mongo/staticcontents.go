@@ -89,7 +89,7 @@ func (sc *staticcontents) FindByStaticContentID(id string, skip int64, limit int
 		return nil, fmt.Errorf("Invalid id %s : %w", id, err)
 	}
 
-	filter := bson.M{"status_id": objectID}
+	filter := bson.M{"staticcontent_id": objectID}
 
 	findOptions := options.Find()
 	findOptions.SetSort(map[string]int{"updated_at": -1})
