@@ -25,11 +25,10 @@ type delete struct {
 
 func (d *delete) toModel(userorganization *dto.Delete) (organization *model.Organization) {
 	organization = &model.Organization{}
-	organization.CreatedAt = time.Now().UTC()
-	//	organization.DeletedAt = organization.CreatedAt
-	//	organization.Status = userorganization.Status
+	organization.UpdatedAt = time.Now().UTC()
 	organization.UserID = userorganization.UserID
-	//	organization.ID = userorganization.StatusID
+	organization.IsDeleted = true
+	organization.ID = userorganization.OrganizationID
 	return
 }
 
@@ -62,10 +61,10 @@ func (d *delete) giveResponse(
 	}).Debug("User deleted organization successfully")
 
 	return &dto.DeleteResponse{
-		Message: "Notice deleted",
-		OK:      true,
-		ID:      id,
-		//		DeleteTime: modelNotice.DeletedAt.String(),
+		Message:     "Organization deleted",
+		OK:          true,
+		ID:          id,
+		DeletedTime: modelOrganization.UpdatedAt.String(),
 	}
 }
 
