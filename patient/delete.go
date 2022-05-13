@@ -26,11 +26,10 @@ type delete struct {
 //to-do
 func (d *delete) toModel(userpatient *dto.Delete) (patient *model.Patient) {
 	patient = &model.Patient{}
-	patient.CreatedAt = time.Now().UTC()
-	//	patient.DeletedAt = patient.CreatedAt
-	//	patient.Status = userpatient.Status
+	patient.UpdatedAt = time.Now().UTC()
 	patient.UserID = userpatient.UserID
-	//	patient.ID = userpatient.StatusID
+	patient.ID = userpatient.PatientID
+	patient.IsDeleted = true
 	return
 }
 
@@ -63,10 +62,10 @@ func (d *delete) giveResponse(
 	}).Debug("User deleted patient successfully")
 
 	return &dto.DeleteResponse{
-		Message: "Patient deleted",
-		OK:      true,
-		ID:      id,
-		//		DeleteTime: modelPatient.DeletedAt.String(),
+		Message:    "Patient deleted",
+		OK:         true,
+		ID:         id,
+		DeleteTime: modelPatient.UpdatedAt.String(),
 	}
 }
 
