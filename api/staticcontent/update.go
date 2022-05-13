@@ -70,8 +70,10 @@ func (uh *updateHandler) ServeHTTP(
 ) {
 	defer r.Body.Close()
 
+	var err error
 	staticcontentDto := dto.Update{}
-	staticcontentDto, err := uh.decodeBody(r.Body)
+
+	staticcontentDto, err = uh.decodeBody(r.Body)
 
 	if err != nil {
 		message := "Unable to decode staticcontent error: "
