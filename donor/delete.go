@@ -25,13 +25,11 @@ type delete struct {
 
 func (d *delete) toModel(userdonor *dto.Delete) (donor *model.Donor) {
 	donor = &model.Donor{}
+
 	donor.UpdatedAt = time.Now().UTC()
 	donor.IsDeleted = true
-	//	notice.DeletedAt = notice.CreatedAt
-	//	notice.Status = usernotice.Status
 	donor.UserID = userdonor.UserID
 	donor.ID = userdonor.DonorID
-	//	notice.ID = usernotice.StatusID
 	return
 }
 
@@ -61,10 +59,10 @@ func (d *delete) giveResponse(
 ) *dto.DeleteResponse {
 	logrus.WithFields(logrus.Fields{
 		"id": modelNotice.UserID,
-	}).Debug("User deleted notice successfully")
+	}).Debug("User deleted donor successfully")
 
 	return &dto.DeleteResponse{
-		Message: "Notice deleted",
+		Message: "Donor deleted",
 		OK:      true,
 		ID:      id,
 		//		DeleteTime: modelNotice.DeletedAt.String(),
