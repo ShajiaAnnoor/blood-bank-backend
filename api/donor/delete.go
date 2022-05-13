@@ -15,13 +15,13 @@ import (
 
 //deleteHandler holds donor update handler
 type deleteHandler struct {
-	delete donor.Updater
+	delete donor.Deleter
 }
 
 func (ch *deleteHandler) decodeBody(
 	body io.ReadCloser,
 ) (
-	donor dto.Update,
+	donor dto.Delete,
 	err error,
 ) {
 	err = donor.FromReader(body)
@@ -44,17 +44,17 @@ func (ch *deleteHandler) decodeContext(
 	return
 }
 
-func (dh *deleteHandler) askController(update *dto.Update) (
-	resp *dto.UpdateResponse,
+func (dh *deleteHandler) askController(update *dto.Delete) (
+	resp *dto.DeleteResponse,
 	err error,
 ) {
-	resp, err = dh.delete.Update(update)
+	resp, err = dh.delete.Delete(update)
 	return
 }
 
 func (dh *deleteHandler) responseSuccess(
 	w http.ResponseWriter,
-	resp *dto.UpdateResponse,
+	resp *dto.DeleteResponse,
 ) {
 	routeutils.ServeResponse(
 		w,
@@ -70,7 +70,7 @@ func (dh *deleteHandler) ServeHTTP(
 ) {
 	defer r.Body.Close()
 
-	donor := dto.Update{}
+	donor := dto.Delete{}
 	donor, err := dh.decodeBody(r.Body)
 
 	if err != nil {
@@ -95,7 +95,7 @@ func (dh *deleteHandler) ServeHTTP(
 //DeleteParams provide parameters for donor delete handler
 type DeleteParams struct {
 	dig.In
-	Delete     donor.Updater
+	Delete     donor.Deleter
 	Middleware *middleware.Auth
 }
 
