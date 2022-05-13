@@ -30,6 +30,7 @@ func (n *Notice) FromModel(modelNotice *model.Notice) error {
 	n.Title = modelNotice.Title
 	n.Address = modelNotice.Address
 	n.District = modelNotice.District
+	n.PatientName = modelNotice.PatientName
 
 	var err error
 
