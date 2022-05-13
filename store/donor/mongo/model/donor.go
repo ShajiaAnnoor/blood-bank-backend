@@ -14,7 +14,7 @@ type Donor struct {
 	Phone        string             `bson:"phone_number,omitempty"`
 	District     string             `bson:"district,omitempty"`
 	Address      string             `bson:"address,omitempty"`
-	Availability bool               `bson:"availability,omitempty"`
+	Availability bool               `bson:"availability"`
 	TimesDonated int                `bson:"times_donated,omitempty"`
 	BloodGroup   string             `bson:"blood_group,omitempty"`
 	UserID       primitive.ObjectID `bson:"user_id,omitempty"`
@@ -25,7 +25,6 @@ type Donor struct {
 
 //FromModel converts model data to db data for donors
 func (d *Donor) FromModel(modelDonor *model.Donor) error {
-	//	d.Donor = modelDonor.Donor
 	d.CreatedAt = modelDonor.CreatedAt
 	d.UpdatedAt = modelDonor.UpdatedAt
 	d.Name = modelDonor.Name
