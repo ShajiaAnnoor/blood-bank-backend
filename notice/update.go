@@ -25,11 +25,15 @@ type update struct {
 
 func (u *update) toModel(usernotice *dto.Update) (notice *model.Notice) {
 	notice = &model.Notice{}
-	notice.CreatedAt = time.Now().UTC()
-	notice.UpdatedAt = notice.CreatedAt
-	//	notice.Status = usernotice.Status
+	notice.UpdatedAt = time.Now().UTC()
+	notice.BloodGroup = usernotice.BloodGroup
+	notice.District = usernotice.District
+	notice.Address = usernotice.Address
+	notice.Description = usernotice.Description
+	notice.Title = usernotice.Title
 	notice.UserID = usernotice.UserID
-	//	notice.ID = usernotice.StatusID
+	notice.PatientName = usernotice.PatientName
+	notice.ID = usernotice.ID
 	return
 }
 
