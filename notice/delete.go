@@ -25,11 +25,10 @@ type delete struct {
 
 func (d *delete) toModel(usernotice *dto.Delete) (notice *model.Notice) {
 	notice = &model.Notice{}
-	notice.CreatedAt = time.Now().UTC()
-	//	notice.DeletedAt = notice.CreatedAt
-	//	notice.Status = usernotice.Status
-	//	notice.UserID = usernotice.UserID
-	//	notice.ID = usernotice.StatusID
+	notice.UpdatedAt = time.Now().UTC()
+	notice.UserID = usernotice.UserID
+	notice.ID = usernotice.NoticeID
+	notice.IsDeleted = true
 	return
 }
 
