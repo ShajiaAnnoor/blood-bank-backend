@@ -61,10 +61,10 @@ func (d *delete) giveResponse(
 	}).Debug("User deleted notice successfully")
 
 	return &dto.DeleteResponse{
-		Message: "Notice deleted",
-		OK:      true,
-		ID:      id,
-		//		DeleteTime: modelNotice.DeletedAt.String(),
+		Message:     "Notice deleted",
+		OK:          true,
+		ID:          id,
+		DeletedTime: modelNotice.UpdatedAt.String(),
 	}
 }
 
