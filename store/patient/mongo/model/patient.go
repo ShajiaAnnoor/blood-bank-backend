@@ -15,6 +15,7 @@ type Patient struct {
 	District   string             `bson:"district,omitempty"`
 	Phone      string             `bson:"phone_number,omitempty"`
 	Address    string             `bson:"address,omitempty"`
+	IsDeleted  bool               `bson:"is_deleted,omitempty"`
 	UserID     primitive.ObjectID `bson:"user_id,omitempty"`
 	CreatedAt  time.Time          `bson:"created_at,omitempty"`
 	UpdatedAt  time.Time          `bson:"updated_at,omitempty"`
@@ -30,6 +31,7 @@ func (p *Patient) FromModel(modelPatient *model.Patient) error {
 	p.Phone = modelPatient.Phone
 	p.Address = modelPatient.Address
 	p.BloodGroup = modelPatient.BloodGroup
+	p.IsDeleted = modelPatient.IsDeleted
 
 	var err error
 
