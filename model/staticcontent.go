@@ -7,6 +7,7 @@ type StaticContent struct {
 	ID        string
 	UserID    string
 	Text      string
+	IsDeleted bool
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
