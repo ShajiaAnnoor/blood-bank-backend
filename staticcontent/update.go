@@ -25,11 +25,10 @@ type update struct {
 
 func (u *update) toModel(userstaticcontent *dto.Update) (sc *model.StaticContent) {
 	sc = &model.StaticContent{}
-	sc.CreatedAt = time.Now().UTC()
-	sc.UpdatedAt = sc.CreatedAt
-	//	sc.Status = userstaticcontent.Status
+	sc.UpdatedAt = time.Now().UTC()
+	sc.Text = userstaticcontent.StaticContent
 	sc.UserID = userstaticcontent.UserID
-	//	sc.ID = userstaticcontent.StatusID
+	sc.ID = userstaticcontent.StaticContentID
 	return
 }
 
@@ -45,27 +44,27 @@ func (u *update) convertData(update *dto.Update) (
 	return
 }
 
-func (u *update) askStore(modelStatus *model.StaticContent) (
+func (u *update) askStore(modelStaticContent *model.StaticContent) (
 	id string,
 	err error,
 ) {
-	id, err = u.storeStaticContent.Save(modelStatus)
+	id, err = u.storeStaticContent.Save(modelStaticContent)
 	return
 }
 
 func (u *update) giveResponse(
-	modelStatus *model.StaticContent,
+	modelStaticContent *model.StaticContent,
 	id string,
 ) *dto.UpdateResponse {
 	logrus.WithFields(logrus.Fields{
-		"id": modelStatus.UserID,
+		"id": modelStaticContent.UserID,
 	}).Debug("User updated staticcontent successfully")
 
 	return &dto.UpdateResponse{
-		Message:    "Status updated",
+		Message:    "Static Content updated",
 		OK:         true,
 		ID:         id,
-		UpdateTime: modelStatus.UpdatedAt.String(),
+		UpdateTime: modelStaticContent.UpdatedAt.String(),
 	}
 }
 
@@ -93,6 +92,7 @@ func (u *update) Update(update *dto.Update) (
 	}
 
 	modelStaticContent := u.convertData(update)
+	fmt.Println("id is", modelStaticContent.ID)
 	id, err := u.askStore(modelStaticContent)
 	if err == nil {
 		return u.giveResponse(modelStaticContent, id), nil
