@@ -11,6 +11,7 @@ type Patient struct {
 	District   string
 	Phone      string
 	Address    string
+	IsDeleted  bool
 	CreatedAt  time.Time
 	UpdatedAt  time.Time
 }
